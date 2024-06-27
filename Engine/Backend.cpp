@@ -41,6 +41,8 @@ namespace Backend {
 		glEnable(GL_DEPTH_TEST);
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc(GL_LESS);
+		Renderer::init("Assets/Shaders/vertexShader.vert", "Assets/Shaders/fragmentShader.frag");
+
 		return 0;
 
 	}
@@ -53,10 +55,5 @@ namespace Backend {
 		return !glfwWindowShouldClose(window);
 	}
 
-	void Backend::SwapBuffers() {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
 }

@@ -4,7 +4,7 @@
 #include "Backend.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Scene/Scene.h"
-
+#include "Core/Renderer.h"
 
 
 namespace Engine

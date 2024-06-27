@@ -23,10 +23,10 @@ namespace Engine {
 			lastTimeDT = currentTime;
 
 			sceneManager.Update(dt);
-			sceneManager.Render();
+			sceneManager.Render(Renderer::GetProgramID());
 
 			//draw to screen
-			Backend::SwapBuffers();
+			Renderer::SwapBuffers(Backend::GetWindowPointer());
 		}
 
 		return 0;

@@ -29,8 +29,10 @@ public:
 
 	GameObject* GetGameObject(const char* name);
 	GameObject* GetGameObject(int index);
+	std::vector<GameObject> GetAllGameObjects();
 
 	Texture* GetTexture(const char* name);
+
 private:
 	std::vector<GameObject> GameObjects;
 	std::vector<Texture> Textures;

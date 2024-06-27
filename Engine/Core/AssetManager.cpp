@@ -48,6 +48,9 @@ GameObject* AssetManager::GetGameObject(int index) {
 	return &GameObjects[index];
 
 }
+std::vector<GameObject> AssetManager::GetAllGameObjects() {
+	return GameObjects;
+}
 
 Texture* AssetManager::GetTexture(const char* name) {
 	for (int i = 0; i < Textures.size(); i++) {

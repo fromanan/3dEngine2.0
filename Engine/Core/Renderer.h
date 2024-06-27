@@ -4,10 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-
-
-
+#include "Loaders/ShaderLoader.hpp"
+#include "Loaders/loader.hpp"
 
 class Texture {
 public:
@@ -23,3 +21,11 @@ private:
     int textureNumber;
     GLuint texture;
 };
+
+namespace Renderer {
+    int init(const char* vertex, const char* fragment);
+    int LoadShader(const char* vertex, const char* fragment);
+
+    void SwapBuffers(GLFWwindow* window);
+    GLuint GetProgramID();
+}
