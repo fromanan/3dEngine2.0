@@ -27,9 +27,30 @@ int Texture::CurrentTextureNumber = GL_TEXTURE1;
 
 namespace Renderer {
 	GLuint programID;
+
+
 	int Renderer::init(const char* vertex, const char* fragment) {
 		programID = LoadShaders::LoadShaders(vertex, fragment);
+
 		return 0;
+	}
+
+	void setMat4(GLuint id, glm::mat4& mat4)
+	{
+		glUniformMatrix4fv(id, 1, GL_FALSE, &mat4[0][0]);
+
+	}
+	void setVec3(GLuint id, glm::vec3& vec3)
+	{
+		glUniform3f(id, vec3.x, vec3.y, vec3.z);
+	}
+	void Renderer::ClearScreen() {
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Renderer::UseProgram(int ProgramID) {
+		glUseProgram(programID);
 	}
 	int Renderer::LoadShader(const char* vertex, const char* fragment) {
 		programID = LoadShaders::LoadShaders(vertex, fragment);

@@ -8,17 +8,12 @@
 class Camera
 {
 public:
-	glm::mat4 ViewMatrix;
-	glm::mat4 ProjectionMatrix;
+
 	glm::vec3 position = glm::vec3(1, 1, 5);
 	glm::vec3 offset = glm::vec3(0, 0, 0);
 
-	glm::mat4 getViewMatrix() {
-		return ViewMatrix;
-	}
-	glm::mat4 getProjectionMatrix() {
-		return ProjectionMatrix;
-	}
+	glm::mat4 getViewMatrix();
+	glm::mat4 getProjectionMatrix();
 
 private:
 	// horizontal angle : toward -Z
@@ -31,6 +26,8 @@ private:
 
 	float mouseSpeed = 0.005f;
 	float speedWalk = 2600.0f;
+	glm::mat4 ViewMatrix;
+	glm::mat4 ProjectionMatrix;
 
 };
 

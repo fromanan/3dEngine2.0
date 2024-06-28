@@ -6,6 +6,10 @@
 namespace Engine {
 	
 	int Engine::Run() {
+		//init Engine comps
+		Input::Init();
+
+
 		Scene basicScene = Scene();
 		SceneManager sceneManager = SceneManager();
 
@@ -17,15 +21,18 @@ namespace Engine {
 		double lastTimeDT = glfwGetTime();
 
 		while (Backend::IsWindowOpen()) {
+			//Delta time stuff
 			double currentTime = glfwGetTime();
-
 			float dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
-
+			
+			//Update Managers
+			Input::Update();
 			sceneManager.Update(dt);
-			sceneManager.Render(Renderer::GetProgramID());
 
-			//draw to screen
+			//Rendering
+			Renderer::ClearScreen();
+			sceneManager.Render(Renderer::GetProgramID());
 			Renderer::SwapBuffers(Backend::GetWindowPointer());
 		}
 

@@ -26,6 +26,11 @@ namespace Renderer {
     int init(const char* vertex, const char* fragment);
     int LoadShader(const char* vertex, const char* fragment);
 
+    void ClearScreen();
+    void UseProgram(int ProgramID);
     void SwapBuffers(GLFWwindow* window);
     GLuint GetProgramID();
+
+    void setMat4(GLuint id, glm::mat4& mat4);
+    void setVec3(GLuint id, glm::vec3& vec3);
 }

@@ -153,6 +153,7 @@
     <ClCompile Include="Engine\Loaders\loader.cpp" />
     <ClCompile Include="Engine\Loaders\ShaderLoader.cpp" />
     <ClCompile Include="Engine\Loaders\vboindexer.cpp" />
+    <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Core\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Core\Scene\SceneManager.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Engine\Core\Camera.h" />
     <ClInclude Include="Engine\Core\Scene\Scene.h" />
     <ClInclude Include="Engine\Core\Scene\SceneManager.h" />
+    <ClInclude Include="Engine\Core\Input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
