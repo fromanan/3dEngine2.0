@@ -5,8 +5,7 @@
 Scene::Scene() {
 	assetManager = AssetManager();
 }
-void Scene::Update(float deltaTime) {
-}
+
 
 void Scene::Load() {
 	assetManager.AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
@@ -25,6 +24,10 @@ void Scene::Load() {
 	MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MVP");
 	ViewMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "V");
 	ModelMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "M");
+
+}
+
+void Scene::Update(float deltaTime) {
 
 }
 

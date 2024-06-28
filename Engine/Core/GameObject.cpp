@@ -26,7 +26,6 @@ GameObject::GameObject(const char* name, const char* path, Texture* texture, glm
 	LoadModel(path);
 }
 
-
 void GameObject::LoadModel(const char* path) {
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -63,10 +62,14 @@ glm::mat4 GameObject::GetModelMatrix() {
 void GameObject::RenderObject(GLuint& programID) {
 	glUseProgram(programID);
 
-	glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
-	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
-	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
-	glUniform1i(TextureID, texture->GetTextureNumber());
+	if (texture != NULL)
+	{
+		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
+		GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+		glUniform1i(TextureID, texture->GetTextureNumber());
+	}
+	
 
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(0);
@@ -177,5 +180,3 @@ const char* GameObject::GetParentName() {
 void GameObject::SetParentName(const char* name) {
 	parentName = name;
 }
-
-

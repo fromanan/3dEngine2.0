@@ -24,3 +24,5 @@ struct Transform {
     };
 };
 
+
+//I do want to add a mesh instead of storing all the obj info in Gameobject this will also make it easy to allow multiple GameObjects to use the same mesh without loading a model each time

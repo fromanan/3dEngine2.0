@@ -53,7 +53,7 @@ public:
 
 private:
 	Transform transform;
-	Texture* texture;
+	Texture* texture = NULL;
 
 	const char* parentName;
 	const char* name;
