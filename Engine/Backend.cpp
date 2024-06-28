@@ -4,6 +4,7 @@
 namespace Backend {
 
 	GLFWwindow* window;
+	bool windowOpen = true;
 
 	int Backend::init() {
 		glewExperimental = true; // Needed for core profile
@@ -52,7 +53,11 @@ namespace Backend {
 	}
 
 	bool Backend::IsWindowOpen() {
-		return !glfwWindowShouldClose(window);
+		return (!glfwWindowShouldClose(window) && windowOpen);
+	}
+
+	void Backend::CloseWindow() {
+		windowOpen = false;
 	}
 
 

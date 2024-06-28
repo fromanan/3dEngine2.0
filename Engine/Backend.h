@@ -12,5 +12,6 @@ namespace Backend {
 	GLFWwindow* GetWindowPointer();
 
 	bool IsWindowOpen();
+	void CloseWindow();
 
 }

@@ -47,6 +47,9 @@ namespace Input {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
+    void Input::CenterMouse() {
+        glfwSetCursorPos(window, SCREENWIDTH / 2, SCREENHEIGHT / 2);
+    }
 
 
     void Input::Init() {
@@ -61,6 +64,9 @@ namespace Input {
     }
     void Input::Update() {
         
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            Backend::CloseWindow();
+        }
 
         for (int i = 32; i < 349; i++) {
             // down

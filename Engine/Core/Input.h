@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "Engine/Backend.h"
+#include "Engine/Core/Common.h"
 #include <iostream>
 #include <cctype>
 
@@ -16,6 +17,7 @@ namespace Input {
 	bool KeyPressed(char c);
 	bool KeyDown(char c);
 	bool KeyDownLastFrame(char c);
+	void CenterMouse();
 
 	void DisableCursor();
 	void HideCursor();
