@@ -9,7 +9,6 @@ Texture::Texture(const char* name, const char* path) {
 	int texturenumTemp = CurrentTextureNumber++;
 	textureNumber = texturenumTemp - GL_TEXTURE0;
 	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
-
 }
 
 
@@ -31,16 +30,15 @@ namespace Renderer {
 
 	int Renderer::init(const char* vertex, const char* fragment) {
 		programID = LoadShaders::LoadShaders(vertex, fragment);
-
 		return 0;
 	}
 
-	void setMat4(GLuint id, glm::mat4& mat4)
+	void Renderer::setMat4(GLuint id, glm::mat4& mat4)
 	{
 		glUniformMatrix4fv(id, 1, GL_FALSE, &mat4[0][0]);
 
 	}
-	void setVec3(GLuint id, glm::vec3& vec3)
+	void Renderer::setVec3(GLuint id, glm::vec3& vec3)
 	{
 		glUniform3f(id, vec3.x, vec3.y, vec3.z);
 	}
@@ -58,7 +56,6 @@ namespace Renderer {
 	}
 	void Renderer::SwapBuffers(GLFWwindow* window) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

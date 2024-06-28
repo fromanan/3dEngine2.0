@@ -8,6 +8,7 @@ namespace Engine {
 	int Engine::Run() {
 		//init Engine comps
 		Input::Init();
+		Input::HideCursor();
 
 
 		Scene basicScene = Scene();

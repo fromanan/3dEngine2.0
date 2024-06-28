@@ -44,6 +44,8 @@ namespace Backend {
 		glDepthFunc(GL_LESS);
 		Renderer::init("Assets/Shaders/vertexShader.vert", "Assets/Shaders/fragmentShader.frag");
 
+		glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
 		return 0;
 
 	}

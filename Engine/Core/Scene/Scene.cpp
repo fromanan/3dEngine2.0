@@ -13,8 +13,9 @@ void Scene::Load() {
 	GameObject cube = GameObject("cube1", "Assets/Objects/suzanne.obj",&multiColour,glm::vec3(0,0,0));
 	assetManager.AddGameObject(cube);
 
-	LightID = glGetUniformLocation(Renderer::GetProgramID(), "LightPosition_worldspace");
-	glm::vec3 lightPos = glm::vec3(100, 100, 100);
+
+	
+
 	MatrixID = glGetUniformLocation(Renderer::GetProgramID(), "MVP");
 	ViewMatrixID = glGetUniformLocation(Renderer::GetProgramID(), "V");
 	ModelMatrixID = glGetUniformLocation(Renderer::GetProgramID(), "M");
@@ -23,7 +24,13 @@ void Scene::Load() {
 }
 
 void Scene::RenderObjects(GLuint programID) {
-	
+
+	Renderer::UseProgram(Renderer::GetProgramID());
+
+	LightID = glGetUniformLocation(Renderer::GetProgramID(), "LightPosition_worldspace");
+	glm::vec3 lightPos = glm::vec3(100, 100, 100);
+	Renderer::setVec3(LightID, lightPos);
+
 	glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
 	glm::mat4 ViewMatrix = Camera::getViewMatrix();
 
