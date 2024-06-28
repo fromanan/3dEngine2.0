@@ -23,7 +23,7 @@ int AssetManager::AddTexture(Texture texture) {
 	return Textures.size() - 1;
 }
 int AssetManager::AddTexture(const char* name, const char* path) {
-	Texture temp(name, path);
+	Texture temp = Texture(name, path);
 	Textures.push_back(temp);
 	return Textures.size() - 1;
 }

@@ -5,7 +5,6 @@
 
 GameObject::GameObject(const char* name) {
 	this->name = name;
-
 }
 GameObject::GameObject(const char* name, glm::vec3 position) {
 	this->name = name;
@@ -67,7 +66,8 @@ void GameObject::RenderObject(GLuint& programID) {
 	glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
-	glUniform1i(TextureID, texture->GetTextureNumber() + GL_TEXTURE0);
+	glUniform1i(TextureID, texture->GetTextureNumber());
+
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);

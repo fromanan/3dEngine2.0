@@ -38,11 +38,7 @@ namespace Backend {
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-		// Enable depth test
-		glEnable(GL_DEPTH_TEST);
-		// Accept fragment if it closer to the camera than the former one
-		glDepthFunc(GL_LESS);
-		Renderer::init("Assets/Shaders/vertexShader.vert", "Assets/Shaders/fragmentShader.frag");
+		Renderer::init("Assets/Shaders/vertexShader.vert", "Assets/Shaders/fragmentShader.frag","Texture");
 
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 

@@ -9,6 +9,7 @@ namespace Engine {
 		//init Engine comps
 		Input::Init();
 		Input::HideCursor();
+		Text2D::initText2D("Assets/Fonts/Holstein.DDS");
 
 
 		Scene basicScene = Scene();
@@ -36,7 +37,7 @@ namespace Engine {
 
 			//Rendering
 			Renderer::ClearScreen();
-			sceneManager.Render(Renderer::GetProgramID());
+			sceneManager.Render();
 			Renderer::SwapBuffers(Backend::GetWindowPointer());
 		}
 

@@ -7,6 +7,7 @@
 #include "Core/Renderer.h"
 #include "Core/Input.h"
 #include "Core/Camera.h"
+#include "Core/UI/Text2D.h"
 
 
 namespace Engine

@@ -18,6 +18,6 @@ void SceneManager::LoadScene(int index) {
 void SceneManager::Update(float dt) {
 	scenes[currentScene].Update(dt);
 }
-void SceneManager::Render(GLuint programID) {
-	scenes[currentScene].RenderObjects(programID);
+void SceneManager::Render() {
+	scenes[currentScene].RenderObjects();
 }

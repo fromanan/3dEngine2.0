@@ -157,12 +157,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Core\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Core\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\Core\UI\Text2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Camera.h" />
     <ClInclude Include="Engine\Core\Scene\Scene.h" />
     <ClInclude Include="Engine\Core\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Core\Input.h" />
+    <ClInclude Include="Engine\Core\UI\Text2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

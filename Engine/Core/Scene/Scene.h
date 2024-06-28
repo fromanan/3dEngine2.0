@@ -6,6 +6,7 @@
 #include "Engine/Backend.h"
 #include <iostream>
 #include <vector>
+#include <ostream>
 
 class Scene
 {
@@ -14,10 +15,11 @@ public:
 
 	void Load();
 	void Update(float dt);
-	void RenderObjects(GLuint programID);
+	void RenderObjects();
 
 private:
 	AssetManager assetManager;
+
 
 	//Shader stuff
 	GLuint LightID;

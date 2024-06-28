@@ -10,7 +10,7 @@ public:
 	int CreateScene(Scene scene);
 	void LoadScene(int sceneNumber);
 	void Update(float dt);
-	void Render(GLuint programID);
+	void Render();
 
 private:
 	std::vector<Scene> scenes;
