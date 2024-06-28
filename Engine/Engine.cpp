@@ -28,6 +28,8 @@ namespace Engine {
 			
 			//Update Managers
 			Input::Update();
+
+			std::cout << "X:" << Input::GetMouseX() << " Y:" << Input::GetMouseY() << std::endl;
 			sceneManager.Update(dt);
 
 			//Rendering

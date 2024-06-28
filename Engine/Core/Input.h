@@ -4,10 +4,22 @@
 #include <glm/glm.hpp>
 #include "Engine/Backend.h"
 #include <iostream>
+#include <cctype>
+
 
 namespace Input {
 	void Init();
 	void Update();
+
+	int GetMouseX();
+	int GetMouseY();
+	bool KeyPressed(char c);
+	bool KeyDown(char c);
+	bool KeyDownLastFrame(char c);
+
+	void DisableCursor();
+	void HideCursor();
+	void ShowCursor();
 	
 }
 

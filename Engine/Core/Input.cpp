@@ -19,6 +19,35 @@ namespace Input {
 
     GLFWwindow* window;
 
+    bool Input::KeyPressed(char c) {
+        return keyPressed[std::toupper(c)];
+    }
+    bool Input::KeyDown(char c) {
+        return keyDown[std::toupper(c)];
+    }
+    bool Input::KeyDownLastFrame(char c) {
+        return keyDownLastFrame[std::toupper(c)];
+    }
+    int Input::GetMouseX() {
+        return (int)mouseX;
+    }
+    int Input::GetMouseY() {
+        return (int)mouseY;
+    }
+
+    void Input::DisableCursor() {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+
+    void Input::HideCursor() {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    }
+
+    void Input::ShowCursor() {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+
+
 
     void Input::Init() {
         window = Backend::GetWindowPointer();
