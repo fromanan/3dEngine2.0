@@ -5,6 +5,8 @@
 
 namespace Engine {
 	
+	Camera camera;
+
 	int Engine::Run() {
 		//init Engine comps
 		Input::Init();
@@ -28,8 +30,9 @@ namespace Engine {
 			
 			//Update Managers
 			Input::Update();
-
-			std::cout << "X:" << Input::GetMouseX() << " Y:" << Input::GetMouseY() << std::endl;
+			camera.Update(dt);
+			
+			std::cout << "X:" << camera.position.x << " Y:" << camera.position.y << std::endl;
 			sceneManager.Update(dt);
 
 			//Rendering

@@ -67,7 +67,6 @@ namespace Input {
             if (glfwGetKey(window, i) == GLFW_PRESS)
             {
                 keyDown[i] = true;
-                std::cout << i << std::endl;
             }
                 
             else

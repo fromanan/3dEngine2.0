@@ -6,6 +6,7 @@
 #include "Core/Scene/Scene.h"
 #include "Core/Renderer.h"
 #include "Core/Input.h"
+#include "Core/Camera.h"
 
 
 namespace Engine

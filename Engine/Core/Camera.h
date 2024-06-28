@@ -5,22 +5,23 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Input.h"
+
 class Camera
 {
 public:
-
 	glm::vec3 position = glm::vec3(1, 1, 5);
 	glm::vec3 offset = glm::vec3(0, 0, 0);
 
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
 
+	void Update(float dt);
+
 private:
 	// horizontal angle : toward -Z
 	float horizontalAngle = 3.14f;
-	// vertical angle : 0, look at the horizon
 	float verticalAngle = 0.0f;
-	// Initial Field of View
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 
