@@ -13,8 +13,7 @@ int AssetManager::AddGameObject(GameObject gameobject) {
 	return GameObjects.size() - 1;
 }
 int AssetManager::AddGameObject(const char* name, const char* path, Texture* texture, glm::vec3 position) {
-	GameObject temp(name, path, texture, position);
-	GameObjects.push_back(temp);
+	GameObjects.push_back(GameObject(name, path, texture, position));
 	return GameObjects.size() - 1;
 }
 
@@ -23,8 +22,7 @@ int AssetManager::AddTexture(Texture texture) {
 	return Textures.size() - 1;
 }
 int AssetManager::AddTexture(const char* name, const char* path) {
-	Texture temp = Texture(name, path);
-	Textures.push_back(temp);
+	Textures.push_back(Texture(name, path));
 	return Textures.size() - 1;
 }
 
