@@ -19,14 +19,7 @@ public:
 
 private:
 	AssetManager assetManager;
-
-
-	//Shader stuff
-	GLuint LightID;
-	GLuint MatrixID;
-	GLuint ViewMatrixID;
-	GLuint ModelMatrixID;
 	glm::vec3 lightPos;
-
+	SkyBox space;
 };
 

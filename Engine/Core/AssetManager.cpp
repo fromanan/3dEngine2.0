@@ -4,7 +4,6 @@
 AssetManager::AssetManager() {
 	Textures.clear();
 	GameObjects.clear();
-
 }
 
 //returns index of object

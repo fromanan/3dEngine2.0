@@ -152,6 +152,7 @@
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Loaders\loader.cpp" />
     <ClCompile Include="Engine\Loaders\ShaderLoader.cpp" />
+    <ClCompile Include="Engine\Loaders\stb_image.cpp" />
     <ClCompile Include="Engine\Loaders\vboindexer.cpp" />
     <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -165,6 +166,10 @@
     <ClInclude Include="Engine\Core\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Core\Input.h" />
     <ClInclude Include="Engine\Core\UI\Text2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\SkyBoxShader.frag" />
+    <None Include="Assets\Shaders\SkyBoxShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

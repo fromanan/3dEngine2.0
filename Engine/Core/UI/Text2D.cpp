@@ -17,14 +17,12 @@ namespace Text2D {
 
 		// Initialize texture
 		Text2DTextureID = loader::loadDDS(texturePath);
-		std::cout << "Text2D Texture: " << Text2DTextureID << std::endl;
 		// Initialize VBO
 		glGenBuffers(1, &Text2DVertexBufferID);
 		glGenBuffers(1, &Text2DUVBufferID);
 
 		// Initialize Shader
 		Text2DShaderID = LoadShaders::LoadShaders("Assets/Shaders/textShader.vert", "Assets/Shaders/textShader.frag");
-		
 		Renderer::UseProgram(Text2DShaderID);
 		// Initialize uniforms' IDs
 		Text2DUniformID = glGetUniformLocation(Text2DShaderID, "textShader");
@@ -102,9 +100,9 @@ namespace Text2D {
 
 		glDisable(GL_BLEND);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		//glDisableVertexAttribArray(0);
+		//glDisableVertexAttribArray(1);
+		//glDisableVertexAttribArray(2);
 
 	}
 

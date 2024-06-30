@@ -60,6 +60,9 @@
     <ClCompile Include="Engine\Core\UI\Text2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Loaders\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Scene\Scene.h">
@@ -77,5 +80,9 @@
     <ClInclude Include="Engine\Core\UI\Text2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\SkyBoxShader.vert" />
+    <None Include="Assets\Shaders\SkyBoxShader.frag" />
   </ItemGroup>
 </Project>
