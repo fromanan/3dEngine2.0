@@ -8,11 +8,13 @@ Scene::Scene() {
 
 
 void Scene::Load() {
+	assetManager.AddTexture("default", "Assets/Textures/default.dds");
 	assetManager.AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
 	assetManager.AddTexture("container", "Assets/Textures/Container.dds");
-	assetManager.AddGameObject("container", "Assets/Objects/ContainerFinal.obj", assetManager.GetTexture("container"), glm::vec3(4, 0, 4));
-	assetManager.AddGameObject("monkey", "Assets/Objects/suzanne.obj", assetManager.GetTexture("uvmap"), glm::vec3(0, 0, 0));
+	//assetManager.AddGameObject("container", "Assets/Objects/ContainerFinal.obj", assetManager.GetTexture("container"), glm::vec3(4, 0, 4));
+	//assetManager.AddGameObject("monkey", "Assets/Objects/suzanne.obj", assetManager.GetTexture("uvmap"), glm::vec3(0, 0, 0));
 
+	assetManager.LoadAssets("Assets/Saves/mainScene.json");
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	lightPos = glm::vec3(100, 100, 100);
@@ -27,6 +29,8 @@ void Scene::Load() {
 	};
 
 	space = SkyBox(faces);
+
+	//assetManager.SaveAssets("Assets/Saves/mainScene.json");
 }
 
 void Scene::Update(float deltaTime) {

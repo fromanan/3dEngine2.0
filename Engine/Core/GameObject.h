@@ -23,6 +23,9 @@ public:
 	GameObject(const char* name, const char* path);
 	GameObject(const char* name, const char* path, glm::vec3 position);
 	GameObject(const char* name, const char* path,Texture* texture, glm::vec3 position);
+	GameObject(const char* name, const char* parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
+		std::vector<glm::vec3> indexed_vertices,std::vector<glm::vec2> indexed_uvs,std::vector<glm::vec3> indexed_normals);
+
 	void LoadModel(const char* path);
 	glm::mat4 GetModelMatrix();
 
@@ -51,6 +54,14 @@ public:
 	const char* GetParentName();
 	void SetParentName(const char* name);
 
+	//forJsonSaving
+	std::vector<unsigned short> getIndices();
+	std::vector<glm::vec3> getIndexedVerticies();
+	std::vector<glm::vec2> getIndexedUvs();
+	std::vector<glm::vec3> getIndexedNormals();
+	const char* GetTextureName();
+
+
 private:
 	Transform transform;
 	Texture* texture = NULL;
@@ -65,7 +76,6 @@ private:
 	std::vector<glm::vec3> normals;
 
 	std::vector<unsigned short> indices;
-
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
 	std::vector<glm::vec3> indexed_normals;

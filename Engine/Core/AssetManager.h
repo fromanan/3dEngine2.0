@@ -6,16 +6,23 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
-
 #include "GameObject.h"
 #include "Common.h"
 #include "Renderer.h"
+
+//Json stuff
+#include <fstream>
+#include <iostream>
+#include "Loaders/nlohmann/json.hpp"
+using json = nlohmann::json;
 
 
 class AssetManager
 {
 public:
 	AssetManager();
+	void SaveAssets(const char* path);
+	void LoadAssets(const char* path);
 
 	//returns index of object
 	int AddGameObject(GameObject gameobject);

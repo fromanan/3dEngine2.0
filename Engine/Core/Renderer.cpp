@@ -9,6 +9,8 @@ Texture::Texture(const char* name, const char* path) {
 	int texturenumTemp = CurrentTextureNumber++;
 	textureNumber = texturenumTemp - GL_TEXTURE0;
 	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
+	std::cout << "With name " << this->name << std::endl;
+
 }
 
 

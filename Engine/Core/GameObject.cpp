@@ -5,34 +5,54 @@
 
 GameObject::GameObject(const char* name) {
 	this->name = name;
+	parentName = "";
+
 }
 GameObject::GameObject(const char* name, glm::vec3 position) {
 	this->name = name;
 	setPosition(position);
+	parentName = "";
+
 }
 GameObject::GameObject(const char* name, const char* path) {
 	this->name = name;
 	LoadModel(path);
+	parentName = "";
+
 }
 GameObject::GameObject(const char* name, const char* path, glm::vec3 position) {
 	this->name = name;
 	LoadModel(path);
 	setPosition(position);
+	parentName = "";
+
 }
 GameObject::GameObject(const char* name, const char* path, Texture* texture, glm::vec3 position) {
 	this->name = name;
 	setPosition(position);
 	this->texture = texture;
 	LoadModel(path);
+	parentName = "";
 }
 
-void GameObject::LoadModel(const char* path) {
+GameObject::GameObject(const char* name,const char* parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indice,
+	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms)
+{
+	this->name = name;
+	setPosition(position);
+	this->texture = texture;
+	parentName = parentname;
+	setRotation(rotation);
+	transform.scale.x = scale.x;
+	transform.scale.y = scale.y;
+	transform.scale.z = scale.z;
+	indices = indice;
+	indexed_normals = indexed_norms;
+	indexed_uvs = indexed_uv;
+	indexed_vertices = indexed_vert;
+
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
-
-	bool res = loader::loadOBJ(path, vertices, uvs, normals);
-	indexer::indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
-
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -55,6 +75,32 @@ void GameObject::LoadModel(const char* path) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_DYNAMIC_DRAW);
 }
 
+void GameObject::LoadModel(const char* path) {
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
+
+	bool res = loader::loadOBJ(path, vertices, uvs, normals);
+	indexer::indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
+
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_DYNAMIC_DRAW);
+
+
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_DYNAMIC_DRAW);
+
+
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_DYNAMIC_DRAW);
+
+	glGenBuffers(1, &elementbuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_DYNAMIC_DRAW);
+}
+
 glm::mat4 GameObject::GetModelMatrix() {
 	return  transform.to_mat4();
 }
@@ -68,6 +114,9 @@ void GameObject::RenderObject(GLuint& programID) {
 		GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 		glUniform1i(TextureID, texture->GetTextureNumber());
+	}
+	else {
+		std::cout << "tets";
 	}
 	
 
@@ -179,4 +228,21 @@ const char* GameObject::GetParentName() {
 }
 void GameObject::SetParentName(const char* name) {
 	parentName = name;
+}
+
+
+std::vector<unsigned short> GameObject::getIndices() {
+	return indices;
+}
+std::vector<glm::vec3>  GameObject::getIndexedVerticies() {
+	return indexed_vertices;
+}
+std::vector<glm::vec2>  GameObject::getIndexedUvs() {
+	return indexed_uvs;
+}
+std::vector<glm::vec3>  GameObject::getIndexedNormals() {
+	return indexed_normals;
+}
+const char* GameObject::GetTextureName() {
+	return texture->GetName();
 }
