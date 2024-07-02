@@ -3,7 +3,9 @@
 #include "Engine/Core/GameObject.h"
 #include "Engine/Core/Renderer.h"
 #include "Engine/Core/Camera.h"
+#include "Engine/Core/Camera.h"
 #include "Engine/Backend.h"
+#include "Engine/Player.h"
 #include <iostream>
 #include <vector>
 #include <ostream>

@@ -27,14 +27,13 @@ void Scene::Load() {
 			"Assets/Skybox/daylight/front.png",
 			"Assets/Skybox/daylight/back.png"
 	};
-
 	space = SkyBox(faces);
-
+	Player::setPosition(glm::vec3(0, 0, 5));
 	//assetManager.SaveAssets("Assets/Saves/mainScene.json");
 }
 
 void Scene::Update(float deltaTime) {
-
+	Player::Update(deltaTime);
 }
 
 void Scene::RenderObjects() {

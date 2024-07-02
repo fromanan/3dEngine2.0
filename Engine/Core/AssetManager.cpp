@@ -21,8 +21,6 @@ void AssetManager::LoadAssets(const char* loadJson) {
 		glm::vec3 position = glm::vec3(data["GameObjects"][gameobject][2], data["GameObjects"][gameobject][3], data["GameObjects"][gameobject][4]);
 		glm::vec3 rotaion = glm::vec3(data["GameObjects"][gameobject][5], data["GameObjects"][gameobject][6], data["GameObjects"][gameobject][7]);
 		glm::vec3 scale = glm::vec3(data["GameObjects"][gameobject][8], data["GameObjects"][gameobject][9], data["GameObjects"][gameobject][10]);
-
-
 		
 		std::vector<unsigned short> indices = data["GameObjects"][gameobject][11];
 		std::vector<glm::vec3> indexed_vertices;
