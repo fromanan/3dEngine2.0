@@ -2,16 +2,22 @@
 
 namespace Player
 {
-	glm::vec3 position;
 	float horizontalAngle = 3.14f;
 	float verticalAngle = 0.0f;
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
+	float speed = 20;
+	RigidBody* rb;
+	Cube* collider;
 
-	float speed = 1000;
+	void Player::Init() {
+		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 1), "PlayerRB");
+		collider = PhysicsManager::AddCube(glm::vec3(0, 0, 1), 0.2, 1, 0.2, "PlayerCollider");
+	}
 
 	void Player::Update(float deltaTime) {
+
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
 		{
 			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());
@@ -37,32 +43,35 @@ namespace Player
 		);
 		// Move forward
 		if (Input::KeyDown('w')) {
-			position -= forward * 10.0f * deltaTime;
+			rb->AddForce(-forward * speed * deltaTime);
 		}
 		// Move backward
 		if (Input::KeyDown('s')) {
-			position += forward * 10.0f * deltaTime;
+			rb->AddForce(forward * speed * deltaTime);
 		}
 
 		// Strafe right
 		if (Input::KeyDown('d')) {
-			position += right * 10.0f * deltaTime;
+			rb->AddForce(right * speed * deltaTime);
 		}
 		// Strafe left
 		if (Input::KeyDown('a')) {
-			position -= right * 10.0f * deltaTime;
+			rb->AddForce(-right * speed * deltaTime);
 		}
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
 
 		Camera::SetHorizontalAngle(horizontalAngle);
 		Camera::SetVerticalAngle(verticalAngle);
-		Camera::SetPosition(position);
+		Camera::SetPosition(rb->GetPostion());
 	}
 	glm::vec3 Player::getPosition() {
-		return position;
+		return rb->GetPostion();
 	}
 	void Player::setPosition(glm::vec3 pos) {
-		position = pos;
+		rb->SetPostion(pos);
+		Camera::SetPosition(rb->GetPostion());
 	}
+
+
 
 }

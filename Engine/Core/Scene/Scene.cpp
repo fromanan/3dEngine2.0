@@ -28,7 +28,10 @@ void Scene::Load() {
 			"Assets/Skybox/daylight/back.png"
 	};
 	space = SkyBox(faces);
+
+	Player::Init();
 	Player::setPosition(glm::vec3(0, 0, 5));
+
 	//assetManager.SaveAssets("Assets/Saves/mainScene.json");
 }
 

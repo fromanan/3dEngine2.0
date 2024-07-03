@@ -155,6 +155,7 @@
     <ClCompile Include="Engine\Loaders\stb_image.cpp" />
     <ClCompile Include="Engine\Loaders\vboindexer.cpp" />
     <ClCompile Include="Engine\Core\Input.cpp" />
+    <ClCompile Include="Engine\Physics\Physics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Core\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Core\Scene\SceneManager.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Engine\Core\UI\Text2D.h" />
     <ClInclude Include="Engine\Loaders\nlohmann\json.hpp" />
     <ClInclude Include="Engine\Loaders\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="Engine\Physics\Physics.h" />
     <ClInclude Include="Engine\Player.h" />
   </ItemGroup>
   <ItemGroup>

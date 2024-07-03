@@ -32,7 +32,7 @@ namespace Engine {
 			Input::Update();
 			Input::CenterMouse();
 			Camera::Update(dt);
-			
+			PhysicsManager::Update(dt);
 			sceneManager.Update(dt);
 
 			//Rendering
