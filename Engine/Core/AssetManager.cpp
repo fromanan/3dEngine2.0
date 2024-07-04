@@ -54,12 +54,9 @@ void AssetManager::LoadAssets(const char* loadJson) {
 		}
 		std::cout << Uvs.size() << std::endl;
 		
+		GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals));
 
-		GameObject DeseralizedObject = GameObject(name.c_str(),Parentname.c_str(),texture,position,rotaion,scale,indices,indexed_vertices,indexed_uvs,indexed_normals);
-
-		GameObjects.push_back(DeseralizedObject);
-
-		std::cout << "Name:" << name << " ParentName:" << Parentname << " postitonx:" << position.x << " rotz:" << rotaion.z << " textureName:" << textureName << std::endl;
+		std::cout << "Name:" << name.c_str() << " ParentName:" << Parentname << " postitonx:" << position.x << " rotz:" << rotaion.z << " textureName:" << textureName << std::endl;
 
 	}
 }
@@ -127,7 +124,7 @@ int AssetManager::AddGameObject(GameObject gameobject) {
 	GameObjects.push_back(gameobject);
 	return GameObjects.size() - 1;
 }
-int AssetManager::AddGameObject(const char* name, const char* path, Texture* texture, glm::vec3 position) {
+int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position) {
 	GameObjects.push_back(GameObject(name, path, texture, position));
 	return GameObjects.size() - 1;
 }

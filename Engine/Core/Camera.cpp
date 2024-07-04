@@ -15,10 +15,11 @@ namespace Camera {
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 
-
 	glm::vec3 Camera::GetPostion() {
 		return position;
 	}
+
+
 
 	glm::mat4 Camera::getViewMatrix() {
 		return ViewMatrix;

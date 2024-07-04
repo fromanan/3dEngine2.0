@@ -8,12 +8,13 @@ namespace Player
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
 	float speed = 35;
+	float jumpforce = 50000;
 	RigidBody* rb;
 	Cube* collider;
 
 	void Player::Init() {
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 1), "PlayerRB");
-		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.3, 1, 0.3, "PlayerCollider");
+		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 2, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
 	}
 
@@ -59,6 +60,7 @@ namespace Player
 		if (Input::KeyDown('a')) {
 			rb->AddForce(-right * speed * deltaTime);
 		}
+
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
 
 		Camera::SetHorizontalAngle(horizontalAngle);

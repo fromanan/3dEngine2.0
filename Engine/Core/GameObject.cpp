@@ -3,31 +3,31 @@
 
 
 
-GameObject::GameObject(const char* name) {
+GameObject::GameObject(std::string name) {
 	this->name = name;
 	parentName = "";
 
 }
-GameObject::GameObject(const char* name, glm::vec3 position) {
+GameObject::GameObject(std::string name, glm::vec3 position) {
 	this->name = name;
 	setPosition(position);
 	parentName = "";
 
 }
-GameObject::GameObject(const char* name, const char* path) {
+GameObject::GameObject(std::string name, const char* path) {
 	this->name = name;
 	LoadModel(path);
 	parentName = "";
 
 }
-GameObject::GameObject(const char* name, const char* path, glm::vec3 position) {
+GameObject::GameObject(std::string name, const char* path, glm::vec3 position) {
 	this->name = name;
 	LoadModel(path);
 	setPosition(position);
 	parentName = "";
 
 }
-GameObject::GameObject(const char* name, const char* path, Texture* texture, glm::vec3 position) {
+GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position) {
 	this->name = name;
 	setPosition(position);
 	this->texture = texture;
@@ -35,7 +35,7 @@ GameObject::GameObject(const char* name, const char* path, Texture* texture, glm
 	parentName = "";
 }
 
-GameObject::GameObject(const char* name,const char* parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indice,
+GameObject::GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indice,
 	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms)
 {
 	this->name = name;
@@ -49,7 +49,7 @@ GameObject::GameObject(const char* name,const char* parentname, Texture* texture
 	indices = indice;
 	indexed_normals = indexed_norms;
 	indexed_uvs = indexed_uv;
-	indexed_vertices = indexed_vert;
+	this->indexed_vertices = indexed_vert;
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -220,13 +220,13 @@ void GameObject::SetScale(float scale) {
 	transform.scale = glm::vec3(scale);
 }
 
-const char* GameObject::GetName() {
+std::string GameObject::GetName() {
 	return name;
 }
-const char* GameObject::GetParentName() {
+std::string GameObject::GetParentName() {
 	return parentName;
 }
-void GameObject::SetParentName(const char* name) {
+void GameObject::SetParentName(std::string name) {
 	parentName = name;
 }
 

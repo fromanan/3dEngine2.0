@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
+#include <string>
 
 #include "Common.h"
 #include "Renderer.h"
@@ -18,12 +19,12 @@
 class GameObject
 {
 public:
-	GameObject(const char* name);
-	GameObject(const char* name, glm::vec3 position);
-	GameObject(const char* name, const char* path);
-	GameObject(const char* name, const char* path, glm::vec3 position);
-	GameObject(const char* name, const char* path,Texture* texture, glm::vec3 position);
-	GameObject(const char* name, const char* parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
+	GameObject(std::string name);
+	GameObject(std::string name, glm::vec3 position);
+	GameObject(std::string name, const char* path);
+	GameObject(std::string name, const char* path, glm::vec3 position);
+	GameObject(std::string name, const char* path,Texture* texture, glm::vec3 position);
+	GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
 		std::vector<glm::vec3> indexed_vertices,std::vector<glm::vec2> indexed_uvs,std::vector<glm::vec3> indexed_normals);
 
 	void LoadModel(const char* path);
@@ -49,10 +50,10 @@ public:
 
 	void SetScale(float scale);
 
-	const char* GetName();
+	std::string GetName();
 
-	const char* GetParentName();
-	void SetParentName(const char* name);
+	std::string GetParentName();
+	void SetParentName(std::string name);
 
 	//forJsonSaving
 	std::vector<unsigned short> getIndices();
@@ -66,8 +67,8 @@ private:
 	Transform transform;
 	Texture* texture = NULL;
 
-	const char* parentName;
-	const char* name;
+	std::string parentName;
+	std::string name;
 	
 
 	// Read our .obj file

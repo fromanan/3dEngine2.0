@@ -7,6 +7,15 @@
 #include "Engine/Core/GameObject.h"
 
 #include <vector>
+class Ray {
+public:
+	glm::vec3 direction;
+	glm::vec3 origin;
+	Ray(glm::vec3 dir, glm::vec3 org);
+
+	bool intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix);
+
+};
 
 class Cube
 {
@@ -28,6 +37,9 @@ public:
 	bool TouchingBack(Cube* colider, float velocity);
 	bool TouchingBottom(Cube* colider, float velocity);
 	bool TouchingTop(Cube* colider, float velocity);
+
+	float intersect(Ray r, float t0, float t1);
+
 
 	Cube(GameObject* gameobject, const char* names);
 
@@ -51,6 +63,8 @@ public:
 	const char* GetName();
 
 	void NewPosition(float deltaTime);
+	void NewPositionY(float deltaTime);
+
 
 	void AddForce(glm::vec3 force);
 	void AddForceX(float force);
@@ -75,15 +89,6 @@ private:
 	Cube* colider = NULL;
 };
 
-class Ray {
-public:
-	glm::vec3 direction;
-	glm::vec3 origin;
-	Ray(glm::vec3 dir, glm::vec3 org);
-
-	bool intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix);
-
-};
 
 
 namespace PhysicsManager {

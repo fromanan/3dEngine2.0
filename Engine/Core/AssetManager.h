@@ -26,7 +26,7 @@ public:
 
 	//returns index of object
 	int AddGameObject(GameObject gameobject);
-	int AddGameObject(const char* name, const char* path,Texture* texture, glm::vec3 position);
+	int AddGameObject(std::string name, const char* path,Texture* texture, glm::vec3 position);
 
 	int AddTexture(Texture texture);
 	int AddTexture(const char* name, const char* path);

@@ -11,15 +11,13 @@ void Scene::Load() {
 	assetManager.AddTexture("default", "Assets/Textures/default.dds");
 	assetManager.AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
 	assetManager.AddTexture("container", "Assets/Textures/Container.dds");
-	//assetManager.AddGameObject("container", "Assets/Objects/ContainerFinal.obj", assetManager.GetTexture("container"), glm::vec3(4, 0, 4));
-	//assetManager.AddGameObject("monkey", "Assets/Objects/suzanne.obj", assetManager.GetTexture("uvmap"), glm::vec3(0, 0, 0));
-	assetManager.AddGameObject("cube3", "Assets/Objects/cube.obj", assetManager.GetTexture("uvmap"), glm::vec3(-2, 0, -2));
-	PhysicsManager::AddCube(glm::vec3(0, -1, 0), 30, 1, 30, "floor_collider");
-	PhysicsManager::AddCube(assetManager.GetGameObject("cube3"), "cube_collider");
-
-
-
 	assetManager.LoadAssets("Assets/Saves/mainScene.json");
+	assetManager.AddGameObject("cube3", "Assets/Objects/cube.obj", assetManager.GetTexture("uvmap"), glm::vec3(-2, 0, -2));
+	PhysicsManager::AddCube(glm::vec3(0, 0.5, 0), 30, 1, 30, "floor_collider");
+	PhysicsManager::AddCube(assetManager.GetGameObject("cube3"), "cube_collider");
+	PhysicsManager::AddCube(assetManager.GetGameObject("container"), "container_collider");
+
+
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	lightPos = glm::vec3(100, 100, 100);
@@ -61,7 +59,11 @@ void Scene::RenderObjects() {
 	}
 
 	std::ostringstream oss;
-	oss << "Pos x:" << Camera::GetPostion().x << " y:" << Camera::GetPostion().y << " z:" << Camera::GetPostion().z;
+	oss << "Position x:" << Camera::GetPostion().x << " y:" << Camera::GetPostion().y << " z:" << Camera::GetPostion().z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
+	glm::vec3 vel = Player::rb->GetForce();
+	oss.str(""); oss.clear();
+	oss << "Velocity x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
+	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
 
 }
