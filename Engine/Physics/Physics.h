@@ -18,6 +18,9 @@ public:
 
 	void setPosition(glm::vec3 position);
 	glm::vec3 getPosition();
+	float getDepth();
+	float getHeight();
+	float getWidth();
 
 	bool TouchingLeft(Cube* colider, float velocity);
 	bool TouchingRight(Cube* colider, float velocity);
@@ -26,7 +29,7 @@ public:
 	bool TouchingBottom(Cube* colider, float velocity);
 	bool TouchingTop(Cube* colider, float velocity);
 
-	Cube(GameObject gameobject, const char* names);
+	Cube(GameObject* gameobject, const char* names);
 
 private:
 	const char* name = "None";
@@ -87,6 +90,8 @@ namespace PhysicsManager {
 	RigidBody* AddRigidbody(glm::vec3 position, const char* name);
 	Cube* AddCube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, const char* name);
 	Cube* AddCube(glm::vec3 postion, float width, float height, float depth, const char* name);
+	Cube* AddCube(GameObject* gameobject, const char* name);
+
 
 	Cube* GetColider(const char* name);
 	RigidBody* GetRigidbody(const char* name);

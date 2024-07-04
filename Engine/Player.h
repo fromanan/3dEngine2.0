@@ -12,7 +12,7 @@
 namespace Player
 {
 	extern RigidBody* rb;
-	extern Cube* colider;
+	extern Cube* collider;
 	glm::vec3 getPosition();
 	void setPosition(glm::vec3 pos);
 	void Update(float deltaTime);

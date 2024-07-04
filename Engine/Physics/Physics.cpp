@@ -67,8 +67,8 @@ Cube::Cube(glm::vec3 postion, float width, float height, float depth, const char
 	max = glm::vec3(postion.x + width / 2, position.y + height / 2, postion.z + depth / 2);
 	this->name = name;
 }
-Cube::Cube(GameObject gameobject, const char* name) {
-	std::vector<glm::vec3> vertices = gameobject.getIndexedVerticies();
+Cube::Cube(GameObject* gameobject, const char* name) {
+	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
 
 	float minx = vertices[0].x;
 	float maxx = vertices[0].x;
@@ -79,7 +79,7 @@ Cube::Cube(GameObject gameobject, const char* name) {
 	for (int i = 0; i < vertices.size(); i++)
 	{
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
-		tempVec = tempVec * (glm::rotate(glm::mat4(1), gameobject.getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject.getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject.getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject.getScale());
+		tempVec = tempVec * (glm::rotate(glm::mat4(1), gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
 
 		if (tempVec.x < minx)
 			minx = tempVec.x;
@@ -105,6 +105,7 @@ Cube::Cube(GameObject gameobject, const char* name) {
 	min = glm::vec3(minx, miny, minz);
 	max = glm::vec3(maxx, maxy, maxz);
 	this->name = name;
+	this->position = gameobject->getPosition();
 }
 
 const char* Cube::GetName() {
@@ -116,47 +117,57 @@ void Cube::setPosition(glm::vec3 position) {
 glm::vec3 Cube::getPosition() {
 	return position;
 }
+float Cube::getDepth() {
+	return depth;
+}
+float Cube::getHeight() {
+	return height;
+}
+float Cube::getWidth() {
+	return width;
+}
 bool Cube::TouchingLeft(Cube* colider, float velocity) {
-	return position.x - velocity - width / 2 < colider->position.x + colider->width / 2 &&
-		position.x + width / 2 > colider->position.x + colider->width / 2 &&
-		position.z + depth / 2 < colider->position.z + colider->depth / 2 &&
-		position.z - depth / 2 > colider->position.z - colider->depth / 2 &&
-		position.y - height / 2 < colider->position.y + colider->height / 2 &&
-		position.y + height / 2 > colider->position.y - colider->height / 2;
+	return this->position.x - this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
+		this->position.x + this->width / 2 > colider->getPosition().x + colider->getWidth() / 2 &&
+		this->position.z + this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
+		this->position.z - this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
+		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
+		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
+	
 }
 bool Cube::TouchingRight(Cube* colider, float velocity) {
-	return position.x + velocity+ width / 2 > colider->position.x - colider->width / 2 &&
-		position.x - width / 2 < colider->position.x - colider->width / 2 &&
-		position.z + depth / 2 < colider->position.z + colider->depth / 2 &&
-		position.z - depth / 2 > colider->position.z - colider->depth / 2 &&
-		position.y - height / 2 < colider->position.y + colider->height / 2 &&
-		position.y + height / 2 > colider->position.y - colider->height / 2;;
+	return this->position.x + this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
+		this->position.x - this->width / 2 < colider->getPosition().x - colider->getWidth() / 2 &&
+		this->position.z + this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
+		this->position.z - this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
+		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
+		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
 }
 bool Cube::TouchingFront(Cube* colider, float velocity) {
-	return position.z - velocity - depth / 2 < colider->position.z + colider->depth / 2 &&
-		position.z + depth / 2 > colider->position.z + colider->depth / 2 &&
-		position.x + width / 2 < colider->position.x + colider->width / 2 &&
-		position.x - width / 2 > colider->position.x - colider->width / 2 &&
-		position.y - height / 2 < colider->position.y + colider->height / 2 &&
-		position.y + height / 2 > colider->position.y - colider->height / 2;;
+	return this->position.z - this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
+		this->position.z + this->depth / 2 > colider->getPosition().z + colider->getDepth() / 2 && 
+		this->position.x + this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
+		this->position.x - this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
+		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
+		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
 }
 bool Cube::TouchingBack(Cube* colider, float velocity) {
-	return position.z + velocity + depth / 2 > colider->position.z - colider->depth / 2 &&
-		position.z - depth / 2 < colider->position.z - colider->depth / 2 &&
-		position.x + width / 2 < colider->position.x + colider->width / 2 &&
-		position.x - width / 2 > colider->position.x - colider->width / 2 &&
-		position.y - height / 2 < colider->position.y + colider->height / 2 &&
-		position.y + height / 2 > colider->position.y - colider->height / 2;;
+	return this->position.z + this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
+		this->position.z - this->depth / 2 < colider->getPosition().z - colider->getDepth() / 2 &&
+		this->position.x + this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
+		this->position.x - this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
+		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
+		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;;
 }
-bool Cube::TouchingBottom(Cube* colider, float velocity) {
-	return position.y + velocity - height / 2 < colider->position.y + colider->height / 2 &&
-		position.x > colider->position.x - colider->width / 2 && position.x < colider->position.x + colider->width / 2 &&
-		position.z > colider->position.z - colider->depth / 2 && position.z < colider->position.z + colider->depth / 2;
+bool Cube::TouchingBottom(Cube* colider, float velocity) {	
+	return this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
+		this->position.x > colider->getPosition().x - colider->getWidth() / 2 && colider->getPosition().x < colider->getPosition().x + colider->getWidth() / 2 &&
+		this->position.z > colider->getPosition().z - colider->getDepth() / 2 && colider->getPosition().z < colider->getPosition().z + colider->getDepth() / 2;
 }
 bool Cube::TouchingTop(Cube* colider, float velocity) {
-	return position.y + velocity + height / 2 > colider->position.y - colider->height / 2 &&
-		position.x > colider->position.x - colider->width / 2 && position.x < colider->position.x + colider->width / 2 &&
-		position.z > colider->position.z - colider->depth / 2 && position.z < colider->position.z + colider->depth / 2;
+	return this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2 &&
+		this->position.x > colider->getPosition().x - colider->getWidth() / 2 && getPosition().x < colider->getPosition().x + colider->getWidth() / 2 &&
+		this->position.z > colider->getPosition().z - colider->getDepth() / 2 && getPosition().z < colider->getPosition().z + colider->getDepth() / 2;
 }
 
 RigidBody::RigidBody() {
@@ -226,13 +237,15 @@ namespace PhysicsManager {
 	std::vector<Cube> coliders;
 	std::vector<RigidBody> rigidbodies;
 
-	float friction = 0.992;
+	float friction = 0.985;
 
 	void PhysicsManager::Update(float deltaTime) {
 		for (int i = 0; i < rigidbodies.size(); i++) {
 			//Do colider Calculation
 			if (rigidbodies[i].GetColider() != NULL) {
 				for (int col = 0; col < coliders.size(); col++) {
+					if (rigidbodies[i].GetColider()->GetName() == coliders[col].GetName())
+						continue;
 					if (rigidbodies[i].GetForce().x < 0 && rigidbodies[i].GetColider()->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x))
 						rigidbodies[i].RemoveForceX();
 					if (rigidbodies[i].GetForce().x > 0 && rigidbodies[i].GetColider()->TouchingRight(&coliders[col], rigidbodies[i].GetForce().x))
@@ -271,6 +284,11 @@ namespace PhysicsManager {
 		coliders.push_back(Cube(postion, width, height,depth, name));
 		return &coliders[coliders.size() - 1];
 	}
+	Cube* AddCube(GameObject* gameobject, const char* name) {
+		coliders.push_back(Cube(gameobject, name));
+		return &coliders[coliders.size() - 1];
+	}
+
 	Cube* PhysicsManager::GetColider(const char* name) {
 		for (int i = 0; i < coliders.size(); i++) {
 			if (std::strcmp(coliders[i].GetName(), name) == 0)

@@ -7,13 +7,14 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 20;
+	float speed = 35;
 	RigidBody* rb;
 	Cube* collider;
 
 	void Player::Init() {
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 1), "PlayerRB");
-		collider = PhysicsManager::AddCube(glm::vec3(0, 0, 1), 0.2, 1, 0.2, "PlayerCollider");
+		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.3, 1, 0.3, "PlayerCollider");
+		rb->SetColider(collider);
 	}
 
 	void Player::Update(float deltaTime) {
@@ -63,12 +64,14 @@ namespace Player
 		Camera::SetHorizontalAngle(horizontalAngle);
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(rb->GetPostion());
+		collider->setPosition(rb->GetPostion());
 	}
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();
 	}
 	void Player::setPosition(glm::vec3 pos) {
 		rb->SetPostion(pos);
+		collider->setPosition(pos);
 		Camera::SetPosition(rb->GetPostion());
 	}
 
