@@ -237,10 +237,18 @@ namespace PhysicsManager {
 	std::vector<Cube> coliders;
 	std::vector<RigidBody> rigidbodies;
 
+	//forces
 	float friction = 0.985;
+	float Gravity = -9.81;
+
 
 	void PhysicsManager::Update(float deltaTime) {
 		for (int i = 0; i < rigidbodies.size(); i++) {
+			//add friction so your not sliding
+			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x * friction);
+			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z * friction);
+			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().z + Gravity);
+
 			//Do colider Calculation
 			if (rigidbodies[i].GetColider() != NULL) {
 				for (int col = 0; col < coliders.size(); col++) {
@@ -262,11 +270,6 @@ namespace PhysicsManager {
 						rigidbodies[i].RemoveForceY();
 				}
 			}
-			//add friction so your not sliding
-			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x * friction);
-			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z * friction);
-
-
 			//add veloctiy to position
 			rigidbodies[i].NewPosition(deltaTime);
 

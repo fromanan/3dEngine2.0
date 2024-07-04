@@ -14,7 +14,7 @@ void Scene::Load() {
 	//assetManager.AddGameObject("container", "Assets/Objects/ContainerFinal.obj", assetManager.GetTexture("container"), glm::vec3(4, 0, 4));
 	//assetManager.AddGameObject("monkey", "Assets/Objects/suzanne.obj", assetManager.GetTexture("uvmap"), glm::vec3(0, 0, 0));
 	assetManager.AddGameObject("cube3", "Assets/Objects/cube.obj", assetManager.GetTexture("uvmap"), glm::vec3(-2, 0, -2));
-	//PhysicsManager::AddCube(glm::vec3(-2, 0, -2), 2, 2, 2, "cube_collider");
+	PhysicsManager::AddCube(glm::vec3(0, -1, 0), 30, 1, 30, "floor_collider");
 	PhysicsManager::AddCube(assetManager.GetGameObject("cube3"), "cube_collider");
 
 
