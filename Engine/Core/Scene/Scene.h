@@ -20,8 +20,8 @@ public:
 	void RenderObjects();
 
 private:
-	AssetManager assetManager;
+	//this is the sun
 	glm::vec3 lightPos;
-	SkyBox space;
+	SkyBox sky;
 };
 

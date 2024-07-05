@@ -17,10 +17,9 @@
 using json = nlohmann::json;
 
 
-class AssetManager
+namespace AssetManager
 {
-public:
-	AssetManager();
+	void Init();
 	void SaveAssets(const char* path);
 	void LoadAssets(const char* path);
 
@@ -31,18 +30,14 @@ public:
 	int AddTexture(Texture texture);
 	int AddTexture(const char* name, const char* path);
 
-	void RemoveGameObject(const char* name);
+	void RemoveGameObject(std::string name);
 	void RemoveGameObject(int index);
 
-	GameObject* GetGameObject(const char* name);
+	GameObject* GetGameObject(std::string name);
 	GameObject* GetGameObject(int index);
 	std::vector<GameObject> GetAllGameObjects();
 
-	Texture* GetTexture(const char* name);
-
-private:
-	std::vector<GameObject> GameObjects;
-	std::vector<Texture> Textures;
+	Texture* GetTexture(std::string name);
 
 };
 

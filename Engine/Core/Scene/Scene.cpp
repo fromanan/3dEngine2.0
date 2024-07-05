@@ -3,19 +3,24 @@
 
 
 Scene::Scene() {
-	assetManager = AssetManager();
+	
 }
 
 
 void Scene::Load() {
-	assetManager.AddTexture("default", "Assets/Textures/default.dds");
-	assetManager.AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
-	assetManager.AddTexture("container", "Assets/Textures/Container.dds");
-	assetManager.LoadAssets("Assets/Saves/mainScene.json");
-	assetManager.AddGameObject("cube3", "Assets/Objects/cube.obj", assetManager.GetTexture("uvmap"), glm::vec3(-2, 0, -2));
+	AssetManager::AddTexture("default", "Assets/Textures/default.dds");
+	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
+	AssetManager::AddTexture("container", "Assets/Textures/Container.dds");
+	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
+	AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
+	AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
+	AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2));
+	AssetManager::GetGameObject("cube5")->SetParentName("cube4");
+
+
 	PhysicsManager::AddCube(glm::vec3(0, 0.5, 0), 30, 1, 30, "floor_collider");
-	PhysicsManager::AddCube(assetManager.GetGameObject("cube3"), "cube_collider");
-	PhysicsManager::AddCube(assetManager.GetGameObject("container"), "container_collider");
+	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
+	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
 
 
 	//sets renderer
@@ -30,12 +35,12 @@ void Scene::Load() {
 			"Assets/Skybox/daylight/front.png",
 			"Assets/Skybox/daylight/back.png"
 	};
-	space = SkyBox(faces);
+	sky = SkyBox(faces);
 
 	Player::Init();
 	Player::setPosition(glm::vec3(0, 0, 5));
 
-	//assetManager.SaveAssets("Assets/Saves/mainScene.json");
+	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
 }
 
 void Scene::Update(float deltaTime) {
@@ -46,16 +51,16 @@ void Scene::RenderObjects() {
 	glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
 	glm::mat4 ViewMatrix = Camera::getViewMatrix();
 
-	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, space);
+	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, sky);
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	Renderer::SetLightPos(lightPos);
 	
-	for (int i = 0; i < assetManager.GetAllGameObjects().size(); i++) {
-		glm::mat4 ModelMatrix = assetManager.GetAllGameObjects()[i].GetModelMatrix();
+	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
+		glm::mat4 ModelMatrix = AssetManager::GetAllGameObjects()[i].GetModelMatrix();
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix);
 		GLuint programid =  Renderer::GetCurrentProgramID();
-		assetManager.GetAllGameObjects()[i].RenderObject(programid);
+		AssetManager::GetAllGameObjects()[i].RenderObject(programid);
 	}
 
 	std::ostringstream oss;

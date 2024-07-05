@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Engine/Core/AssetManager.h"
 
 
 
@@ -101,8 +102,19 @@ void GameObject::LoadModel(const char* path) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_DYNAMIC_DRAW);
 }
 
+//Parent child transformations
 glm::mat4 GameObject::GetModelMatrix() {
-	return  transform.to_mat4();
+	glm::mat4 matrix = transform.to_mat4();
+	if (parentName != "") {
+		GameObject* parent = AssetManager::GetGameObject(parentName);
+		if (parent != NULL) {
+			matrix = transform.to_mat4() * parent->GetModelMatrix();
+		}
+	}
+	return  matrix;
+}
+glm::mat4 GameObject::GetLocalModelMatrix() {
+	return transform.to_mat4();
 }
 
 void GameObject::RenderObject(GLuint& programID) {
@@ -115,11 +127,6 @@ void GameObject::RenderObject(GLuint& programID) {
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 		glUniform1i(TextureID, texture->GetTextureNumber());
 	}
-	else {
-		std::cout << "tets";
-	}
-	
-
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);

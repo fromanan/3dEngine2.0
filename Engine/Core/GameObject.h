@@ -29,6 +29,8 @@ public:
 
 	void LoadModel(const char* path);
 	glm::mat4 GetModelMatrix();
+	glm::mat4 GetLocalModelMatrix();
+
 
 	void RenderObject(GLuint& programID);
 
@@ -51,8 +53,8 @@ public:
 	void SetScale(float scale);
 
 	std::string GetName();
-
 	std::string GetParentName();
+
 	void SetParentName(std::string name);
 
 	//forJsonSaving
