@@ -91,7 +91,6 @@ Cube::Cube(GameObject* gameobject, const char* name) {
 	{
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
 		tempVec = tempVec * (glm::rotate(glm::mat4(1), gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
-
 		if (tempVec.x < minx)
 			minx = tempVec.x;
 		if (tempVec.x > maxx)
@@ -111,9 +110,9 @@ Cube::Cube(GameObject* gameobject, const char* name) {
 	}
 
 	//1.05 is for padding because the camera can somtimes clip into the object
-	width = (maxx - minx) * 1.05;
-	height = (maxy - miny) * 1.05;
-	depth = (maxz - minz) * 1.05;
+	width = (maxx - minx) * 1.0;
+	height = (maxy - miny) * 1.0;
+	depth = (maxz - minz) * 1.0;
 
 
 
@@ -145,6 +144,12 @@ float Cube::getWidth() {
 }
 bool Cube::GetIsTrigger() {
 	return isTrigger;
+}
+glm::vec3 Cube::getMin() {
+	return min;
+}
+glm::vec3 Cube::getMax() {
+	return max;
 }
 void Cube::SetIsTrigger(bool trigger) {
 	isTrigger = trigger;
@@ -198,10 +203,6 @@ bool Cube::TouchingTop(Cube* colider, float velocity) {
 }
 //Returns -1 if there is no intersection
 float Cube::intersect(Ray r, float t0, float t1) {
-	//std::cout << min.x << name << std::endl;
-	//std::cout << min.x << "minx" << std::endl;
-	//std::cout << max.x << "max" << std::endl;
-
 	float tmin, tmax, tymin, tymax, tzmin, tzmax;
 	if (r.direction.x >= 0) {
 		tmin = (min.x - r.origin.x) / r.direction.x;

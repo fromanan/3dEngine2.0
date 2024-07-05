@@ -31,10 +31,13 @@ public:
 	float getDepth();
 	float getHeight();
 	float getWidth();
+	glm::vec3 getMin();
+	glm::vec3 getMax();
+
 
 	bool GetIsTrigger();
 	void SetIsTrigger(bool trigger);
-
+	
 	bool TouchingLeft(Cube* colider, float velocity);
 	bool TouchingRight(Cube* colider, float velocity);
 	bool TouchingFront(Cube* colider, float velocity);

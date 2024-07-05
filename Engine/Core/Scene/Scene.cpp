@@ -10,11 +10,22 @@ Scene::Scene() {
 void Scene::Load() {
 	AssetManager::AddTexture("default", "Assets/Textures/default.dds");
 	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
+	AssetManager::AddTexture("red", "Assets/Textures/red.dds");
+	AssetManager::AddTexture("target", "Assets/Textures/ShootingTarget.dds");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.dds");
-	AssetManager::AddTexture("glock", "Assets/Textures/glock.dds");
+	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.dds");
 
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
+	AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("target"), glm::vec3(-4, 1.5, 0));
+	AssetManager::GetGameObject("target1")->SetScale(0.3);
+
+	//AssetManager::AddGameObject("point", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
+	//AssetManager::GetGameObject("point")->SetScale(0.05);
+	AssetManager::AddGameObject("point", "Assets/Objects/Floor.obj", AssetManager::GetTexture("bullet_hole"), glm::vec3(0, 0, 0));
+	AssetManager::GetGameObject("point")->SetScale(0.01);
+
+
 
 	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
 	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
@@ -23,7 +34,7 @@ void Scene::Load() {
 
 
 
-
+	PhysicsManager::AddCube(AssetManager::GetGameObject("target1"), "target1_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");

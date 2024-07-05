@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "AssetManager.h"
 
 
 namespace Camera {
@@ -52,14 +53,37 @@ namespace Camera {
 		float objectDistance = cube->intersect(ray, 0, 100);
 		if (objectDistance > 0 && objectDistance < distance)
 		{
+			
 			lookingAtName = cube->GetName();
 			distance = objectDistance;
+			glm::vec3 intersectionPoint(ray.origin + distance * ray.direction);
+			//Makes the decal not overlap with the object
+			objectDistance -= 0.01;
+			AssetManager::GetGameObject("point")->setPosition(ray.origin + objectDistance * ray.direction);
+
+			// Determine which face was hit by checking the intersection point
+			glm::vec3 normal(0,0,0);
+			glm::vec3 up(0,1,0);
+			if (fabs(intersectionPoint.x - cube->getMin().x) < 0.001f) normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+			if (fabs(intersectionPoint.x - cube->getMax().x) < 0.001f) normal = glm::vec3(1.0f, 0.0f, 0.0f);
+			if (fabs(intersectionPoint.y - cube->getMin().y) < 0.001f) normal = glm::vec3(0.0f, -1.0f, 0.0f);
+			if (fabs(intersectionPoint.y - cube->getMax().y) < 0.001f) normal = glm::vec3(0.0f, 1.0f, 0.0f);
+			if (fabs(intersectionPoint.z - cube->getMin().z) < 0.001f) normal = glm::vec3(0.0f, 0.0f, -1.0f);
+			if (fabs(intersectionPoint.z - cube->getMax().z) < 0.001f) normal = glm::vec3(0.0f, 0.0f, 1.0f);
+
+			glm::vec3 rotationAxis = glm::cross(normal, up);
+			float angle = acos(glm::dot(normal, up));
+			std::cout << "rotationAxis x: " << rotationAxis.x << " y: " << rotationAxis.y << " z: " << rotationAxis.z << " angle: " << angle << std::endl;
+
+			AssetManager::GetGameObject("point")->setRotation(rotationAxis * -angle);
 		}
 	}
 
 	void Camera::Update(float dt) {
 		distance = 9999;
 		lookingAtName = "Nothing";
+		AssetManager::GetGameObject("point")->setPosition(glm::vec3(0,0,0));
+
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
 		glm::vec3 direction(
 			cos(verticalAngle) * sin(horizontalAngle),
