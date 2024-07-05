@@ -12,15 +12,18 @@ void Scene::Load() {
 	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.dds");
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
-	AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
-	AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
-	AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2));
-	AssetManager::GetGameObject("cube5")->SetParentName("cube4");
+	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
+	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
+	//AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2));
+	//AssetManager::GetGameObject("cube5")->SetParentName("cube4");
+
+
 
 
 	PhysicsManager::AddCube(glm::vec3(0, 0.5, 0), 30, 1, 30, "floor_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
+
 
 
 	//sets renderer

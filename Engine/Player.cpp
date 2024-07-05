@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "AssetManager.h"
 
 namespace Player
 {
@@ -12,10 +13,15 @@ namespace Player
 	RigidBody* rb;
 	Cube* collider;
 
+	GameObject* playerModel;
+	GameObject* gun;
+
 	void Player::Init() {
-		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 1), "PlayerRB");
+		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 2, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
+		std::cout << "loading player model" << std::endl;
+		playerModel = AssetManager::GetGameObject(AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z)));
 	}
 
 	void Player::Update(float deltaTime) {
@@ -67,6 +73,8 @@ namespace Player
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(rb->GetPostion());
 		collider->setPosition(rb->GetPostion());
+		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
+		playerModel->SetRotationY(horizontalAngle);
 	}
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();

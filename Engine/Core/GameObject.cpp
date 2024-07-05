@@ -113,6 +113,7 @@ glm::mat4 GameObject::GetModelMatrix() {
 	}
 	return  matrix;
 }
+//gets the models world space without translations from the parent to the world and not the parent
 glm::mat4 GameObject::GetLocalModelMatrix() {
 	return transform.to_mat4();
 }
