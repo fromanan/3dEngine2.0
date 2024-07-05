@@ -8,8 +8,8 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 35;
-	float jumpforce = 50000;
+	float speed = 40;
+	float jumpforce = 50;
 	RigidBody* rb;
 	Cube* collider;
 
@@ -18,7 +18,7 @@ namespace Player
 
 	void Player::Init() {
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
-		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 2, 0.5, "PlayerCollider");
+		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 3, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
 		//gun = AssetManager::GetGameObject(AssetManager::AddGameObject("playerGun", "Assets/Objects/gun.obj", AssetManager::GetTexture("uvmap"), glm::vec3(1,0.8,0.2)));
@@ -61,7 +61,6 @@ namespace Player
 		if (Input::KeyDown('s')) {
 			rb->AddForce(forward * speed * deltaTime);
 		}
-
 		// Strafe right
 		if (Input::KeyDown('d')) {
 			rb->AddForce(right * speed * deltaTime);
@@ -69,6 +68,9 @@ namespace Player
 		// Strafe left
 		if (Input::KeyDown('a')) {
 			rb->AddForce(-right * speed * deltaTime);
+		}
+		if (Input::KeyDown('e')) {
+
 		}
 
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());

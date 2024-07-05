@@ -15,8 +15,6 @@ namespace AssetManager
 	void AssetManager::LoadAssets(const char* loadJson) {
 		std::ifstream f(loadJson);
 		json data = json::parse(f);
-
-
 		std::cout << "loaded object count " << data["GameObjects"].size() << std::endl;
 
 		for (int gameobject = 0; gameobject < data["GameObjects"].size(); gameobject++)
@@ -45,21 +43,14 @@ namespace AssetManager
 				indexed_vertices.push_back(glm::vec3(data["GameObjects"][gameobject][12][vert], data["GameObjects"][gameobject][12][vert + 1], data["GameObjects"][gameobject][12][vert + 2]));
 				vert = vert + 2;
 			}
-			std::cout << verticies.size() << std::endl;
-
-
 			for (int uvs = 0; uvs < Uvs.size(); uvs++) {
 				indexed_uvs.push_back(glm::vec2(data["GameObjects"][gameobject][13][uvs], data["GameObjects"][gameobject][13][uvs + 1]));
 				uvs = uvs + 1;
 			}
-			std::cout << Uvs.size() << std::endl;
-
 			for (int normal = 0; normal < normals.size(); normal++) {
 				indexed_normals.push_back(glm::vec3(data["GameObjects"][gameobject][14][normal], data["GameObjects"][gameobject][14][normal + 1], data["GameObjects"][gameobject][14][normal + 2]));
 				normal = normal + 2;
 			}
-			std::cout << Uvs.size() << std::endl;
-
 			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals));
 		}
 	}

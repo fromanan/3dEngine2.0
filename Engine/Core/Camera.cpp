@@ -10,7 +10,6 @@ namespace Camera {
 	float verticalAngle = 0.0f;
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
-
 	float mouseSpeed = 0.005f;
 
 	//ray
@@ -18,7 +17,6 @@ namespace Camera {
 	float distance = 9999;
 	Ray ray;
 	
-
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 
@@ -43,6 +41,12 @@ namespace Camera {
 	std::string Camera::GetLookingAtName() {
 		return lookingAtName;
 	}
+	float GetLookingAtDistance() {
+		if(lookingAtName != "Nothing")
+			return distance;
+		return -1;
+	}
+
 	void Camera::CheckIntersectingWithRay(Cube* cube) {
 
 		float objectDistance = cube->intersect(ray, 0, 100);

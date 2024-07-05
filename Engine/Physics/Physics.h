@@ -14,7 +14,6 @@ public:
 	Ray();
 	Ray(glm::vec3 dir, glm::vec3 org);
 	void UpdateRay(glm::vec3 dir, glm::vec3 org);
-
 	bool intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix);
 
 };
@@ -32,6 +31,9 @@ public:
 	float getDepth();
 	float getHeight();
 	float getWidth();
+
+	bool GetIsTrigger();
+	void SetIsTrigger(bool trigger);
 
 	bool TouchingLeft(Cube* colider, float velocity);
 	bool TouchingRight(Cube* colider, float velocity);

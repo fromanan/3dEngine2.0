@@ -143,6 +143,12 @@ float Cube::getHeight() {
 float Cube::getWidth() {
 	return width;
 }
+bool Cube::GetIsTrigger() {
+	return isTrigger;
+}
+void Cube::SetIsTrigger(bool trigger) {
+	isTrigger = trigger;
+}
 bool Cube::TouchingLeft(Cube* colider, float velocity) {
 	return this->position.x - this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
 		this->position.x + this->width / 2 > colider->getPosition().x + colider->getWidth() / 2 &&
@@ -313,7 +319,7 @@ namespace PhysicsManager {
 
 	//forces
 	float friction = 0.96;
-	float Gravity = -0.81;
+	float Gravity = -0.4;
 
 	bool UpdatedCamera = false;
 
@@ -329,8 +335,7 @@ namespace PhysicsManager {
 				for (int col = 0; col < coliders.size(); col++) {
 					if (!UpdatedCamera)
 						Camera::CheckIntersectingWithRay(&coliders[col]);
-
-					if (rigidbodies[i].GetColider()->GetName() == coliders[col].GetName())
+					if (rigidbodies[i].GetColider()->GetName() == coliders[col].GetName() || coliders[col].GetIsTrigger())
 						continue;
 					if (rigidbodies[i].GetForce().x < 0 && rigidbodies[i].GetColider()->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
 						rigidbodies[i].RemoveForceX();

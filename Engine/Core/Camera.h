@@ -20,6 +20,7 @@ namespace Camera
 
 	void CheckIntersectingWithRay(Cube* cube);
 	std::string GetLookingAtName();
+	float GetLookingAtDistance();
 
 	void Update(float dt);
 
