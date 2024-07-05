@@ -34,7 +34,6 @@ namespace Engine {
 			Camera::Update(dt);
 			PhysicsManager::Update(dt);
 			sceneManager.Update(dt);
-
 			//Rendering
 			Renderer::ClearScreen();
 			sceneManager.Render();

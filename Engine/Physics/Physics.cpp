@@ -1,4 +1,5 @@
 #include "Physics.h"
+#include "Camera.h"
 
 
 
@@ -6,6 +7,15 @@ Ray::Ray(glm::vec3 dir, glm::vec3 org) {
 	direction = dir;
 	origin = org;
 }
+Ray::Ray() {
+	direction = glm::vec3(0, 0, 0);
+	origin = glm::vec3(0, 0, 0);
+}
+void Ray::UpdateRay(glm::vec3 dir, glm::vec3 org) {
+	direction = dir;
+	origin = org;
+}
+
 
 bool Ray::intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix) {
 	int i = -1;
@@ -63,14 +73,11 @@ Cube::Cube(glm::vec3 postion, float width, float height, float depth, const char
 	this->width = width;
 	this->depth = depth;
 	this->height = height;
-	min = glm::vec3(postion.x - width / 2, position.y - height / 2, postion.z - depth / 2);
-	max = glm::vec3(postion.x + width / 2, position.y + height / 2, postion.z + depth / 2);
+	min = glm::vec3(postion.x - width / 2, postion.y - height / 2, postion.z - depth / 2);
+	max = glm::vec3(postion.x + width / 2, postion.y + height / 2, postion.z + depth / 2);
 	this->name = name;
 }
 Cube::Cube(GameObject* gameobject, const char* name) {
-	if (gameobject == NULL)
-		std::cout << " UH OH";
-
 	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
 
 	float minx = vertices[0].x;
@@ -108,11 +115,12 @@ Cube::Cube(GameObject* gameobject, const char* name) {
 	height = (maxy - miny) * 1.05;
 	depth = (maxz - minz) * 1.05;
 
-	min = glm::vec3(minx, miny, minz);
-	max = glm::vec3(maxx, maxy, maxz);
+
 
 	this->name = name;
 	this->position = gameobject->getPosition();
+	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
+	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 
 
 }
@@ -184,6 +192,10 @@ bool Cube::TouchingTop(Cube* colider, float velocity) {
 }
 //Returns -1 if there is no intersection
 float Cube::intersect(Ray r, float t0, float t1) {
+	//std::cout << min.x << name << std::endl;
+	//std::cout << min.x << "minx" << std::endl;
+	//std::cout << max.x << "max" << std::endl;
+
 	float tmin, tmax, tymin, tymax, tzmin, tzmax;
 	if (r.direction.x >= 0) {
 		tmin = (min.x - r.origin.x) / r.direction.x;
@@ -300,13 +312,14 @@ namespace PhysicsManager {
 	std::vector<RigidBody> rigidbodies;
 
 	//forces
-	float friction = 0.985;
+	float friction = 0.96;
 	float Gravity = -0.81;
 
+	bool UpdatedCamera = false;
 
 	void PhysicsManager::Update(float deltaTime) {
+		UpdatedCamera = false;
 		for (int i = 0; i < rigidbodies.size(); i++) {
-
 			//add friction so your not sliding
 			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x * friction);
 			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z * friction);
@@ -314,6 +327,9 @@ namespace PhysicsManager {
 			//Do colider Calculation
 			if (rigidbodies[i].GetColider() != NULL) {
 				for (int col = 0; col < coliders.size(); col++) {
+					if (!UpdatedCamera)
+						Camera::CheckIntersectingWithRay(&coliders[col]);
+
 					if (rigidbodies[i].GetColider()->GetName() == coliders[col].GetName())
 						continue;
 					if (rigidbodies[i].GetForce().x < 0 && rigidbodies[i].GetColider()->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
@@ -330,12 +346,11 @@ namespace PhysicsManager {
 						rigidbodies[i].RemoveForceY();
 						
 				}
+				if (!UpdatedCamera)
+					UpdatedCamera = true;
 			}
-
-
 			//add veloctiy to position
 			rigidbodies[i].NewPosition(deltaTime);
-
 		}
 	}
 	RigidBody* PhysicsManager::AddRigidbody(glm::vec3 position, const char* name) {

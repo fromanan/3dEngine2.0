@@ -11,6 +11,8 @@ void Scene::Load() {
 	AssetManager::AddTexture("default", "Assets/Textures/default.dds");
 	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.dds");
+	AssetManager::AddTexture("glock", "Assets/Textures/glock.dds");
+
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
 	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
@@ -48,6 +50,7 @@ void Scene::Load() {
 
 void Scene::Update(float deltaTime) {
 	Player::Update(deltaTime);
+
 }
 
 void Scene::RenderObjects() {
@@ -73,5 +76,8 @@ void Scene::RenderObjects() {
 	oss.str(""); oss.clear();
 	oss << "Velocity x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
+	oss.str(""); oss.clear();
+	oss << "Looking at: " << Camera::GetLookingAtName();
+	Renderer::RenderText(oss.str().c_str(), 0, 520, 15);
 
 }

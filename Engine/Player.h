@@ -13,6 +13,8 @@ namespace Player
 {
 	extern RigidBody* rb;
 	extern Cube* collider;
+	extern GameObject* playerModel;
+	extern GameObject* gun;
 	glm::vec3 getPosition();
 	void setPosition(glm::vec3 pos);
 	void Update(float deltaTime);

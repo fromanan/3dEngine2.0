@@ -61,9 +61,6 @@ namespace AssetManager
 			std::cout << Uvs.size() << std::endl;
 
 			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals));
-
-			std::cout << "Name:" << name.c_str() << " ParentName:" << Parentname << " postitonx:" << position.x << " rotz:" << rotaion.z << " textureName:" << textureName << std::endl;
-
 		}
 	}
 

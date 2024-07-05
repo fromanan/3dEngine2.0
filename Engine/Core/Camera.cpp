@@ -12,33 +12,50 @@ namespace Camera {
 	float maxAngle = 1.5;
 
 	float mouseSpeed = 0.005f;
+
+	//ray
+	std::string lookingAtName = "Nothing";
+	float distance = 9999;
+	Ray ray;
+	
+
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 
 	glm::vec3 Camera::GetPostion() {
 		return position;
 	}
-
-
-
 	glm::mat4 Camera::getViewMatrix() {
 		return ViewMatrix;
 	}
 	glm::mat4 Camera::getProjectionMatrix() {
 		return ProjectionMatrix;
 	}
-	void SetHorizontalAngle(float angle) {
+	void Camera::SetHorizontalAngle(float angle) {
 		horizontalAngle = angle;
 	}
-	void SetVerticalAngle(float angle) {
+	void Camera::SetVerticalAngle(float angle) {
 		verticalAngle = angle;
 	}
-	void SetPosition(glm::vec3 pos) {
+	void Camera::SetPosition(glm::vec3 pos) {
 		position = pos;
+	}
+	std::string Camera::GetLookingAtName() {
+		return lookingAtName;
+	}
+	void Camera::CheckIntersectingWithRay(Cube* cube) {
+
+		float objectDistance = cube->intersect(ray, 0, 100);
+		if (objectDistance > 0 && objectDistance < distance)
+		{
+			lookingAtName = cube->GetName();
+			distance = objectDistance;
+		}
 	}
 
 	void Camera::Update(float dt) {
-
+		distance = 9999;
+		lookingAtName = "Nothing";
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
 		glm::vec3 direction(
 			cos(verticalAngle) * sin(horizontalAngle),
@@ -62,6 +79,8 @@ namespace Camera {
 			position + direction, // and looks here : at the same position, plus "direction"
 			up                  // Head is up (set to 0,-1,0 to look upside-down)
 		);
+
+		ray.UpdateRay(direction, position);
 
 	}
 

@@ -10,8 +10,6 @@
 
 namespace Camera
 {
-
-
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
 
@@ -19,6 +17,9 @@ namespace Camera
 	void SetHorizontalAngle(float angle);
 	void SetVerticalAngle(float angle);
 	void SetPosition(glm::vec3 pos);
+
+	void CheckIntersectingWithRay(Cube* cube);
+	std::string GetLookingAtName();
 
 	void Update(float dt);
 

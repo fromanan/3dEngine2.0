@@ -21,7 +21,11 @@ namespace Player
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 2, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
+		//gun = AssetManager::GetGameObject(AssetManager::AddGameObject("playerGun", "Assets/Objects/gun.obj", AssetManager::GetTexture("uvmap"), glm::vec3(1,0.8,0.2)));
+		//gun->SetParentName("player");
+
 		playerModel = AssetManager::GetGameObject(AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z)));
+
 	}
 
 	void Player::Update(float deltaTime) {
@@ -75,6 +79,7 @@ namespace Player
 		collider->setPosition(rb->GetPostion());
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
+
 	}
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();
