@@ -51,6 +51,12 @@ namespace Input {
         glfwSetCursorPos(window, SCREENWIDTH / 2, SCREENHEIGHT / 2);
     }
 
+    void Input::LeftMouseDown() {
+
+    }
+    void Input::RightMouseDown() {
+
+    }
 
     void Input::Init() {
         window = Backend::GetWindowPointer();

@@ -59,8 +59,6 @@ namespace Camera {
 			glm::vec3 intersectionPoint(ray.origin + distance * ray.direction);
 			//Makes the decal not overlap with the object
 			objectDistance -= 0.01;
-			AssetManager::GetGameObject("point")->setPosition(ray.origin + objectDistance * ray.direction);
-
 			// Determine which face was hit by checking the intersection point
 			glm::vec3 normal(0,0,0);
 			glm::vec3 up(0,1,0);
@@ -71,18 +69,20 @@ namespace Camera {
 			if (fabs(intersectionPoint.z - cube->getMin().z) < 0.001f) normal = glm::vec3(0.0f, 0.0f, -1.0f);
 			if (fabs(intersectionPoint.z - cube->getMax().z) < 0.001f) normal = glm::vec3(0.0f, 0.0f, 1.0f);
 
-			glm::vec3 rotationAxis = glm::cross(normal, up);
-			float angle = acos(glm::dot(normal, up));
-			std::cout << "rotationAxis x: " << rotationAxis.x << " y: " << rotationAxis.y << " z: " << rotationAxis.z << " angle: " << angle << std::endl;
-
-			AssetManager::GetGameObject("point")->setRotation(rotationAxis * -angle);
+			if (Input::KeyPressed('e'))
+			{
+				glm::vec3 rotationAxis = glm::cross(normal, up);
+				float angle = acos(glm::dot(normal, up));
+				int index = AssetManager::AddGameObject("point", "Assets/Objects/Floor.obj", AssetManager::GetTexture("bullet_hole"), ray.origin + objectDistance * ray.direction);
+				AssetManager::GetGameObject(index)->SetScale(0.002);
+				AssetManager::GetGameObject(index)->setRotation(rotationAxis * -angle);
+			}
 		}
 	}
 
 	void Camera::Update(float dt) {
 		distance = 9999;
 		lookingAtName = "Nothing";
-		AssetManager::GetGameObject("point")->setPosition(glm::vec3(0,0,0));
 
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
 		glm::vec3 direction(

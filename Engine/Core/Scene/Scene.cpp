@@ -22,8 +22,7 @@ void Scene::Load() {
 
 	//AssetManager::AddGameObject("point", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
 	//AssetManager::GetGameObject("point")->SetScale(0.05);
-	AssetManager::AddGameObject("point", "Assets/Objects/Floor.obj", AssetManager::GetTexture("bullet_hole"), glm::vec3(0, 0, 0));
-	AssetManager::GetGameObject("point")->SetScale(0.01);
+
 
 
 

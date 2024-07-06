@@ -320,7 +320,7 @@ namespace PhysicsManager {
 
 	//forces
 	float friction = 0.96;
-	float Gravity = -0.4;
+	float Gravity = -12;
 
 	bool UpdatedCamera = false;
 
@@ -330,7 +330,7 @@ namespace PhysicsManager {
 			//add friction so your not sliding
 			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x * friction);
 			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z * friction);
-			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity);
+			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity	* deltaTime);
 			//Do colider Calculation
 			if (rigidbodies[i].GetColider() != NULL) {
 				for (int col = 0; col < coliders.size(); col++) {
