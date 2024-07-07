@@ -6,6 +6,8 @@ namespace AssetManager
 {
 	std::vector<GameObject> GameObjects;
 	std::vector<Texture> Textures;
+	std::vector<Decal> Decals;
+
 
 	void AssetManager::Init() {
 		Textures.clear();
@@ -121,6 +123,18 @@ namespace AssetManager
 	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position) {
 		GameObjects.push_back(GameObject(name, path, texture, position));
 		return GameObjects.size() - 1;
+	}
+	
+	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture) {
+		Decals.push_back(Decal(position, normal, scale, texture));
+		return Decals.size() - 1;
+	}
+	Decal* GetDecal(int index) {
+		return &Decals[index];
+	}
+
+	std::vector<Decal>* GetAllDecals() {
+		return &Decals;
 	}
 
 	int AssetManager::AddTexture(Texture texture) {

@@ -147,6 +147,7 @@
     <ClCompile Include="Engine\Backend.cpp" />
     <ClCompile Include="Engine\Core\AssetManager.cpp" />
     <ClCompile Include="Engine\Core\Common.cpp" />
+    <ClCompile Include="Engine\Core\Decal.cpp" />
     <ClCompile Include="Engine\Core\GameObject.cpp" />
     <ClCompile Include="Engine\Core\Renderer.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Camera.h" />
+    <ClInclude Include="Engine\Core\Decal.h" />
     <ClInclude Include="Engine\Core\Scene\Scene.h" />
     <ClInclude Include="Engine\Core\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Core\Input.h" />

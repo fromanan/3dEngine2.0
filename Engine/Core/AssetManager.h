@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "Common.h"
 #include "Renderer.h"
+#include "Decal.h"
 
 //Json stuff
 #include <fstream>
@@ -26,6 +27,10 @@ namespace AssetManager
 	//returns index of object
 	int AddGameObject(GameObject gameobject);
 	int AddGameObject(std::string name, const char* path,Texture* texture, glm::vec3 position);
+
+	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
+	Decal* GetDecal(int index);
+	std::vector<Decal>* GetAllDecals();
 
 	int AddTexture(Texture texture);
 	int AddTexture(const char* name, const char* path);

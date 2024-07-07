@@ -73,13 +73,25 @@ void Scene::RenderObjects() {
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	Renderer::SetLightPos(lightPos);
 	
+	GLuint programid = Renderer::GetCurrentProgramID();
+
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
-		glm::mat4 ModelMatrix = AssetManager::GetAllGameObjects()[i].GetModelMatrix();
+		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix);
-		GLuint programid =  Renderer::GetCurrentProgramID();
-		AssetManager::GetAllGameObjects()[i].RenderObject(programid);
+		AssetManager::GetGameObject(i)->RenderObject(programid);
 	}
+	for (int i = 0; i < AssetManager::GetAllDecals()->size(); i++)
+	{
+		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
+		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix);
+		AssetManager::GetDecal(i)->RenderDecal(programid);
+	}
+
+
+
+
 
 	std::ostringstream oss;
 	oss << "Position x:" << Camera::GetPostion().x << " y:" << Camera::GetPostion().y << " z:" << Camera::GetPostion().z;
@@ -93,3 +105,4 @@ void Scene::RenderObjects() {
 	Renderer::RenderText(oss.str().c_str(), 0, 520, 15);
 
 }
+

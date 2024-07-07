@@ -61,7 +61,6 @@ namespace Camera {
 			objectDistance -= 0.01;
 			// Determine which face was hit by checking the intersection point
 			glm::vec3 normal(0,0,0);
-			glm::vec3 up(0,1,0);
 			if (fabs(intersectionPoint.x - cube->getMin().x) < 0.001f) normal = glm::vec3(-1.0f, 0.0f, 0.0f);
 			if (fabs(intersectionPoint.x - cube->getMax().x) < 0.001f) normal = glm::vec3(1.0f, 0.0f, 0.0f);
 			if (fabs(intersectionPoint.y - cube->getMin().y) < 0.001f) normal = glm::vec3(0.0f, -1.0f, 0.0f);
@@ -71,11 +70,8 @@ namespace Camera {
 
 			if (Input::KeyPressed('e'))
 			{
-				glm::vec3 rotationAxis = glm::cross(normal, up);
-				float angle = acos(glm::dot(normal, up));
-				int index = AssetManager::AddGameObject("point", "Assets/Objects/Floor.obj", AssetManager::GetTexture("bullet_hole"), ray.origin + objectDistance * ray.direction);
-				AssetManager::GetGameObject(index)->SetScale(0.002);
-				AssetManager::GetGameObject(index)->setRotation(rotationAxis * -angle);
+				AssetManager::AddDecal(ray.origin + objectDistance * ray.direction, normal, glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+
 			}
 		}
 	}

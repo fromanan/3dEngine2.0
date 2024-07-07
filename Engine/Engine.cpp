@@ -23,10 +23,13 @@ namespace Engine {
 		double lastTimeDT = glfwGetTime();
 
 		while (Backend::IsWindowOpen()) {
+			
 			//Delta time stuff
 			double currentTime = glfwGetTime();
 			float dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
+			std::cout << "FPS: " << (1 / dt) << "/" << dt << std::endl;
+
 			
 			//Update Managers
 			Input::Update();
@@ -43,3 +46,5 @@ namespace Engine {
 		return 0;
 	}
 }
+
+
