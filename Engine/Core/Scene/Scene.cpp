@@ -8,30 +8,24 @@ Scene::Scene() {
 
 
 void Scene::Load() {
-	AssetManager::AddTexture("default", "Assets/Textures/default.dds");
-	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.DDS");
-	AssetManager::AddTexture("red", "Assets/Textures/red.dds");
-	AssetManager::AddTexture("target", "Assets/Textures/ShootingTarget.dds");
-	AssetManager::AddTexture("container", "Assets/Textures/Container.dds");
-	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.dds");
+	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.png");
+	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
+	AssetManager::AddTexture("container", "Assets/Textures/Container.png");
+	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
+
+
 
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
-	AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("target"), glm::vec3(-4, 1.5, 0));
+	AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("bullet_hole"), glm::vec3(-4, 1.5, 0));
 	AssetManager::GetGameObject("target1")->SetScale(0.3);
 
 	//AssetManager::AddGameObject("point", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
 	//AssetManager::GetGameObject("point")->SetScale(0.05);
-
-
-
-
 	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
 	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
 	//AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2));
 	//AssetManager::GetGameObject("cube5")->SetParentName("cube4");
-
-
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject("target1"), "target1_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
@@ -74,6 +68,8 @@ void Scene::RenderObjects() {
 	Renderer::SetLightPos(lightPos);
 	
 	GLuint programid = Renderer::GetCurrentProgramID();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
 		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
@@ -88,6 +84,9 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix);
 		AssetManager::GetDecal(i)->RenderDecal(programid);
 	}
+	glDisable(GL_BLEND);
+
+
 
 
 

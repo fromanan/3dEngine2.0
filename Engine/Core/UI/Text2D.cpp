@@ -32,7 +32,7 @@ namespace Text2D {
 
 	void Text2D::printText2D(const char* text, int x, int y, int size) {
 		unsigned int length = strlen(text);
-
+		glEnable(GL_BLEND);
 		// Fill buffers
 		std::vector<glm::vec2> vertices;
 		std::vector<glm::vec2> UVs;
@@ -98,11 +98,11 @@ namespace Text2D {
 		// Draw call
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-		//glDisable(GL_BLEND);
+		glDisable(GL_BLEND);
 
-		//glDisableVertexAttribArray(0);
-		//glDisableVertexAttribArray(1);
-		//glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 
 	}
 

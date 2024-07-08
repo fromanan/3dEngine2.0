@@ -18,9 +18,12 @@ namespace Camera
 	void SetVerticalAngle(float angle);
 	void SetPosition(glm::vec3 pos);
 
+
 	void CheckIntersectingWithRay(Cube* cube);
 	std::string GetLookingAtName();
 	float GetLookingAtDistance();
+	glm::vec3 GetRayDirection();
+
 
 	void Update(float dt);
 

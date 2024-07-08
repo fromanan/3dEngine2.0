@@ -2,7 +2,7 @@
 #include "Renderer.h"
 
 
-Texture::Texture(const char* name, const char* path) {
+Texture::Texture(const char* path) {
 	this->name = name;
 	std::cout << "Loading Texture " << path << std::endl;
 	texture = loader::loadDDS(path);
@@ -11,6 +11,34 @@ Texture::Texture(const char* name, const char* path) {
 	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
 	std::cout << "With name " << this->name << std::endl;
 
+}
+Texture::Texture(const char* name, const char* path) {
+	this->name = name;
+	int texturenumTemp = CurrentTextureNumber++;
+	textureNumber = texturenumTemp - GL_TEXTURE0;
+
+	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load and generate the texture
+	int width, height;
+	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
 }
 
 

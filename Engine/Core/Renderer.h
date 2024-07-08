@@ -10,12 +10,12 @@
 #include "Engine/Core/UI/Text2D.h"
 #include "Loaders/stb_image.h"
 
-
 class Texture {
 public:
     static int CurrentTextureNumber;
 
     Texture(const char* name, const char* path);
+    Texture(const char* path);
 
     const char* GetName();
     int GetTextureNumber();

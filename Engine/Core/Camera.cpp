@@ -47,6 +47,9 @@ namespace Camera {
 			return distance;
 		return -1;
 	}
+	glm::vec3 GetRayDirection() {
+		return ray.direction;
+	}
 
 	void Camera::CheckIntersectingWithRay(Cube* cube) {
 
@@ -71,7 +74,6 @@ namespace Camera {
 			if (Input::KeyPressed('e'))
 			{
 				AssetManager::AddDecal(ray.origin + objectDistance * ray.direction, normal, glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
-
 			}
 		}
 	}
