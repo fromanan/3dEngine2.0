@@ -1,5 +1,13 @@
 # OpenGL Engine 2.0
 
+### 3D Engine 2.0 2024/July/08
+Rendering pipeline had a few changes most notably transparent textures and decals were added. Raycasting was also added, the camerea casts a ray giving you the intersection point at any AABB in the screenshot below I use this for bullet holes. GameObjects also
+now have a parent-child hierarchy and there model matrix gets updated correctly. Soon I will have to redo the model system to incoperate assimp for animations.
+
+![screenshot](/github/screenshots/Decals.png)
+
+
+
 ### 3D Engine 2.0 2024/July/04
 This week I have implemented phyiscs, my implementation includes rigidbodies and axis alined boxes for collision, GameObjects can be used to produce a collider with the same demensions as the model. A Map editor is also in the works making it easier for 
 me to edit the scenes, you can also save gameobjects in the scene to json files and load them through the Asset Manager. The Player was changed to work with the new physics system and the movement has been changed to add inertia making the movement more "realistic".

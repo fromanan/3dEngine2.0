@@ -82,7 +82,7 @@ namespace Player
 		collider->setPosition(rb->GetPostion());
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
-		gun->SetRotationX(verticalAngle);
+		//gun->SetRotationX(verticalAngle);
 
 	}
 	glm::vec3 Player::getPosition() {
