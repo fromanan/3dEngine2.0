@@ -115,13 +115,11 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 	depth = (maxz - minz) * 1.0;
 
 
-
-	this->name = name;
-	this->position = gameobject->getPosition();
+	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 
-
+	this->name = name;
 }
 
 std::string Cube::GetName() {
@@ -252,6 +250,54 @@ float Cube::intersect(Ray r, float t0, float t1) {
 	else
 		return -1;
 }
+void Cube::Regenerate(GameObject* gameobject) {
+	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
+
+	float minx = vertices[0].x;
+	float maxx = vertices[0].x;
+	float miny = vertices[0].y;
+	float maxy = vertices[0].y;
+	float minz = vertices[0].z;
+	float maxz = vertices[0].z;
+
+	for (int i = 0; i < vertices.size() - 1; i++)
+	{
+		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
+		tempVec = tempVec * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+		if (tempVec.x < minx)
+			minx = tempVec.x;
+		if (tempVec.x > maxx)
+			maxx = tempVec.x;
+
+		if (tempVec.y < miny)
+			miny = tempVec.y;
+		if (tempVec.y > maxy)
+			maxy = tempVec.y;
+
+		if (tempVec.z < minz)
+			minz = tempVec.z;
+		if (tempVec.z > maxx)
+			maxz = tempVec.z;
+
+
+	}
+
+	//1.05 is for padding because the camera can somtimes clip into the object
+	width = (maxx - minx) * 1.0;
+	height = (maxy - miny) * 1.0;
+	depth = (maxz - minz) * 1.0;
+
+
+	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
+	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
+	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
+
+	std::cout << "posx:" << this->position.x << " posy: " << this->position.y << " posz: " << this->position.z << std::endl;
+	std::cout << "posx:" << width<< " posy: " << height << " posz: " << depth << std::endl;
+
+
+}
+
 
 
 RigidBody::RigidBody() {

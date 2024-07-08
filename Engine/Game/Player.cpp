@@ -13,6 +13,8 @@ namespace Player
 	RigidBody* rb;
 	Cube* collider;
 
+	Gun CurrentGun;
+
 	GameObject* playerModel;
 	GameObject* gun;
 

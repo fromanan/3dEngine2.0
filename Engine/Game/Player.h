@@ -2,6 +2,7 @@
 #include "Core/Input.h"
 #include "Core/Camera.h"
 #include "Physics/Physics.h"
+#include "Engine/Game/Gun.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>

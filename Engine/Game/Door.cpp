@@ -10,24 +10,17 @@ Door::Door(const char* frame, Texture* frameTexture, const char* door, Texture* 
 	this->door = AssetManager::GetGameObject(AssetManager::AddGameObject(std::string(door), door, doorTexture, position));
 	this->door->SetParentName(name);
 
-	collider = PhysicsManager::AddCube(glm::vec3(position.x + 1, position.y + 2, position.z),2.5,2,0.5,name);
+	PhysicsManager::AddCube(this->door, name);
+	collider = PhysicsManager::GetColider(name);
 	collider->SetStatic(false);
 
 }
 void Door::Interact() {
 	if (Player::GetInteractingWithName() == this->name && !Opening)
-		Opening = true;
-	else
-		std::cout << Player::GetInteractingWithName() << std::endl;
-	
+		Opening = true;	
 }
 
 void Door::Update() {
-	if (isOpened)
-		collider->SetIsTrigger(true);
-	else
-		collider->SetIsTrigger(false);
-
 	if (Opening)
 	{
 		if (!isOpened)
@@ -39,6 +32,8 @@ void Door::Update() {
 		{
 			Opening = false;
 			isOpened = !isOpened;
+			collider->Regenerate(door);
+
 		}
 	}
 }

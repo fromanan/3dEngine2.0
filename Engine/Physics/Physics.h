@@ -53,6 +53,7 @@ public:
 
 
 	Cube(GameObject* gameobject, std::string names);
+	void Regenerate(GameObject* gameobject);
 
 private:
 	std::string name = "None";
