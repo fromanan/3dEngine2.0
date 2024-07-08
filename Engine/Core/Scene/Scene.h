@@ -6,6 +6,8 @@
 #include "Engine/Core/Camera.h"
 #include "Engine/Backend.h"
 #include "Engine/Game/Player.h"
+#include "Engine/Game/Door.h"
+
 #include <iostream>
 #include <vector>
 #include <ostream>
@@ -23,5 +25,7 @@ private:
 	//this is the sun
 	glm::vec3 lightPos;
 	SkyBox sky;
+	//objects
+	std::vector<Door> doors;
 };
 

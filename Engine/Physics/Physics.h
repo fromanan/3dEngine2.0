@@ -7,6 +7,7 @@
 #include "Engine/Core/GameObject.h"
 
 #include <vector>
+#include <string>
 class Ray {
 public:
 	glm::vec3 direction;
@@ -21,10 +22,10 @@ public:
 class Cube
 {
 public:
-	Cube(glm::vec3 postion, float width, float height, float depth, const char* name);
-	Cube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, const char* name);
+	Cube(glm::vec3 postion, float width, float height, float depth, std::string name);
+	Cube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, std::string name);
 
-	const char* GetName();
+	std::string GetName();
 
 	void setPosition(glm::vec3 position);
 	glm::vec3 getPosition();
@@ -37,6 +38,9 @@ public:
 
 	bool GetIsTrigger();
 	void SetIsTrigger(bool trigger);
+	void SetStatic(bool Static);
+	bool GetStatic();
+
 	
 	bool TouchingLeft(Cube* colider, float velocity);
 	bool TouchingRight(Cube* colider, float velocity);
@@ -48,15 +52,16 @@ public:
 	float intersect(Ray r, float t0, float t1);
 
 
-	Cube(GameObject* gameobject, const char* names);
+	Cube(GameObject* gameobject, std::string names);
 
 private:
-	const char* name = "None";
+	std::string name = "None";
 	glm::vec3 min;
 	glm::vec3 max;
 	glm::vec3 position;
 	float width, depth, height;
 	bool isTrigger = false;
+	bool Static = true;
 };
 class RigidBody {
 public:
@@ -100,12 +105,12 @@ private:
 
 namespace PhysicsManager {
 	RigidBody* AddRigidbody(glm::vec3 position, const char* name);
-	Cube* AddCube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, const char* name);
-	Cube* AddCube(glm::vec3 postion, float width, float height, float depth, const char* name);
-	Cube* AddCube(GameObject* gameobject, const char* name);
+	Cube* AddCube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, std::string name);
+	Cube* AddCube(glm::vec3 postion, float width, float height, float depth, std::string name);
+	Cube* AddCube(GameObject* gameobject, std::string name);
 
 
-	Cube* GetColider(const char* name);
+	Cube* GetColider(std::string name);
 	RigidBody* GetRigidbody(const char* name);
 
 

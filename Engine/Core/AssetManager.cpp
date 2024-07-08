@@ -9,6 +9,9 @@ namespace AssetManager
 	std::vector<Decal> Decals;
 
 
+
+
+
 	void AssetManager::Init() {
 		Textures.clear();
 		GameObjects.clear();

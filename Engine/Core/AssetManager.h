@@ -10,6 +10,7 @@
 #include "Common.h"
 #include "Renderer.h"
 #include "Decal.h"
+#include "Engine/Game/Door.h"
 
 //Json stuff
 #include <fstream>
@@ -41,6 +42,8 @@ namespace AssetManager
 	GameObject* GetGameObject(std::string name);
 	GameObject* GetGameObject(int index);
 	std::vector<GameObject> GetAllGameObjects();
+	std::vector<GameObject> GetAllGameObjects();
+
 
 	Texture* GetTexture(std::string name);
 

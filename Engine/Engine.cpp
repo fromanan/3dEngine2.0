@@ -18,6 +18,7 @@ namespace Engine {
 		sceneManager.CreateScene(basicScene);
 		sceneManager.LoadScene(1);
 
+
 		// For speed computation
 		double lastTime = glfwGetTime();
 		double lastTimeDT = glfwGetTime();

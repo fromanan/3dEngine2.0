@@ -16,6 +16,9 @@ namespace Player
 	GameObject* playerModel;
 	GameObject* gun;
 
+	std::string interactingWithName = "Nothing";
+	float interactDistance = 2;
+
 	void Player::Init() {
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 3, 0.5, "PlayerCollider");
@@ -28,6 +31,7 @@ namespace Player
 	}
 
 	void Player::Update(float deltaTime) {
+		interactingWithName = "Nothing";
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
 		{
@@ -68,8 +72,11 @@ namespace Player
 		if (Input::KeyDown('a')) {
 			rb->AddForce(-right * speed * deltaTime);
 		}
+		if (Input::KeyPressed('e') && Camera::GetLookingAtDistance() <= interactDistance) {
+			interactingWithName = Camera::GetLookingAtName();
+		}
 		//get ray details
-		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999) {
+		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic()) {
 			float distance = Camera::GetLookingAtDistance() - 0.015;
 			AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
 		}
@@ -93,6 +100,10 @@ namespace Player
 		collider->setPosition(pos);
 		Camera::SetPosition(rb->GetPostion());
 	}
+	std::string GetInteractingWithName() {
+		return interactingWithName;
+	}
+
 
 
 

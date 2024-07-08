@@ -16,7 +16,7 @@ namespace Camera {
 	//ray
 	std::string lookingAtName = "Nothing";
 	glm::vec3 normalFace= glm::vec3(0, 0, 0);
-
+	Cube* LookingAtcollider;
 	float distance = 9999;
 	Ray ray;
 	
@@ -49,14 +49,17 @@ namespace Camera {
 			return distance;
 		return -1;
 	}
-	glm::vec3 GetRayDirection() {
+	glm::vec3 Camera::GetRayDirection() {
 		return ray.direction;
 	}
-	Ray GetRay() {
+	Ray Camera::GetRay() {
 		return ray;
 	}
-	glm::vec3 GetNormalFace() {
+	glm::vec3 Camera::GetNormalFace() {
 		return normalFace;
+	}
+	Cube* Camera::GetLookingAtCollider() {
+		return LookingAtcollider;
 	}
 
 
@@ -66,6 +69,7 @@ namespace Camera {
 		float objectDistance = cube->intersect(ray, 0, 100);
 		if (objectDistance > 0 && objectDistance < distance)
 		{
+			LookingAtcollider = cube;
 			distance = objectDistance;
 			lookingAtName = cube->GetName();
 			glm::vec3 intersectionPoint(ray.origin + distance * ray.direction);

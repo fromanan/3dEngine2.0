@@ -8,6 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <string>
+
 
 namespace Player
 {
@@ -19,5 +21,6 @@ namespace Player
 	void setPosition(glm::vec3 pos);
 	void Update(float deltaTime);
 	void Init();
+	std::string GetInteractingWithName();
 };
 

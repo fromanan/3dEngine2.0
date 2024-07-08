@@ -25,6 +25,7 @@ namespace Camera
 	glm::vec3 GetRayDirection();
 	Ray GetRay();
 	glm::vec3 GetNormalFace();
+	Cube* GetLookingAtCollider();
 
 
 	void Update(float dt);
