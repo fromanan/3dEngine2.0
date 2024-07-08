@@ -25,7 +25,7 @@ namespace Player
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
 		gun = AssetManager::GetGameObject(AssetManager::AddGameObject("playerGun", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0,0,0)));
-		gun->SetParentName("player");
+		//gun->SetParentName("player");
 		playerModel = AssetManager::GetGameObject(AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z)));
 
 	}
@@ -89,7 +89,10 @@ namespace Player
 		collider->setPosition(rb->GetPostion());
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
-		//gun->SetRotationX(verticalAngle);
+		gun->SetRotationX(-verticalAngle);
+		gun->SetRotationY(horizontalAngle);
+		gun->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
+
 
 	}
 	glm::vec3 Player::getPosition() {
