@@ -1,17 +1,6 @@
 #pragma once
 #include "Renderer.h"
 
-
-Texture::Texture(const char* path) {
-	this->name = name;
-	std::cout << "Loading Texture " << path << std::endl;
-	texture = loader::loadDDS(path);
-	int texturenumTemp = CurrentTextureNumber++;
-	textureNumber = texturenumTemp - GL_TEXTURE0;
-	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
-	std::cout << "With name " << this->name << std::endl;
-
-}
 Texture::Texture(const char* name, const char* path) {
 	this->name = name;
 	int texturenumTemp = CurrentTextureNumber++;

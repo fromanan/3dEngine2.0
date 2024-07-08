@@ -13,11 +13,11 @@ void Scene::Load() {
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
 
-
-
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
-	AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("bullet_hole"), glm::vec3(-4, 1.5, 0));
+	AssetManager::AddGameObject("floor", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0,0,5));
+
+	AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("target"), glm::vec3(-4, 1.5, 0));
 	AssetManager::GetGameObject("target1")->SetScale(0.3);
 
 	//AssetManager::AddGameObject("point", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
@@ -56,7 +56,6 @@ void Scene::Load() {
 
 void Scene::Update(float deltaTime) {
 	Player::Update(deltaTime);
-
 }
 
 void Scene::RenderObjects() {
@@ -85,11 +84,6 @@ void Scene::RenderObjects() {
 		AssetManager::GetDecal(i)->RenderDecal(programid);
 	}
 	glDisable(GL_BLEND);
-
-
-
-
-
 
 
 	std::ostringstream oss;

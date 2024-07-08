@@ -51,11 +51,17 @@ namespace Input {
         glfwSetCursorPos(window, SCREENWIDTH / 2, SCREENHEIGHT / 2);
     }
 
-    void Input::LeftMouseDown() {
-
+    bool Input::LeftMouseDown() {
+        return leftMouseDown;
     }
-    void Input::RightMouseDown() {
-
+    bool Input::RightMouseDown() {
+        return rightMouseDown;
+    }
+    bool LeftMousePressed(){
+        return leftMousePressed;
+    }
+    bool RightMousePressed() {
+        return rightMousePressed;
     }
 
     void Input::Init() {
@@ -69,7 +75,6 @@ namespace Input {
         mouseY = y;
     }
     void Input::Update() {
-        
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             Backend::CloseWindow();
         }
@@ -115,5 +120,6 @@ namespace Input {
         else
             rightMousePressed = false;
         rightMouseDownLastFrame = rightMouseDown;
+
     }
 }

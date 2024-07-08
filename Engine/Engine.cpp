@@ -28,15 +28,15 @@ namespace Engine {
 			double currentTime = glfwGetTime();
 			float dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
-			std::cout << "FPS: " << (1 / dt) << "/" << dt << std::endl;
+			//std::cout << "FPS: " << (1 / dt) << "/" << dt << std::endl;
 
 			
 			//Update Managers
 			Input::Update();
 			Input::CenterMouse();
-			Camera::Update(dt);
 			PhysicsManager::Update(dt);
 			sceneManager.Update(dt);
+			Camera::Update(dt);
 			//Rendering
 			Renderer::ClearScreen();
 			sceneManager.Render();

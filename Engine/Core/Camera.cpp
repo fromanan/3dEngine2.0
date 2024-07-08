@@ -15,6 +15,8 @@ namespace Camera {
 
 	//ray
 	std::string lookingAtName = "Nothing";
+	glm::vec3 normalFace= glm::vec3(0, 0, 0);
+
 	float distance = 9999;
 	Ray ray;
 	
@@ -50,31 +52,30 @@ namespace Camera {
 	glm::vec3 GetRayDirection() {
 		return ray.direction;
 	}
+	Ray GetRay() {
+		return ray;
+	}
+	glm::vec3 GetNormalFace() {
+		return normalFace;
+	}
+
+
 
 	void Camera::CheckIntersectingWithRay(Cube* cube) {
 
 		float objectDistance = cube->intersect(ray, 0, 100);
 		if (objectDistance > 0 && objectDistance < distance)
 		{
-			
-			lookingAtName = cube->GetName();
 			distance = objectDistance;
+			lookingAtName = cube->GetName();
 			glm::vec3 intersectionPoint(ray.origin + distance * ray.direction);
-			//Makes the decal not overlap with the object
-			objectDistance -= 0.01;
 			// Determine which face was hit by checking the intersection point
-			glm::vec3 normal(0,0,0);
-			if (fabs(intersectionPoint.x - cube->getMin().x) < 0.001f) normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-			if (fabs(intersectionPoint.x - cube->getMax().x) < 0.001f) normal = glm::vec3(1.0f, 0.0f, 0.0f);
-			if (fabs(intersectionPoint.y - cube->getMin().y) < 0.001f) normal = glm::vec3(0.0f, -1.0f, 0.0f);
-			if (fabs(intersectionPoint.y - cube->getMax().y) < 0.001f) normal = glm::vec3(0.0f, 1.0f, 0.0f);
-			if (fabs(intersectionPoint.z - cube->getMin().z) < 0.001f) normal = glm::vec3(0.0f, 0.0f, -1.0f);
-			if (fabs(intersectionPoint.z - cube->getMax().z) < 0.001f) normal = glm::vec3(0.0f, 0.0f, 1.0f);
-
-			if (Input::KeyPressed('e'))
-			{
-				AssetManager::AddDecal(ray.origin + objectDistance * ray.direction, normal, glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
-			}
+			if (fabs(intersectionPoint.x - cube->getMin().x) < 0.001f) normalFace = glm::vec3(-1.0f, 0.0f, 0.0f);
+			if (fabs(intersectionPoint.x - cube->getMax().x) < 0.001f) normalFace = glm::vec3(1.0f, 0.0f, 0.0f);
+			if (fabs(intersectionPoint.y - cube->getMin().y) < 0.001f) normalFace = glm::vec3(0.0f, -1.0f, 0.0f);
+			if (fabs(intersectionPoint.y - cube->getMax().y) < 0.001f) normalFace = glm::vec3(0.0f, 1.0f, 0.0f);
+			if (fabs(intersectionPoint.z - cube->getMin().z) < 0.001f) normalFace = glm::vec3(0.0f, 0.0f, -1.0f);
+			if (fabs(intersectionPoint.z - cube->getMax().z) < 0.001f) normalFace = glm::vec3(0.0f, 0.0f, 1.0f);
 		}
 	}
 

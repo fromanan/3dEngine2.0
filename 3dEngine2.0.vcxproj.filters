@@ -63,10 +63,13 @@
     <ClCompile Include="Engine\Loaders\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Player.cpp">
+    <ClCompile Include="Engine\Game\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Physics\Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Decal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,10 +95,13 @@
     <ClInclude Include="Engine\Loaders\nlohmann\json_fwd.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Player.h">
+    <ClInclude Include="Engine\Game\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Physics\Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Decal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

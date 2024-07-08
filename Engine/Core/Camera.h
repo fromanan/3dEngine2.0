@@ -23,6 +23,8 @@ namespace Camera
 	std::string GetLookingAtName();
 	float GetLookingAtDistance();
 	glm::vec3 GetRayDirection();
+	Ray GetRay();
+	glm::vec3 GetNormalFace();
 
 
 	void Update(float dt);

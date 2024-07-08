@@ -18,8 +18,11 @@ namespace Input {
 	bool KeyDown(char c);
 	bool KeyDownLastFrame(char c);
 	void CenterMouse();
-	void LeftMouseDown();
-	void RightMouseDown();
+	bool LeftMouseDown();
+	bool RightMouseDown();
+	bool LeftMousePressed();
+	bool RightMousePressed();
+
 
 
 

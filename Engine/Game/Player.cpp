@@ -21,8 +21,8 @@ namespace Player
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 3, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
-		//gun = AssetManager::GetGameObject(AssetManager::AddGameObject("playerGun", "Assets/Objects/gun.obj", AssetManager::GetTexture("uvmap"), glm::vec3(1,0.8,0.2)));
-		//gun->SetParentName("player");
+		gun = AssetManager::GetGameObject(AssetManager::AddGameObject("playerGun", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0,0,0)));
+		gun->SetParentName("player");
 		playerModel = AssetManager::GetGameObject(AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z)));
 
 	}
@@ -68,8 +68,10 @@ namespace Player
 		if (Input::KeyDown('a')) {
 			rb->AddForce(-right * speed * deltaTime);
 		}
-		if (Input::KeyDown('e')) {
-
+		//get ray details
+		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999) {
+			float distance = Camera::GetLookingAtDistance() - 0.015;
+			AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
 		}
 
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
@@ -80,6 +82,7 @@ namespace Player
 		collider->setPosition(rb->GetPostion());
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
+		gun->SetRotationX(verticalAngle);
 
 	}
 	glm::vec3 Player::getPosition() {

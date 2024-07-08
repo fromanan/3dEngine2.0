@@ -15,7 +15,6 @@ public:
     static int CurrentTextureNumber;
 
     Texture(const char* name, const char* path);
-    Texture(const char* path);
 
     const char* GetName();
     int GetTextureNumber();
