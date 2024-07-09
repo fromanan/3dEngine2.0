@@ -30,7 +30,7 @@ namespace Player
 		//gun->SetParentName("player");
 		playerModel = AssetManager::GetGameObject(AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z)));
 
-	}
+	} 
 
 	void Player::Update(float deltaTime) {
 		interactingWithName = "Nothing";
