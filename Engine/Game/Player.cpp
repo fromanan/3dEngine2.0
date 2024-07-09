@@ -19,9 +19,14 @@ namespace Player
 	std::string interactingWithName = "Nothing";
 	float interactDistance = 2;
 
+	//states
+	bool reloading = false;
+	double reloadingTime = 0;
 	
 
 	void Player::Init() {
+		srand(time(0));
+
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 3, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
@@ -76,16 +81,48 @@ namespace Player
 		if (Input::KeyPressed('e') && Camera::GetLookingAtDistance() <= interactDistance) {
 			interactingWithName = Camera::GetLookingAtName();
 		}
-		//get ray details
-		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic() && CurrentGun->type == Semi) {
-			float distance = Camera::GetLookingAtDistance() - 0.015;
-			AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+		if (Input::KeyPressed('r') && !reloading) {
+			reloading = true;
+			reloadingTime = glfwGetTime();
 		}
-		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic() && CurrentGun->type == Auto && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate) {
-			verticalAngle += CurrentGun->recoil;
-			CurrentGun->lastTimeShot = glfwGetTime();
-			float distance = Camera::GetLookingAtDistance() - 0.015;
-			AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+		
+		if (glfwGetTime() - reloadingTime > CurrentGun->reloadtime && reloading)
+		{
+			reloading = false;
+			CurrentGun->currentammo = CurrentGun->ammo;
+			CurrentGun->rotation = 0;
+			CurrentGun->down = 1;
+
+		}
+		
+		//get ray details
+		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic() && CurrentGun->type == Semi && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
+			if (CurrentGun->currentammo > 0)
+			{
+				CurrentGun->currentammo--;
+				verticalAngle += CurrentGun->recoil;
+				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
+				CurrentGun->lastTimeShot = glfwGetTime();
+				float distance = Camera::GetLookingAtDistance() - 0.015;
+				AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+			}
+			else {
+				//click click
+			}
+		}
+		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic() && CurrentGun->type == Auto && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
+			if (CurrentGun->currentammo > 0)
+			{
+				CurrentGun->currentammo--;
+				verticalAngle += CurrentGun->recoil;
+				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
+				CurrentGun->lastTimeShot = glfwGetTime();
+				float distance = Camera::GetLookingAtDistance() - 0.015;
+				AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+			}
+			else {
+				//click click
+			}
 		}
 
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
@@ -96,10 +133,12 @@ namespace Player
 		collider->setPosition(rb->GetPostion());
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
-
 		CurrentGun->gunModel->SetRotationX(-verticalAngle);
 		CurrentGun->gunModel->SetRotationY(horizontalAngle);
 		CurrentGun->gunModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
+		if (reloading) {
+			CurrentGun->ReloadingAnimation(deltaTime);
+		}
 	}
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();
@@ -112,4 +151,8 @@ namespace Player
 	std::string GetInteractingWithName() {
 		return interactingWithName;
 	}
+	Gun* getCurrentGun() {
+		return CurrentGun;
+	}
+
 }

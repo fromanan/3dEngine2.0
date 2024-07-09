@@ -16,13 +16,18 @@ struct Gun {
 	int ammo;
 	double firerate;
 	int currentammo;
-	int reloadtime;
+	double reloadtime;
 	int damage;
 	float recoil;
+	float recoilY;
 	float kickback;
 	double lastTimeShot = glfwGetTime();
 	GameObject* gunModel;
 	GunType type;
+
+	double rotation = 0;
+	int down = 1;
+	void ReloadingAnimation(float deltaTime);
 };
 
 namespace WeaponManager {

@@ -101,6 +101,9 @@ void Scene::RenderObjects() {
 	oss.str(""); oss.clear();
 	oss << "Velocity x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
+	oss.str(""); oss.clear();
+	oss << Player::getCurrentGun()->currentammo << "/" << Player::getCurrentGun()->ammo;
+	Renderer::RenderText(oss.str().c_str(), 660, 0, 15);
 
 }
 
