@@ -11,7 +11,7 @@ uniform sampler2D textShader;
 
 void main(){
 
-	color = texture( textShader, UV );
+	color = texture( textShader, UV ) * vec4(0, 0, 0, 1);
 	
 	
 }

@@ -291,11 +291,6 @@ void Cube::Regenerate(GameObject* gameobject) {
 	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
-
-	std::cout << "posx:" << this->position.x << " posy: " << this->position.y << " posz: " << this->position.z << std::endl;
-	std::cout << "posx:" << width<< " posy: " << height << " posz: " << depth << std::endl;
-
-
 }
 
 

@@ -24,9 +24,9 @@ void Door::Update() {
 	if (Opening)
 	{
 		if (!isOpened)
-			door->SetRotationY(door->getRotation().y + 0.05);
+			door->SetRotationY(door->getRotation().y + doorOpenSpeed);
 		else 
-			door->SetRotationY(door->getRotation().y - 0.05);
+			door->SetRotationY(door->getRotation().y - doorOpenSpeed);
 
 		if (door->getRotation().y >= 1.5708 || door->getRotation().y <= 0)
 		{

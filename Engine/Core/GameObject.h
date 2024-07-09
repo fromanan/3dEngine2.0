@@ -47,6 +47,8 @@ public:
 	glm::vec3 getRotation();
 	glm::vec3 getScale();
 
+	void addPosition(glm::vec3 position);
+
 	void setPositionX(float x);
 	void setPositionY(float y);
 	void setPositionZ(float z);

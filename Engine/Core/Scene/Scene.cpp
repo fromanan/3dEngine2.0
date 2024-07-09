@@ -17,8 +17,8 @@ void Scene::Load() {
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
 	AssetManager::AddGameObject("floor", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0,0,5));
 
-	AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("target"), glm::vec3(-4, 1.5, 0));
-	AssetManager::GetGameObject("target1")->SetScale(0.3);
+	//AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("target"), glm::vec3(-4, 1.5, 0));
+	//AssetManager::GetGameObject("target1")->SetScale(0.3);
 
 	//AssetManager::AddGameObject("point", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
 	//AssetManager::GetGameObject("point")->SetScale(0.05);
@@ -27,11 +27,10 @@ void Scene::Load() {
 	//AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2));
 	//AssetManager::GetGameObject("cube5")->SetParentName("cube4");
 
-	PhysicsManager::AddCube(AssetManager::GetGameObject("target1"), "target1_collider");
+	//PhysicsManager::AddCube(AssetManager::GetGameObject("target1"), "target1_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
-
 
 	doors.push_back(Door("Assets/Objects/door_frame.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/door.obj", AssetManager::GetTexture("uvmap"),glm::vec3(-5, 0, -5), std::string("door1")));
 
@@ -49,6 +48,8 @@ void Scene::Load() {
 			"Assets/Skybox/daylight/back.png"
 	};
 	sky = SkyBox(faces);
+
+	WeaponManager::Init();
 
 	Player::Init();
 	Player::setPosition(glm::vec3(0, 5, 5));
@@ -100,9 +101,6 @@ void Scene::RenderObjects() {
 	oss.str(""); oss.clear();
 	oss << "Velocity x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
-	oss.str(""); oss.clear();
-	oss << "Looking at: " << Camera::GetLookingAtName();
-	Renderer::RenderText(oss.str().c_str(), 0, 520, 15);
 
 }
 
