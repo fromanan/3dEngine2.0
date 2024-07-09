@@ -25,6 +25,7 @@ struct Gun {
 	GameObject* gunModel;
 	GunType type;
 
+	
 	double rotation = 0;
 	int down = 1;
 	void ReloadingAnimation(float deltaTime);

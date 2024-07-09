@@ -59,11 +59,11 @@ void Scene::Load() {
 
 void Scene::Update(float deltaTime) {
 	Player::Update(deltaTime);
-
-	for (int i = 0; i < doors.size(); i++) {
-		doors[i].Interact();
-		doors[i].Update();
+	for (int door = 0; door < doors.size(); door++) {
+		doors[0].Interact();
+		doors[0].Update();
 	}
+
 }
 
 void Scene::RenderObjects() {

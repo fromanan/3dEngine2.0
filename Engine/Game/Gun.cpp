@@ -19,7 +19,7 @@ namespace WeaponManager {
 		pistol.name = "pistol";
 		pistol.ammo = 18;
 		pistol.reloadtime = 1.5;
-		pistol.firerate = 100;
+		pistol.firerate = 200;
 		pistol.currentammo = 18;
 		pistol.damage = 10;
 		pistol.type = Semi;

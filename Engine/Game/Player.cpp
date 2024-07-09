@@ -92,7 +92,6 @@ namespace Player
 			CurrentGun->currentammo = CurrentGun->ammo;
 			CurrentGun->rotation = 0;
 			CurrentGun->down = 1;
-
 		}
 		
 		//get ray details

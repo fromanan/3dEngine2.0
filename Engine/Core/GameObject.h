@@ -73,7 +73,7 @@ public:
 
 
 private:
-	Transform transform;
+	Transform transform = Transform();
 	Texture* texture = NULL;
 
 	std::string parentName;
