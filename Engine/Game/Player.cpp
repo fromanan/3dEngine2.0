@@ -14,7 +14,7 @@ namespace Player
 	RigidBody* rb;
 	Cube* collider;
 	Gun* CurrentGun;
-	GameObject* playerModel;
+	GameObject* playerModel; 
 
 	std::string interactingWithName = "Nothing";
 	float interactDistance = 2;
