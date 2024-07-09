@@ -22,7 +22,7 @@ public:
 private:
 	bool isOpened = false;
 	bool Opening = false;
-	float rotation = 0;
+	float doorOpenSpeed = 0.025;
 	GameObject* frame;
 	GameObject* door;
 	Cube* collider;

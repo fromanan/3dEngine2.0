@@ -20,8 +20,10 @@ namespace Engine {
 
 
 		// For speed computation
-		double lastTime = glfwGetTime();
 		double lastTimeDT = glfwGetTime();
+		double previousTime = glfwGetTime();
+		int frameCount = 0;
+		int FPS = 0;
 
 		while (Backend::IsWindowOpen()) {
 			
@@ -29,7 +31,13 @@ namespace Engine {
 			double currentTime = glfwGetTime();
 			float dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
-			//std::cout << "FPS: " << (1 / dt) << "/" << dt << std::endl;
+			frameCount++;
+			if (currentTime - previousTime >= 1.0)
+			{
+				FPS = frameCount;
+				frameCount = 0;
+				previousTime = currentTime;
+			}
 
 			
 			//Update Managers
@@ -41,6 +49,9 @@ namespace Engine {
 			//Rendering
 			Renderer::ClearScreen();
 			sceneManager.Render();
+			std::ostringstream oss;
+			oss << "FPS: " << FPS;
+			Renderer::RenderText(oss.str().c_str(), 660, 585, 15);
 			Renderer::SwapBuffers(Backend::GetWindowPointer());
 		}
 

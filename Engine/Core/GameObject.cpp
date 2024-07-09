@@ -202,6 +202,10 @@ glm::vec3 GameObject::getRotation() {
 glm::vec3 GameObject::getScale() {
 	return transform.scale;
 }
+void GameObject::addPosition(glm::vec3 position) {
+	transform.position += position;
+}
+
 
 void GameObject::setPositionX(float x) {
 	transform.position.x = x;

@@ -1,16 +1,37 @@
 #pragma once
+#include <string>
+#include <vector>
+#include "Engine/Core/GameObject.h"
+
+
 
 enum GunType {
 	Semi,
-	Automatic,
+	Auto,
 	ShotGun
 };
 
 struct Gun {
+	std::string name;
 	int ammo;
-	int firerate;
+	double firerate;
 	int currentammo;
-	int reloadtime;
+	double reloadtime;
 	int damage;
+	float recoil;
+	float recoilY;
+	float kickback;
+	double lastTimeShot = glfwGetTime();
+	GameObject* gunModel;
 	GunType type;
+
+	
+	double rotation = 0;
+	int down = 1;
+	void ReloadingAnimation(float deltaTime);
 };
+
+namespace WeaponManager {
+	void Init();
+	Gun* GetGunByName(std::string name);
+}
