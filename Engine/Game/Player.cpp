@@ -129,7 +129,7 @@ namespace Player
 		Camera::SetHorizontalAngle(horizontalAngle);
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(rb->GetPostion());
-		collider->setPosition(rb->GetPostion());
+		collider->setPosition(rb->GetPostion()); 
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
 		CurrentGun->gunModel->SetRotationX(-verticalAngle);
