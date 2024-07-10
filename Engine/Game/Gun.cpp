@@ -5,7 +5,6 @@
 void Gun::ReloadingAnimation(float deltaTime) {
 	if (rotation > 0.8)
 		down = -1;
-	std::cout << rotation << std::endl;
 	float incerment = (1.6 / reloadtime) * down * deltaTime;
 	rotation += incerment;
 	float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;

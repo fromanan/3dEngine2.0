@@ -72,10 +72,10 @@
     <ClCompile Include="Engine\Core\Decal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Door.cpp">
+    <ClCompile Include="Engine\Game\Gun.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Gun.cpp">
+    <ClCompile Include="Engine\Game\Door.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,10 +110,10 @@
     <ClInclude Include="Engine\Core\Decal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Door.h">
+    <ClInclude Include="Engine\Game\Gun.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Gun.h">
+    <ClInclude Include="Engine\Game\Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -95,7 +95,7 @@ namespace Player
 		}
 		
 		//get ray details
-		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic() && CurrentGun->type == Semi && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
+		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && CurrentGun->type == Semi && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
 			if (CurrentGun->currentammo > 0)
 			{
 				CurrentGun->currentammo--;
@@ -103,22 +103,23 @@ namespace Player
 				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
 				CurrentGun->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
-				AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+				if(Camera::GetLookingAtCollider()->GetStatic())
+					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
 			}
 			else {
 				//click click
 			}
 		}
-		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999 && Camera::GetLookingAtCollider()->GetStatic() && CurrentGun->type == Auto && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
+		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999  && CurrentGun->type == Auto && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
 			if (CurrentGun->currentammo > 0)
 			{
 				CurrentGun->currentammo--;
 				verticalAngle += CurrentGun->recoil;
 				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
-				std::cout << "test";
 				CurrentGun->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
-				AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
+				if (Camera::GetLookingAtCollider()->GetStatic())
+					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
 			}
 			else {
 				//click click

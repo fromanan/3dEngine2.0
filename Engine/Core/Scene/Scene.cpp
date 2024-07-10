@@ -32,8 +32,7 @@ void Scene::Load() {
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
 
-	//doors.push_back(Door("Assets/Objects/door_frame.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/door.obj", AssetManager::GetTexture("uvmap"),glm::vec3(-5, 0, -5), std::string("door1")));
-
+	doors.push_back(Door("door1", "Assets/Objects/door.obj", "Assets/Objects/door_frame.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(-5, 0, -5)));
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
@@ -59,8 +58,11 @@ void Scene::Load() {
 
 void Scene::Update(float deltaTime) {
 	Player::Update(deltaTime);
-	
 
+	for (int door = 0; door < doors.size(); door++) {
+		doors[door].Interact();
+		doors[door].Update(deltaTime);
+	}
 }
 
 void Scene::RenderObjects() {
@@ -90,13 +92,14 @@ void Scene::RenderObjects() {
 	}
 	glDisable(GL_BLEND);
 
-
 	std::ostringstream oss;
-	oss << "Position x:" << Camera::GetPostion().x << " y:" << Camera::GetPostion().y << " z:" << Camera::GetPostion().z;
+	oss.precision(2);
+	oss << "Pos x:" << Camera::GetPostion().x << " y:" << Camera::GetPostion().y << " z:" << Camera::GetPostion().z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
 	glm::vec3 vel = Player::rb->GetForce();
 	oss.str(""); oss.clear();
-	oss << "Velocity x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
+	oss.precision(2);
+	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
 	oss.str(""); oss.clear();
 	oss << Player::getCurrentGun()->currentammo << "/" << Player::getCurrentGun()->ammo;
