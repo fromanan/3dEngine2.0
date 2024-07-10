@@ -32,7 +32,7 @@ void Scene::Load() {
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
 
-	doors.push_back(Door("Assets/Objects/door_frame.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/door.obj", AssetManager::GetTexture("uvmap"),glm::vec3(-5, 0, -5), std::string("door1")));
+	//doors.push_back(Door("Assets/Objects/door_frame.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/door.obj", AssetManager::GetTexture("uvmap"),glm::vec3(-5, 0, -5), std::string("door1")));
 
 
 	//sets renderer
@@ -59,10 +59,7 @@ void Scene::Load() {
 
 void Scene::Update(float deltaTime) {
 	Player::Update(deltaTime);
-	for (int door = 0; door < doors.size(); door++) {
-		doors[0].Interact();
-		doors[0].Update();
-	}
+	
 
 }
 

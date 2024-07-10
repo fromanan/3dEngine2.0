@@ -8,13 +8,17 @@ void Gun::ReloadingAnimation(float deltaTime) {
 	std::cout << rotation << std::endl;
 	float incerment = (1.6 / reloadtime) * down * deltaTime;
 	rotation += incerment;
-	gunModel->SetRotationX(gunModel->getRotation().x + rotation);
+	float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
+	AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + rotation);
 }
 
 namespace WeaponManager {
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {
+		AssetManager::AddGameObject("pistol", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
+		AssetManager::AddGameObject("ak47", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
+
 		Gun pistol;
 		pistol.name = "pistol";
 		pistol.ammo = 18;
@@ -26,7 +30,7 @@ namespace WeaponManager {
 		pistol.recoil = 0.01;
 		pistol.recoilY = 150;
 		pistol.kickback = 0.03;
-		pistol.gunModel = AssetManager::GetGameObject(AssetManager::AddGameObject("pistol", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0)));
+		pistol.gunModel = "pistol";  
 		guns.emplace_back(pistol);
 
 		Gun ak47;
@@ -38,9 +42,9 @@ namespace WeaponManager {
 		ak47.damage = 25;
 		ak47.type = Auto;
 		ak47.recoil = 0.01;
-		pistol.recoilY = 100;
+		ak47.recoilY = 150;
 		ak47.kickback = 0.03;
-		ak47.gunModel = AssetManager::GetGameObject(AssetManager::AddGameObject("ak47", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0)));
+		ak47.gunModel = "ak47"; 
 		guns.emplace_back(ak47);
 
 	}

@@ -22,7 +22,7 @@ struct Gun {
 	float recoilY;
 	float kickback;
 	double lastTimeShot = glfwGetTime();
-	GameObject* gunModel;
+	std::string gunModel;
 	GunType type;
 
 	

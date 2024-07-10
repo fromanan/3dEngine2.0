@@ -115,6 +115,7 @@ namespace Player
 				CurrentGun->currentammo--;
 				verticalAngle += CurrentGun->recoil;
 				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
+				std::cout << "test";
 				CurrentGun->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
 				AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.1, 0.1, 0.1), AssetManager::GetTexture("bullet_hole"));
@@ -132,9 +133,9 @@ namespace Player
 		collider->setPosition(rb->GetPostion()); 
 		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
 		playerModel->SetRotationY(horizontalAngle);
-		CurrentGun->gunModel->SetRotationX(-verticalAngle);
-		CurrentGun->gunModel->SetRotationY(horizontalAngle);
-		CurrentGun->gunModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
+		AssetManager::GetGameObject(CurrentGun->gunModel)->SetRotationX(-verticalAngle);
+		AssetManager::GetGameObject(CurrentGun->gunModel)->SetRotationY(horizontalAngle);
+		AssetManager::GetGameObject(CurrentGun->gunModel)->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
 		if (reloading) {
 			CurrentGun->ReloadingAnimation(deltaTime);
 		}
