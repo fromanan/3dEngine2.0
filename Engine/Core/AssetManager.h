@@ -26,7 +26,7 @@ namespace AssetManager
 
 	//returns index of object
 	int AddGameObject(GameObject gameobject);
-	int AddGameObject(std::string name, const char* path,Texture* texture, glm::vec3 position);
+	int AddGameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save);
 
 	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
 	Decal* GetDecal(int index);

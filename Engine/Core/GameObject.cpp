@@ -4,41 +4,50 @@
 
 
 
-GameObject::GameObject(std::string name) {
+GameObject::GameObject(std::string name, bool save) {
 	this->name = name;
 	parentName = "";
 
 }
-GameObject::GameObject(std::string name, glm::vec3 position) {
+GameObject::GameObject(std::string name, glm::vec3 position, bool save) {
 	this->name = name;
 	setPosition(position);
 	parentName = "";
+	canSave = save;
+
 
 }
-GameObject::GameObject(std::string name, const char* path) {
+GameObject::GameObject(std::string name, const char* path, bool save) {
 	this->name = name;
 	LoadModel(path);
 	parentName = "";
+	canSave = save;
+
 
 }
-GameObject::GameObject(std::string name, const char* path, glm::vec3 position) {
+GameObject::GameObject(std::string name, const char* path, glm::vec3 position, bool save) {
 	this->name = name;
 	LoadModel(path);
 	setPosition(position);
 	parentName = "";
+	canSave = save;
+
 
 }
-GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position) {
+GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save) {
 	this->name = name;
 	setPosition(position);
 	this->texture = texture;
 	LoadModel(path);
 	parentName = "";
+	canSave = save;
+
 }
 
 GameObject::GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indice,
-	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms)
+	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms, bool save)
 {
+	canSave = save;
 	this->name = name;
 	setPosition(position);
 	this->texture = texture;
@@ -257,4 +266,7 @@ std::vector<glm::vec3>  GameObject::getIndexedNormals() {
 }
 const char* GameObject::GetTextureName() {
 	return texture->GetName();
+}
+bool GameObject::CanSave() {
+	return canSave;
 }

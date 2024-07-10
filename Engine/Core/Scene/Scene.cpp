@@ -14,25 +14,23 @@ void Scene::Load() {
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
 
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
-	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
-	AssetManager::AddGameObject("floor", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0,0,5));
-
-	//AssetManager::AddGameObject("target1", "Assets/Objects/ShootingTarget.obj", AssetManager::GetTexture("target"), glm::vec3(-4, 1.5, 0));
-	//AssetManager::GetGameObject("target1")->SetScale(0.3);
-
-	//AssetManager::AddGameObject("point", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0));
-	//AssetManager::GetGameObject("point")->SetScale(0.05);
-	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2));
-	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7));
-	//AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2));
+	//AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
+	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2), true);
+	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7), true);
+	//AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2), true);
 	//AssetManager::GetGameObject("cube5")->SetParentName("cube4");
+	//AssetManager::AddGameObject("container", "Assets/Objects/ContainerFinal.obj", AssetManager::GetTexture("container"), glm::vec3(4, 2, 4), true);
 
-	//PhysicsManager::AddCube(AssetManager::GetGameObject("target1"), "target1_collider");
+
+
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
+	std::cout << "test";
 
 	doors.push_back(Door("door1", "Assets/Objects/door.obj", "Assets/Objects/door_frame.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(-5, 0, -5)));
+
+	AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-8, 0, -5),false);
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));

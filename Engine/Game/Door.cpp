@@ -4,8 +4,8 @@
 Door::Door(std::string Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, glm::vec3 position) {
 	name = Name;
 
-	AssetManager::AddGameObject(name+"_frame", framePath, frameTexture, position);
-	AssetManager::AddGameObject(name+"_door", doorPath, doorTexture, position);
+	AssetManager::AddGameObject(name+"_frame", framePath, frameTexture, position, false);
+	AssetManager::AddGameObject(name+"_door", doorPath, doorTexture, position, false);
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject(name + "_door"),name);
 	PhysicsManager::GetColider(name)->SetStatic(false);

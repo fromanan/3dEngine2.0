@@ -23,14 +23,14 @@
 class GameObject
 {
 public:
-	GameObject(std::string name);
-	GameObject(std::string name, glm::vec3 position);
-	GameObject(std::string name, const char* path);
-	GameObject(std::string name, const char* path, glm::vec3 position);
-	GameObject(std::string name, const char* path,Texture* texture, glm::vec3 position);
+	GameObject(std::string name, bool save);
+	GameObject(std::string name, glm::vec3 position, bool save);
+	GameObject(std::string name, const char* path, bool save);
+	GameObject(std::string name, const char* path, glm::vec3 position, bool save);
+	GameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save);
 
 	GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
-		std::vector<glm::vec3> indexed_vertices,std::vector<glm::vec2> indexed_uvs,std::vector<glm::vec3> indexed_normals);
+		std::vector<glm::vec3> indexed_vertices,std::vector<glm::vec2> indexed_uvs,std::vector<glm::vec3> indexed_normals, bool save);
 
 	void LoadModel(const char* path);
 	glm::mat4 GetModelMatrix();
@@ -71,6 +71,8 @@ public:
 	std::vector<glm::vec3> getIndexedNormals();
 	const char* GetTextureName();
 
+	bool CanSave();
+
 
 private:
 	Transform transform = Transform();
@@ -96,4 +98,5 @@ private:
 	GLuint elementbuffer;
 	GLuint VertexArrayID;
 
+	bool canSave = false;
 };

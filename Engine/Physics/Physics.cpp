@@ -32,7 +32,6 @@ bool Ray::intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMa
 		float n_dot_d = glm::dot(direction, normal);
 
 		if (n_dot_d > 0.0001f) {
-
 			float n_dot_ps = glm::dot(normal, glm::vec3(point1.x, point1.y, point1.z) - origin);
 
 			float t = n_dot_ps / n_dot_d;

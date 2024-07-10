@@ -56,7 +56,8 @@ namespace AssetManager
 				indexed_normals.push_back(glm::vec3(data["GameObjects"][gameobject][14][normal], data["GameObjects"][gameobject][14][normal + 1], data["GameObjects"][gameobject][14][normal + 2]));
 				normal = normal + 2;
 			}
-			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals));
+			bool save = data["GameObjects"][gameobject][16];
+			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save));
 		}
 	}
 
@@ -65,6 +66,8 @@ namespace AssetManager
 		std::vector<json> SerializedGameObjects;
 		//name,parentname,pos,rotation,scale,indices,indexvert,indexuv,indexnormal,texturename
 		for (int i = 0; i < GameObjects.size(); i++) {
+			if (!GameObjects[i].CanSave())
+				continue;
 			std::vector<float> verticies;
 			std::vector<float> Uvs;
 			std::vector<float> normals;
@@ -99,7 +102,8 @@ namespace AssetManager
 				GameObjects[i].getScale().z,
 				GameObjects[i].getIndices(),
 				verticies, Uvs, normals,
-				GameObjects[i].GetTextureName()
+				GameObjects[i].GetTextureName(),
+				true
 			};
 			SerializedGameObjects.push_back(gameobject);
 		}
@@ -123,8 +127,8 @@ namespace AssetManager
 		GameObjects.push_back(gameobject);
 		return GameObjects.size() - 1;
 	}
-	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position) {
-		GameObjects.push_back(GameObject(name, path, texture, position));
+	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save) {
+		GameObjects.push_back(GameObject(name, path, texture, position,save));
 		return GameObjects.size() - 1;
 	}
 	
