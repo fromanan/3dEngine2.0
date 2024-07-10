@@ -360,6 +360,7 @@ glm::vec3 RigidBody::GetForce() {
 }
 
 
+
 namespace PhysicsManager {
 	std::vector<Cube> coliders;
 	std::vector<RigidBody> rigidbodies;

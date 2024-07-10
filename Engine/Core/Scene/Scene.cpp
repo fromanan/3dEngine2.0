@@ -12,6 +12,8 @@ void Scene::Load() {
 	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
+	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png");
+
 
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	//AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);

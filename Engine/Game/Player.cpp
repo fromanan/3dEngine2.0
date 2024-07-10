@@ -3,7 +3,6 @@
 
 namespace Player
 {
-
 	float horizontalAngle = 3.14f;
 	float verticalAngle = 0.0f;
 	float initialFoV = 45.0f;
@@ -13,8 +12,7 @@ namespace Player
 	float jumpforce = 50;
 	RigidBody* rb;
 	Cube* collider;
-	Gun* CurrentGun;
-	GameObject* playerModel; 
+	std::string gunName = "";
 
 	std::string interactingWithName = "Nothing";
 	float interactDistance = 2;
@@ -31,9 +29,8 @@ namespace Player
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 3, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
-		playerModel = AssetManager::GetGameObject(AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z), false));
 
-		CurrentGun = WeaponManager::GetGunByName("ak47");
+		gunName = "ak47";
 	}
 
 	void Player::Update(float deltaTime) {
@@ -86,22 +83,22 @@ namespace Player
 			reloadingTime = glfwGetTime();
 		}
 		
-		if (glfwGetTime() - reloadingTime > CurrentGun->reloadtime && reloading)
+		if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 		{
 			reloading = false;
-			CurrentGun->currentammo = CurrentGun->ammo;
-			CurrentGun->rotation = 0;
-			CurrentGun->down = 1;
+			WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
+			WeaponManager::GetGunByName(gunName)->rotation = 0;
+			WeaponManager::GetGunByName(gunName)->down = 1;
 		}
 		
 		//get ray details
-		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && CurrentGun->type == Semi && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
-			if (CurrentGun->currentammo > 0)
+		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+			if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
 			{
-				CurrentGun->currentammo--;
-				verticalAngle += CurrentGun->recoil;
-				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
-				CurrentGun->lastTimeShot = glfwGetTime();
+				WeaponManager::GetGunByName(gunName)->currentammo--;
+				verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
+				horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
+				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
 				if(Camera::GetLookingAtCollider()->GetStatic())
 					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
@@ -110,13 +107,13 @@ namespace Player
 				//click click
 			}
 		}
-		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999  && CurrentGun->type == Auto && glfwGetTime() - CurrentGun->lastTimeShot > 60.0f / CurrentGun->firerate && !reloading) {
-			if (CurrentGun->currentammo > 0)
+		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999  && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+			if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
 			{
-				CurrentGun->currentammo--;
-				verticalAngle += CurrentGun->recoil;
-				horizontalAngle += (((double)rand()) / RAND_MAX) / CurrentGun->recoilY;
-				CurrentGun->lastTimeShot = glfwGetTime();
+				WeaponManager::GetGunByName(gunName)->currentammo--;
+				verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
+				horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
+				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
 				if (Camera::GetLookingAtCollider()->GetStatic())
 					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
@@ -132,13 +129,11 @@ namespace Player
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(rb->GetPostion());
 		collider->setPosition(rb->GetPostion()); 
-		playerModel->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y - 1.25, rb->GetPostion().z));
-		playerModel->SetRotationY(horizontalAngle);
-		AssetManager::GetGameObject(CurrentGun->gunModel)->SetRotationX(-verticalAngle);
-		AssetManager::GetGameObject(CurrentGun->gunModel)->SetRotationY(horizontalAngle);
-		AssetManager::GetGameObject(CurrentGun->gunModel)->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
+		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRotationX(-verticalAngle);
+		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRotationY(horizontalAngle);
+		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
 		if (reloading) {
-			CurrentGun->ReloadingAnimation(deltaTime);
+			WeaponManager::GetGunByName(gunName)->ReloadingAnimation(deltaTime);
 		}
 	}
 	glm::vec3 Player::getPosition() {
@@ -153,7 +148,7 @@ namespace Player
 		return interactingWithName;
 	}
 	Gun* getCurrentGun() {
-		return CurrentGun;
+		return WeaponManager::GetGunByName(gunName);
 	}
 
 }

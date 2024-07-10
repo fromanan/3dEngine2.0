@@ -27,7 +27,7 @@ namespace WeaponManager {
 		pistol.damage = 10;
 		pistol.type = Semi;
 		pistol.recoil = 0.01;
-		pistol.recoilY = 150;
+		pistol.recoilY = 100;
 		pistol.kickback = 0.03;
 		pistol.gunModel = "pistol";  
 		guns.emplace_back(pistol);
@@ -40,8 +40,8 @@ namespace WeaponManager {
 		ak47.currentammo = 30;
 		ak47.damage = 25;
 		ak47.type = Auto;
-		ak47.recoil = 0.01;
-		ak47.recoilY = 150;
+		ak47.recoil = 0.03;
+		ak47.recoilY = 175;
 		ak47.kickback = 0.03;
 		ak47.gunModel = "ak47"; 
 		guns.emplace_back(ak47);

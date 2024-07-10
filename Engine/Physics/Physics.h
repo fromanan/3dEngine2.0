@@ -78,6 +78,8 @@ public:
 	void NewPosition(float deltaTime);
 	void NewPositionY(float deltaTime);
 
+;
+
 
 	void AddForce(glm::vec3 force);
 	void AddForceX(float force);
@@ -100,6 +102,7 @@ private:
 	glm::vec3 position;
 	glm::vec3 velocity;
 	Cube* colider = NULL;
+
 };
 
 
