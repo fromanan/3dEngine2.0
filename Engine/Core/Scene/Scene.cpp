@@ -31,6 +31,8 @@ void Scene::Load() {
 	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(-5, 0, -5)));
 
 	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(-5, 1, 0)));
+	gunPickUps.push_back(GunPickUp("pistol", "pistol_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-5, 1, 2)));
+
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));

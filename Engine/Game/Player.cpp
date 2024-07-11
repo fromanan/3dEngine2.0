@@ -153,12 +153,14 @@ namespace Player
 	std::string Player::getCurrentGun() {
 		return gunName;
 	}
-	void Player::SelectWeapon(std::string weaponName) {
+	bool Player::SelectWeapon(std::string weaponName) {
 		if (reloading)
-			return;
+			return false;
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
 		gunName = weaponName;
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(true);
+
+		return true;
 
 	}
 
