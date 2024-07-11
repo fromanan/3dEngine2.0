@@ -30,7 +30,7 @@ namespace Player
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
 
-		gunName = "ak47";
+		gunName = "pistol";
 	}
 
 	void Player::Update(float deltaTime) {
@@ -96,6 +96,7 @@ namespace Player
 			if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
 			{
 				WeaponManager::GetGunByName(gunName)->currentammo--;
+				WeaponManager::GetGunByName(gunName)->Shoot();
 				verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 				horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
 				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
@@ -111,6 +112,7 @@ namespace Player
 			if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
 			{
 				WeaponManager::GetGunByName(gunName)->currentammo--;
+				WeaponManager::GetGunByName(gunName)->Shoot();
 				verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 				horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
 				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
@@ -135,6 +137,8 @@ namespace Player
 		if (reloading) {
 			WeaponManager::GetGunByName(gunName)->ReloadingAnimation(deltaTime);
 		}
+		WeaponManager::GetGunByName(gunName)->Update(deltaTime);
+
 	}
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Engine/Core/Camera.h"
 #include "Engine/Core/GameObject.h"
 
 
@@ -25,10 +26,12 @@ struct Gun {
 	std::string gunModel;
 	GunType type;
 
-	
+	float kickbackOffset = 0;
 	double rotation = 0;
 	int down = 1;
 	void ReloadingAnimation(float deltaTime);
+	void Update(float deltaTime);
+	void Shoot();
 };
 
 namespace WeaponManager {
