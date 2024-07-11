@@ -133,11 +133,11 @@ namespace Player
 		collider->setPosition(rb->GetPostion()); 
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRotationX(-verticalAngle);
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRotationY(horizontalAngle);
-		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
+		//AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
 		if (reloading) {
 			WeaponManager::GetGunByName(gunName)->ReloadingAnimation(deltaTime);
 		}
-		WeaponManager::GetGunByName(gunName)->Update(deltaTime);
+		WeaponManager::GetGunByName(gunName)->Update(deltaTime,rb->GetPostion());
 
 	}
 	glm::vec3 Player::getPosition() {
@@ -154,5 +154,4 @@ namespace Player
 	Gun* getCurrentGun() {
 		return WeaponManager::GetGunByName(gunName);
 	}
-
 }

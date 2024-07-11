@@ -10,7 +10,7 @@ void Gun::ReloadingAnimation(float deltaTime) {
 	float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
 	AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + rotation);
 }
-void Gun::Update(float deltaTime) {
+void Gun::Update(float deltaTime, glm::vec3 position) {
 	kickbackOffset = kickbackOffset * 0.96;
 	if (kickbackOffset < 0.001) kickbackOffset = 0;
 
@@ -22,7 +22,9 @@ void Gun::Update(float deltaTime) {
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
-	AssetManager::GetGameObject(gunModel)->addPosition(direction * -kickbackOffset * deltaTime);
+
+	AssetManager::GetGameObject(gunModel)->setPosition(position + (direction * -kickbackOffset * deltaTime));
+
 }
 void Gun::Shoot() {
 	kickbackOffset += kickback;

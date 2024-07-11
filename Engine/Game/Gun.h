@@ -30,7 +30,7 @@ struct Gun {
 	double rotation = 0;
 	int down = 1;
 	void ReloadingAnimation(float deltaTime);
-	void Update(float deltaTime);
+	void Update(float deltaTime, glm::vec3 position);
 	void Shoot();
 };
 
