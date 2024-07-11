@@ -366,7 +366,7 @@ namespace PhysicsManager {
 	std::vector<RigidBody> rigidbodies;
 
 	//forces
-	float friction = 0.96;
+	float friction = 7;
 	float Gravity = -12;
 
 	bool UpdatedCamera = false;
@@ -375,8 +375,8 @@ namespace PhysicsManager {
 		UpdatedCamera = false;
 		for (int i = 0; i < rigidbodies.size(); i++) {
 			//add friction so your not sliding
-			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x * friction);
-			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z * friction);
+			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x / (1 + (deltaTime * friction)));
+			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z / (1 + (deltaTime * friction)));
 			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity	* deltaTime);
 			//Do colider Calculation
 			if (rigidbodies[i].GetColider() != NULL) {
@@ -435,4 +435,11 @@ namespace PhysicsManager {
 				return &rigidbodies[i];
 		}
 	}
+	void PhysicsManager::RemoveCube(std::string name) {
+		for (int i = 0; i < coliders.size(); i++) {
+			if (coliders[i].GetName() == name)
+				coliders.erase(coliders.begin() + i);
+		}
+	}
+
 };

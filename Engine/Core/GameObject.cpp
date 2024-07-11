@@ -128,6 +128,8 @@ glm::mat4 GameObject::GetLocalModelMatrix() {
 }
 
 void GameObject::RenderObject(GLuint& programID) {
+	if (!render)
+		return;
 	glUseProgram(programID);
 
 	if (texture != NULL)
@@ -269,4 +271,8 @@ const char* GameObject::GetTextureName() {
 }
 bool GameObject::CanSave() {
 	return canSave;
+}
+void GameObject::SetRender(bool render) {
+	this->render = render;
+
 }

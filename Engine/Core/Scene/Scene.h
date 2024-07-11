@@ -7,6 +7,8 @@
 #include "Engine/Backend.h"
 #include "Engine/Game/Player.h"
 #include "Engine/Game/Door.h"
+#include "Engine/Game/Gun.h"
+
 #include <iostream>
 #include <vector>
 #include <ostream>
@@ -26,5 +28,6 @@ private:
 	SkyBox sky;
 	//objects
 	std::vector<Door> doors;
+	std::vector<GunPickUp> gunPickUps;
 };
 

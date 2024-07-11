@@ -23,6 +23,8 @@ namespace Player
 	void Update(float deltaTime);
 	void Init();
 	std::string GetInteractingWithName();
-	Gun* getCurrentGun();
+	std::string getCurrentGun();
+
+	void SelectWeapon(std::string weaponName);
 };
 

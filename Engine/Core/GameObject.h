@@ -72,6 +72,7 @@ public:
 	const char* GetTextureName();
 
 	bool CanSave();
+	void SetRender(bool render);
 
 
 private:
@@ -99,4 +100,5 @@ private:
 	GLuint VertexArrayID;
 
 	bool canSave = false;
+	bool render = true;
 };

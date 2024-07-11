@@ -112,6 +112,7 @@ namespace PhysicsManager {
 	Cube* AddCube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, std::string name);
 	Cube* AddCube(glm::vec3 postion, float width, float height, float depth, std::string name);
 	Cube* AddCube(GameObject* gameobject, std::string name);
+	void RemoveCube(std::string name);
 
 
 	Cube* GetColider(std::string name);

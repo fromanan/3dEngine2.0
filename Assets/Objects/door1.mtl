@@ -1,0 +1,44 @@
+# Blender 4.1.1 MTL File: 'None'
+# www.blender.org
+
+newmtl door_single_mat
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Ns C:/Users/kokok/Downloads/doors_obj/doors_obj/door_single_Roughness.tga
+map_Bump C:/Users/kokok/Downloads/doors_obj/doors_obj/door_single_Normal.tga
+
+newmtl glass_mat
+Ns 812.250061
+Ka 1.000000 1.000000 1.000000
+Kd 0.916805 1.000000 0.890005
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl window_frame_mat
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Ns C:/Users/kokok/Downloads/doors_obj/doors_obj/window_frame_Roughness.tga
+map_Bump C:/Users/kokok/Downloads/doors_obj/doors_obj/window_frame_Normal.tga
+
+newmtl wire_mat
+Ns 224.999985
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2

@@ -20,13 +20,12 @@ namespace Player
 	//states
 	bool reloading = false;
 	double reloadingTime = 0;
-	
 
 	void Player::Init() {
 		srand(time(0));
 
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
-		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 3, 0.5, "PlayerCollider");
+		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 4, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
 
@@ -148,10 +147,19 @@ namespace Player
 		collider->setPosition(pos);
 		Camera::SetPosition(rb->GetPostion());
 	}
-	std::string GetInteractingWithName() {
+	std::string Player::GetInteractingWithName() {
 		return interactingWithName;
 	}
-	Gun* getCurrentGun() {
-		return WeaponManager::GetGunByName(gunName);
+	std::string Player::getCurrentGun() {
+		return gunName;
 	}
+	void Player::SelectWeapon(std::string weaponName) {
+		if (reloading)
+			return;
+		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
+		gunName = weaponName;
+		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(true);
+
+	}
+
 }

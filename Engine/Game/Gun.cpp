@@ -43,10 +43,10 @@ namespace WeaponManager {
 		pistol.name = "pistol";
 		pistol.ammo = 18;
 		pistol.reloadtime = 1.5;
-		pistol.firerate = 600;
+		pistol.firerate = 250;
 		pistol.currentammo = 18;
 		pistol.damage = 10;
-		pistol.type = Auto;
+		pistol.type = Semi;
 		pistol.recoil = 0.01;
 		pistol.recoilY = 100;
 		pistol.kickback = 6;
@@ -73,5 +73,25 @@ namespace WeaponManager {
 			if (guns[i].name == name)
 				return &guns[i];
 		return NULL;
+	}
+}
+
+
+GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* objectModel, Texture* texture, glm::vec3 position) {
+	gunName = GunName;
+	objectName = ObjectName;
+	AssetManager::AddGameObject(objectName, objectModel, texture, position, false);
+	AssetManager::GetGameObject(objectName)->SetRotationZ(1.5f);
+	PhysicsManager::AddCube(glm::vec3(position.x,position.y,position.z + 0.5), 1, 0.3, 3, ObjectName);
+	PhysicsManager::GetColider(objectName)->SetStatic(false);
+	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
+
+	
+}
+void GunPickUp::Interact() {
+	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() != gunName) {
+		Player::SelectWeapon(gunName);
+		AssetManager::RemoveGameObject(objectName);
+		PhysicsManager::RemoveCube(objectName);
 	}
 }
