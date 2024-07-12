@@ -39,8 +39,11 @@ namespace Engine {
 				previousTime = currentTime;
 			}
 
+
 			
 			//Update Managers
+			std::cout << "run" << std::endl;
+			float test = glfwGetTime();
 			Input::Update();
 			Input::CenterMouse();
 			PhysicsManager::Update(dt);
