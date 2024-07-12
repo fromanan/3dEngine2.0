@@ -19,12 +19,17 @@ private:
     std::vector<glm::vec3> indexed_vertices = { glm::vec3(1.0, 0.0,1.0),glm::vec3(-1.0,0.0,-1.0),glm::vec3(-1.0, 0.0,1.0),glm::vec3(1.0,0.0,-1.0) };
     std::vector<glm::vec2> indexed_uvs = { glm::vec2(1.0,-0.0),glm::vec2(0.0,-1.0),glm::vec2(0.0,-0.0),glm::vec2(1.0,-1.0) };
     std::vector<glm::vec3> indexed_normals = { glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0) };
+    std::vector<glm::vec3> indexed_tangents = { glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0) };
+    std::vector<glm::vec3> indexed_bitangents = { glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0),glm::vec3(-0.0,1.0,-0.0) };
 
     GLuint vertexbuffer;
     GLuint uvbuffer;
     GLuint normalbuffer;
     GLuint elementbuffer;
     GLuint VertexArrayID;
+    GLuint tangentbuffer;
+    GLuint bitangentbuffer;
+
     
        
 

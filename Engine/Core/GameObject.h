@@ -14,6 +14,7 @@
 #include "../Loaders/vboindexer.h"
 #include "../Loaders/loader.hpp"
 
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -77,6 +78,16 @@ public:
 	void SetDelete(bool state);
 	bool ShouldDlete();
 
+	void computeTangentBasis(
+		// inputs
+		std::vector<glm::vec3>& vertices,
+		std::vector<glm::vec2>& uvs,
+		std::vector<glm::vec3>& normals,
+		// outputs
+		std::vector<glm::vec3>& tangents,
+		std::vector<glm::vec3>& bitangents
+	);
+
 
 
 private:
@@ -91,17 +102,25 @@ private:
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec3> bitangents;
 
 	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
 	std::vector<glm::vec3> indexed_normals;
+	std::vector<glm::vec3> indexed_tangents;
+	std::vector<glm::vec3> indexed_bitangents;
 
 	GLuint vertexbuffer;
 	GLuint uvbuffer;
 	GLuint normalbuffer;
 	GLuint elementbuffer;
 	GLuint VertexArrayID;
+	GLuint tangentbuffer;
+	GLuint bitangentbuffer;
+
+
 
 	bool canSave = false;
 	bool render = true;

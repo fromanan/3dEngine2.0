@@ -12,11 +12,12 @@ void Scene::Load() {
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png");
-	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png");
+	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.tga");
+
 
 
 	WeaponManager::Init();
-	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
+	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 
 
 	AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
@@ -25,13 +26,16 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 
+	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(0, 0, 0), true);
+
+
 
 
 
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
+	//PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
+	//PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
 
 	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(-5, 0, -5)));
 
@@ -41,7 +45,7 @@ void Scene::Load() {
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
-	lightPos = glm::vec3(100, 100, 100);
+	lightPos = glm::vec3(0, 100, 0);
 
 	std::vector<std::string> faces{
 		"Assets/Skybox/daylight/right.png",
@@ -85,17 +89,21 @@ void Scene::RenderObjects() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
 		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix);
+		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+
+		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetGameObject(i)->RenderObject(programid);
 	}
 	for (int i = 0; i < AssetManager::GetAllDecals()->size(); i++)
 	{
 		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix);
+		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetDecal(i)->RenderDecal(programid);
 	}
 	glDisable(GL_BLEND);

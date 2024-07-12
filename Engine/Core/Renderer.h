@@ -15,14 +15,22 @@ public:
     static int CurrentTextureNumber;
 
     Texture(const char* name, const char* path);
+    Texture(const char* name, const char* path, const char* normalPath);
 
     const char* GetName();
     int GetTextureNumber();
+    int GetTextureNormalNumber();
+
     GLuint GetTexture();
+    GLuint GetTextureNormal();
+
 private:
     const char* name;
     int textureNumber;
+    int textureNormalNumber;
     GLuint texture;
+    GLuint textureNormal;
+
 };
 
 class SkyBox {
@@ -57,7 +65,7 @@ namespace Renderer {
     void RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox);
 
     //shader
-    void SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view);
+    void SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view, glm::mat3 ModelView3x3Matrix);
     void SetLightPos(glm::vec3 lightpos);
 
     void setMat4(GLuint id, glm::mat4& mat4);

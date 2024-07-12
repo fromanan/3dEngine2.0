@@ -29,6 +29,14 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &tangentbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_tangents.size() * sizeof(glm::vec3), &indexed_tangents[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &bitangentbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 }
 
 glm::mat4 Decal::GetModel() {
@@ -80,6 +88,29 @@ void Decal::RenderDecal(GLuint& programID) {
 		0,                                // stride
 		(void*)0                          // array buffer offset
 	);
+	// 4th attribute buffer : tangents
+	glEnableVertexAttribArray(3);
+	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+	glVertexAttribPointer(
+		3,                                // attribute
+		3,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		(void*)0                          // array buffer offset
+	);
+
+	// 5th attribute buffer : bitangents
+	glEnableVertexAttribArray(4);
+	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
+	glVertexAttribPointer(
+		4,                                // attribute
+		3,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		(void*)0                          // array buffer offset
+	);
 
 	// Index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
@@ -97,5 +128,7 @@ void Decal::RenderDecal(GLuint& programID) {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
+	glDisableVertexAttribArray(4);
 }
 

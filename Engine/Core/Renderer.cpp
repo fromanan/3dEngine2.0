@@ -28,7 +28,94 @@ Texture::Texture(const char* name, const char* path) {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
+
+	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
+
+	std::cout << "Texture Numbers Normal loaded at " << textureNormalNumber << std::endl;
+
+	glGenTextures(1, &textureNormal);
+	glBindTexture(GL_TEXTURE_2D, textureNormal);
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load and generate the texture
+	int width1, height1;
+
+	unsigned char* data1 = stbi_load("Assets/Normals/no_normal.png", &width1, &height1, 0, STBI_rgb_alpha);
+	if (data1)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data1);
 }
+Texture::Texture(const char* name, const char* path, const char* normalPath) {
+	this->name = name;
+	int texturenumTemp = CurrentTextureNumber++;
+	textureNumber = texturenumTemp - GL_TEXTURE0;
+
+	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load and generate the texture
+	int width, height;
+	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
+
+	std::cout << "Texture Numbers Normal loaded at " << textureNormalNumber << std::endl;
+
+	glGenTextures(1, &textureNormal);
+	glBindTexture(GL_TEXTURE_2D, textureNormal);
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load and generate the texture
+	int width1, height1;
+
+	unsigned char* data1 = stbi_load(normalPath, &width1, &height1, 0, STBI_rgb_alpha);
+	if (data1)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data1);
+}
+int Texture::GetTextureNormalNumber() {
+	return textureNormalNumber;
+}
+GLuint Texture::GetTextureNormal() {
+	return textureNormal;
+}
+
 
 
 const char* Texture::GetName() {
@@ -143,15 +230,19 @@ namespace Renderer {
 	GLuint MatrixID;
 	GLuint ViewMatrixID;
 	GLuint ModelMatrixID;
+	GLuint ModelView3x3MatrixID;
+
 
 	GLuint Renderer::GetProgramID(const char* name) {
 		return shaderProgramIds[name];
 	}
 
-	void Renderer::SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view) {
+	void Renderer::SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view, glm::mat3 ModelView3x3Matrix) {
 		setMat4(MatrixID, mvp);
 		setMat4(ModelMatrixID, model);
 		setMat4(ViewMatrixID, view);
+		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
+
 	}
 	void Renderer::SetLightPos(glm::vec3 lightpos)
 	{
@@ -175,6 +266,7 @@ namespace Renderer {
 		ViewMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "V");
 		ModelMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "M");
 		LightID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "LightPosition_worldspace");
+		ModelView3x3MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MV3x3");
 
 		//skybox
 		LoadShader("Assets/Shaders/SkyBoxShader.vert", "Assets/Shaders/SkyBoxShader.frag", "skybox");

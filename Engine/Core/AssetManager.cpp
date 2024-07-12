@@ -8,10 +8,6 @@ namespace AssetManager
 	std::vector<Texture> Textures;
 	std::vector<Decal> Decals;
 
-
-
-
-
 	void AssetManager::Init() {
 		Textures.clear();
 		GameObjects.clear();
@@ -152,6 +148,11 @@ namespace AssetManager
 		Textures.push_back(Texture(name, path));
 		return Textures.size() - 1;
 	}
+	int AddTexture(const char* name, const char* path, const char* normalPath) {
+		Textures.push_back(Texture(name, path,normalPath));
+		return Textures.size() - 1;
+	}
+
 
 	void AssetManager::RemoveGameObject(std::string name) {
 		for (int i = 0; i < GameObjects.size(); i++) {
