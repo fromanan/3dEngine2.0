@@ -11,8 +11,8 @@ void Scene::Load() {
 	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png", "Assets/Normals/container_normal.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
-	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal1.png");
-	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.tga");
+	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
+	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 
 
@@ -51,8 +51,7 @@ void Scene::Load() {
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
-	lightPos = glm::vec3(0, 100, 20);
-
+	lightPos = glm::vec3(100, 100, 100);
 	std::vector<std::string> faces{
 		"Assets/Skybox/daylight/right.png",
 			"Assets/Skybox/daylight/left.png",
@@ -89,20 +88,20 @@ void Scene::RenderObjects() {
 
 	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, sky);
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
-	Renderer::SetLightPos(lightPos);
 	
 	GLuint programid = Renderer::GetCurrentProgramID();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glm::mat3 ModelView3x3Matrix = glm::mat3(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
+	Renderer::SetLightPos(lightPos);
 
 
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
+
 		GameObject* gameobjectRender = AssetManager::GetGameObject(i);
 		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
 		glm::mat4 MVP = PV * ModelMatrix;
-		//glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetGameObject(i)->RenderObject(programid);
@@ -111,7 +110,7 @@ void Scene::RenderObjects() {
 	{
 		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;
-		//glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetDecal(i)->RenderDecal(programid);
 	}

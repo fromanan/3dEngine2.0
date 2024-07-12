@@ -42,7 +42,6 @@ namespace Engine {
 
 			
 			//Update Managers
-			std::cout << "run" << std::endl;
 			float test = glfwGetTime();
 			Input::Update();
 			Input::CenterMouse();

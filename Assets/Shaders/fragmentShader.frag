@@ -25,15 +25,15 @@ void main(){
 	// Light emission properties
 	// You probably want to put them as uniforms
 	vec3 LightColor = vec3(1,1,1);
-	float LightPower = 4000.0;
+	float LightPower = 40000.0;
 	
 	// Material properties
 	vec3 MaterialDiffuseColor = texture( DiffuseTextureSampler, UV ).rgb;
 	vec3 MaterialAmbientColor = vec3(0.5,0.5,0.5) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
+	vec3 MaterialSpecularColor = vec3(0.0,0.0,0.0);
 
 	// Local normal, in tangent space. V tex coordinate is inverted because normal map is in TGA (not in DDS) for better quality
-	vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, vec2(UV.x,-UV.y) ).rgb*2.0 - 1.0);
+	vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, vec2(UV.x,UV.y) ).rgb*2.0 - 1.0);
 	
 	// Distance to the light
 	float distance = length( LightPosition_worldspace - Position_worldspace );
@@ -43,11 +43,6 @@ void main(){
 	vec3 n = TextureNormal_tangentspace;
 	// Direction of the light (from the fragment to the light)
 	vec3 l = normalize(LightDirection_tangentspace);
-	// Cosine of the angle between the normal and the light direction, 
-	// clamped above 0
-	//  - light is at the vertical of the triangle -> 1
-	//  - light is perpendicular to the triangle -> 0
-	//  - light is behind the triangle -> 0
 	float cosTheta = clamp( dot( n,l ), 0,1 );
 
 	// Eye vector (towards the camera)
@@ -68,6 +63,14 @@ void main(){
 		// Specular : reflective highlight, like a mirror
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 
+	    // Debug outputs:
+    // color = vec4(MaterialDiffuseColor, 1.0); // Diffuse color only
+    // color = vec4(vec3(cosTheta), 1.0); // Show cosine of angle between normal and light direction
+    // color = vec4(n, 1.0); // Show normal
+    // color = vec4(l, 1.0); // Show light direction
+    //color = vec4(E, 1.0); // Show eye direction
+
 	color = vec4(Finalcolor, alpha);
+
 
 }
