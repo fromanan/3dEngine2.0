@@ -49,9 +49,14 @@ void Decal::RenderDecal(GLuint& programID) {
 	if (texture != NULL)
 	{
 		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
-		GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+		GLuint TextureID = glGetUniformLocation(programID, "DiffuseTextureSampler");
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 		glUniform1i(TextureID, texture->GetTextureNumber());
+
+		glActiveTexture(texture->GetTextureNormalNumber() + GL_TEXTURE0);
+		GLuint NormalID = glGetUniformLocation(programID, "NormalTextureSampler");
+		glBindTexture(GL_TEXTURE_2D, texture->GetTextureNormal());
+		glUniform1i(NormalID, texture->GetTextureNormalNumber());
 	}
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(0);

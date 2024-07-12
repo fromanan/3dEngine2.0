@@ -10,7 +10,7 @@ in vec3 LightDirection_tangentspace;
 in vec3 EyeDirection_tangentspace;
 
 // Output data
-out vec3 color;
+out vec4 color;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D DiffuseTextureSampler;
@@ -37,6 +37,7 @@ void main(){
 	
 	// Distance to the light
 	float distance = length( LightPosition_worldspace - Position_worldspace );
+	float alpha = texture( DiffuseTextureSampler, UV ).a;
 
 	// Normal of the computed fragment, in camera space
 	vec3 n = TextureNormal_tangentspace;
@@ -59,12 +60,14 @@ void main(){
 	//  - Looking elsewhere -> < 1
 	float cosAlpha = clamp( dot( E,R ), 0,1 );
 	
-	color = 
+	vec3 Finalcolor = 
 		// Ambient : simulates indirect lighting
 		MaterialAmbientColor +
 		// Diffuse : "color" of the object
 		MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
 		// Specular : reflective highlight, like a mirror
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
+
+	color = vec4(Finalcolor, alpha);
 
 }

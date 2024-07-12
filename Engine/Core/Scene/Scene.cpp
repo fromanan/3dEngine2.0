@@ -9,25 +9,30 @@ Scene::Scene() {
 void Scene::Load() {
 	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.png");
 	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
-	AssetManager::AddTexture("container", "Assets/Textures/Container.png");
+	AssetManager::AddTexture("container", "Assets/Textures/Container.png", "Assets/Normals/container_normal.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
-	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png");
+	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal1.png");
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.tga");
-
-
 
 	WeaponManager::Init();
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 
 
-	AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
+	//AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence1", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
+	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
+	AssetManager::AddGameObject("fence1", "Assets/Objects/container.obj", AssetManager::GetTexture("container"), glm::vec3(0, 0, 0), true);
 
-	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(0, 0, 0), true);
 
+
+	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
+	PhysicsManager::AddCube(AssetManager::GetGameObject("fence1"), "fence1_collider");
+	PhysicsManager::AddCube(AssetManager::GetGameObject("fence2"), "fence2_collider");
+	PhysicsManager::AddCube(AssetManager::GetGameObject("fence3"), "fence3_collider");
+	PhysicsManager::AddCube(AssetManager::GetGameObject("fence4"), "fence4_collider");
 
 
 
@@ -45,7 +50,7 @@ void Scene::Load() {
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
-	lightPos = glm::vec3(0, 100, 0);
+	lightPos = glm::vec3(0, 100, 20);
 
 	std::vector<std::string> faces{
 		"Assets/Skybox/daylight/right.png",
@@ -80,6 +85,7 @@ void Scene::Update(float deltaTime) {
 void Scene::RenderObjects() {
 	glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
 	glm::mat4 ViewMatrix = Camera::getViewMatrix();
+	glm::mat4 PV = ProjectionMatrix * ViewMatrix;
 
 	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, sky);
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
@@ -90,9 +96,10 @@ void Scene::RenderObjects() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
+
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
 		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
-		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glm::mat4 MVP = PV * ModelMatrix;
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
@@ -101,7 +108,7 @@ void Scene::RenderObjects() {
 	for (int i = 0; i < AssetManager::GetAllDecals()->size(); i++)
 	{
 		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
-		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glm::mat4 MVP = PV * ModelMatrix;
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetDecal(i)->RenderDecal(programid);
