@@ -17,7 +17,7 @@ uniform sampler2D DiffuseTextureSampler;
 uniform sampler2D NormalTextureSampler;
 uniform mat4 V;
 uniform mat4 M;
-uniform mat3 MV3x3;
+//uniform mat3 MV3x3;
 uniform vec3 LightPosition_worldspace;
 
 void main(){

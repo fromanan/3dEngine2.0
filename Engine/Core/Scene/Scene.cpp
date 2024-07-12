@@ -14,8 +14,8 @@ void Scene::Load() {
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal1.png");
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.tga");
 
-	WeaponManager::Init();
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
+	WeaponManager::Init();
 
 
 	//AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
@@ -24,7 +24,8 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
-	AssetManager::AddGameObject("fence1", "Assets/Objects/container.obj", AssetManager::GetTexture("container"), glm::vec3(0, 0, 0), true);
+
+	AssetManager::AddGameObject("container", "Assets/Objects/container.obj", AssetManager::GetTexture("container"), glm::vec3(20, 2, 0), true);
 
 
 
@@ -34,18 +35,16 @@ void Scene::Load() {
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence3"), "fence3_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence4"), "fence4_collider");
 
-
-
-
+	PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 	//PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
 	//PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
 
-	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(-5, 0, -5)));
+	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(-5, 1, 0)));
-	gunPickUps.push_back(GunPickUp("pistol", "pistol_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-5, 1, 2)));
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(8, 1, -5)));
+	gunPickUps.push_back(GunPickUp("pistol", "pistol_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
 
 
 	//sets renderer
@@ -62,9 +61,8 @@ void Scene::Load() {
 	};
 	sky = SkyBox(faces);
 
-
 	Player::Init();
-	Player::setPosition(glm::vec3(0, 5, 5));
+	Player::setPosition(glm::vec3(3, 5, 0));
 	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
 
 }
@@ -94,13 +92,14 @@ void Scene::RenderObjects() {
 	GLuint programid = Renderer::GetCurrentProgramID();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glm::mat3 ModelView3x3Matrix = glm::mat3(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 
 
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
 		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
 		glm::mat4 MVP = PV * ModelMatrix;
-		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+		//glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetGameObject(i)->RenderObject(programid);
@@ -109,7 +108,7 @@ void Scene::RenderObjects() {
 	{
 		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;
-		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+		//glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		AssetManager::GetDecal(i)->RenderDecal(programid);
 	}

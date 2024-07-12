@@ -266,7 +266,7 @@ namespace Renderer {
 		ViewMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "V");
 		ModelMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "M");
 		LightID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "LightPosition_worldspace");
-		ModelView3x3MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MV3x3");
+		//ModelView3x3MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MV3x3");
 
 		//skybox
 		LoadShader("Assets/Shaders/SkyBoxShader.vert", "Assets/Shaders/SkyBoxShader.frag", "skybox");

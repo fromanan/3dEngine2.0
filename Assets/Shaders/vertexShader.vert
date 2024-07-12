@@ -20,7 +20,7 @@ out vec3 EyeDirection_tangentspace;
 uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
-uniform mat3 MV3x3;
+//uniform mat3 MV3x3;
 uniform vec3 LightPosition_worldspace;
 
 void main(){
@@ -42,11 +42,14 @@ void main(){
 	
 	// UV of the vertex. No special space for this one.
 	UV = vertexUV;
+
+	mat3 MV = mat3(V * M);
+
 	
 	// model to camera = ModelView
-	vec3 vertexTangent_cameraspace = MV3x3 * vertexTangent_modelspace;
-	vec3 vertexBitangent_cameraspace = MV3x3 * vertexBitangent_modelspace;
-	vec3 vertexNormal_cameraspace = MV3x3 * vertexNormal_modelspace;
+	vec3 vertexTangent_cameraspace = MV * vertexTangent_modelspace;
+	vec3 vertexBitangent_cameraspace = MV * vertexBitangent_modelspace;
+	vec3 vertexNormal_cameraspace = MV * vertexNormal_modelspace;
 	
 	mat3 TBN = transpose(mat3(
 		vertexTangent_cameraspace,

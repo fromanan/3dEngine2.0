@@ -36,8 +36,10 @@ namespace WeaponManager {
 	void WeaponManager::Init() {
 		AssetManager::AddGameObject("pistol", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), false);
 
-		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png");
+		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
 		AssetManager::AddGameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0, 0, 0), false);
+		AssetManager::GetGameObject("ak47")->SetRender(false);
+
 
 		Gun pistol;
 		pistol.name = "pistol";
@@ -49,7 +51,7 @@ namespace WeaponManager {
 		pistol.type = Semi;
 		pistol.recoil = 0.01;
 		pistol.recoilY = 100;
-		pistol.kickback = 6;
+		pistol.kickback = 3;
 		pistol.gunModel = "pistol";  
 		guns.emplace_back(pistol);
 
@@ -63,8 +65,8 @@ namespace WeaponManager {
 		ak47.type = Auto;
 		ak47.recoil = 0.03;
 		ak47.recoilY = 175;
-		ak47.kickback = 6;
-		ak47.gunModel = "ak47"; 
+		ak47.kickback = 2;
+		ak47.gunModel = "ak47";
 		guns.emplace_back(ak47);
 
 	}
