@@ -162,7 +162,12 @@ namespace AssetManager
 	void AssetManager::RemoveGameObject(int index) {
 		GameObjects.erase(GameObjects.begin() + index);
 	}
-
+	void AssetManager::CleanUp() {
+		for (int i = 0; i < GameObjects.size(); i++) {
+			if (GameObjects[i].ShouldDlete())
+				GameObjects.erase(GameObjects.begin() + i);
+		}
+	}
 	GameObject* AssetManager::GetGameObject(std::string name) {
 		for (int i = 0; i < GameObjects.size(); i++) {
 			if (GameObjects[i].GetName() == name)

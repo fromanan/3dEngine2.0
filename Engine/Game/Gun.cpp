@@ -88,10 +88,12 @@ GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* ob
 
 	
 }
-void GunPickUp::Interact() {
+bool GunPickUp::Interact() {
 	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() != gunName && Player::SelectWeapon(gunName)) {
 		AssetManager::RemoveGameObject(objectName);
 		PhysicsManager::RemoveCube(objectName);
 		WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
+		return true;
 	}
+	return false;
 }

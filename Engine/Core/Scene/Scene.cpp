@@ -12,17 +12,22 @@ void Scene::Load() {
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png");
+	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png");
+
 
 	WeaponManager::Init();
 	AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 
-	//AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
-	//AssetManager::AddGameObject("cube3", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-2, 0, -2), true);
-	//AssetManager::AddGameObject("cube4", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 1, 7), true);
-	//AssetManager::AddGameObject("cube5", "Assets/Objects/cube.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 2, 2), true);
-	//AssetManager::GetGameObject("cube5")->SetParentName("cube4");
-	//AssetManager::AddGameObject("container", "Assets/Objects/ContainerFinal.obj", AssetManager::GetTexture("container"), glm::vec3(4, 2, 4), true);
-	AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(-8, 0, -5), false);
+
+	AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
+	AssetManager::AddGameObject("fence1", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
+	AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
+	AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
+	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
+
+
+
+
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
@@ -52,6 +57,7 @@ void Scene::Load() {
 	Player::Init();
 	Player::setPosition(glm::vec3(0, 5, 5));
 	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
+
 }
 
 void Scene::Update(float deltaTime) {
@@ -62,7 +68,8 @@ void Scene::Update(float deltaTime) {
 		doors[door].Update(deltaTime);
 	}
 	for (int gun = 0; gun < gunPickUps.size(); gun++) {
-		gunPickUps[gun].Interact();
+		if (gunPickUps[gun].Interact())
+			gunPickUps.erase(gunPickUps.begin() + gun);
 	}
 }
 

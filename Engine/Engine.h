@@ -8,6 +8,7 @@
 #include "Core/Input.h"
 #include "Core/Camera.h"
 #include "Core/UI/Text2D.h"
+#include "Core/Animation.h"
 
 
 namespace Engine

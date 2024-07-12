@@ -274,5 +274,10 @@ bool GameObject::CanSave() {
 }
 void GameObject::SetRender(bool render) {
 	this->render = render;
-
+}
+void GameObject::SetDelete(bool state) {
+	shouldDelete = state;
+}
+bool GameObject::ShouldDlete() {
+	return shouldDelete;
 }

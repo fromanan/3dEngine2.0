@@ -8,6 +8,8 @@
 #include "Engine/Game/Player.h"
 #include "Engine/Game/Door.h"
 #include "Engine/Game/Gun.h"
+#include "Engine/Core/Animation.h"
+
 
 #include <iostream>
 #include <vector>

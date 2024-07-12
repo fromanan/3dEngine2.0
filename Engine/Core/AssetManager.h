@@ -38,6 +38,8 @@ namespace AssetManager
 	void RemoveGameObject(std::string name);
 	void RemoveGameObject(int index);
 
+	void CleanUp();
+
 	GameObject* GetGameObject(std::string name);
 	GameObject* GetGameObject(int index);
 	std::vector<GameObject> GetAllGameObjects();

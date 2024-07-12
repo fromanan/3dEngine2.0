@@ -45,6 +45,7 @@ namespace Engine {
 			Input::CenterMouse();
 			PhysicsManager::Update(dt);
 			sceneManager.Update(dt);
+			AnimationManager::Update(dt);
 			Camera::Update(dt);
 			//Rendering
 			Renderer::ClearScreen();
@@ -53,6 +54,8 @@ namespace Engine {
 			oss << "FPS: " << FPS;
 			Renderer::RenderText(oss.str().c_str(), 660, 585, 15);
 			Renderer::SwapBuffers(Backend::GetWindowPointer());
+
+			AssetManager::CleanUp();
 		}
 
 		return 0;

@@ -43,7 +43,7 @@ namespace WeaponManager {
 class GunPickUp {
 public:
 	GunPickUp(std::string GunName, std::string ObjectName, const char* objectModel, Texture* texture, glm::vec3 position);
-	void Interact();
+	bool Interact();
 private:
 	std::string gunName;
 	std::string objectName;

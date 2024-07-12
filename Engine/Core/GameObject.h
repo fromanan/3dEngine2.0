@@ -74,6 +74,10 @@ public:
 	bool CanSave();
 	void SetRender(bool render);
 
+	void SetDelete(bool state);
+	bool ShouldDlete();
+
+
 
 private:
 	Transform transform = Transform();
@@ -101,4 +105,5 @@ private:
 
 	bool canSave = false;
 	bool render = true;
+	bool shouldDelete = false;
 };

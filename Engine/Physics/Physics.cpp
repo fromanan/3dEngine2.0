@@ -158,7 +158,7 @@ void Cube::SetIsTrigger(bool trigger) {
 	isTrigger = trigger;
 }
 bool Cube::TouchingLeft(Cube* colider, float velocity) {
-	return this->position.x - this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
+	return this->position.x + velocity - this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
 		this->position.x + this->width / 2 > colider->getPosition().x + colider->getWidth() / 2 &&
 		this->position.z + this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
 		this->position.z - this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
@@ -167,7 +167,7 @@ bool Cube::TouchingLeft(Cube* colider, float velocity) {
 	
 }
 bool Cube::TouchingRight(Cube* colider, float velocity) {
-	return this->position.x + this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
+	return this->position.x + velocity + this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
 		this->position.x - this->width / 2 < colider->getPosition().x - colider->getWidth() / 2 &&
 		this->position.z + this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
 		this->position.z - this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
@@ -175,7 +175,7 @@ bool Cube::TouchingRight(Cube* colider, float velocity) {
 		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
 }
 bool Cube::TouchingFront(Cube* colider, float velocity) {
-	return this->position.z - this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
+	return this->position.z + velocity - this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
 		this->position.z + this->depth / 2 > colider->getPosition().z + colider->getDepth() / 2 && 
 		this->position.x + this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
 		this->position.x - this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
@@ -183,7 +183,7 @@ bool Cube::TouchingFront(Cube* colider, float velocity) {
 		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
 }
 bool Cube::TouchingBack(Cube* colider, float velocity) {
-	return this->position.z + this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
+	return this->position.z + velocity + this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
 		this->position.z - this->depth / 2 < colider->getPosition().z - colider->getDepth() / 2 &&
 		this->position.x + this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
 		this->position.x - this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&

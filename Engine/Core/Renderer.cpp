@@ -215,7 +215,6 @@ namespace Renderer {
 		UseProgram(GetProgramID("skybox"));
 		GLuint projectionid = glGetUniformLocation(GetProgramID("skybox"), "projection");
 		GLuint viewid = glGetUniformLocation(GetProgramID("skybox"), "view");
-		// ... set view and projection matrix
 		glm::mat4 viewWithoutTranslation = glm::mat4(glm::mat3(view));
 
 		setMat4(viewid, viewWithoutTranslation);
