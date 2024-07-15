@@ -25,6 +25,7 @@ namespace Player
 		srand(time(0));
 
 		AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), false);
+		AssetManager::GetGameObject("player")->SetRender(false);
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 4, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
