@@ -24,6 +24,7 @@ namespace Player
 	void Player::Init() {
 		srand(time(0));
 
+		AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), false);
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 4, 0.5, "PlayerCollider");
 		rb->SetColider(collider);
@@ -130,13 +131,14 @@ namespace Player
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(rb->GetPostion());
 		collider->setPosition(rb->GetPostion()); 
-		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRotationX(-verticalAngle);
-		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRotationY(horizontalAngle);
-		//AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->setPosition(glm::vec3(rb->GetPostion().x, rb->GetPostion().y, rb->GetPostion().z));
+		AssetManager::GetGameObject("player")->SetRotationX(-verticalAngle);
+		AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
+		AssetManager::GetGameObject("player")->setPosition(rb->GetPostion());
+
 		if (reloading) {
 			WeaponManager::GetGunByName(gunName)->ReloadingAnimation(deltaTime);
 		}
-		WeaponManager::GetGunByName(gunName)->Update(deltaTime,rb->GetPostion());
+		WeaponManager::GetGunByName(gunName)->Update(deltaTime);
 
 	}
 	glm::vec3 Player::getPosition() {

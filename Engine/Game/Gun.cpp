@@ -10,7 +10,7 @@ void Gun::ReloadingAnimation(float deltaTime) {
 	float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
 	AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + rotation);
 }
-void Gun::Update(float deltaTime, glm::vec3 position) {
+void Gun::Update(float deltaTime) {
 	kickbackOffset = kickbackOffset * 0.96;
 	if (kickbackOffset < 0.001) kickbackOffset = 0;
 
@@ -23,8 +23,7 @@ void Gun::Update(float deltaTime, glm::vec3 position) {
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
 
-	AssetManager::GetGameObject(gunModel)->setPosition(position + (direction * -kickbackOffset * deltaTime));
-
+	AssetManager::GetGameObject(gunModel)->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
 }
 void Gun::Shoot() {
 	kickbackOffset += kickback;
@@ -34,11 +33,14 @@ namespace WeaponManager {
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {
-		AssetManager::AddGameObject("pistol", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), false);
+		AssetManager::AddGameObject("pistol", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false);
+		AssetManager::GetGameObject("pistol")->SetParentName("player");
 
 		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
-		AssetManager::AddGameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0, 0, 0), false);
+		AssetManager::AddGameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false);
 		AssetManager::GetGameObject("ak47")->SetRender(false);
+		AssetManager::GetGameObject("ak47")->SetParentName("player");
+
 
 
 		Gun pistol;
@@ -68,6 +70,8 @@ namespace WeaponManager {
 		ak47.recoilY = 175;
 		ak47.kickback = 2;
 		ak47.gunModel = "ak47";
+		ak47.weaponOffSet = glm::vec3(-0.3, -0.3, 0.7);
+
 		guns.emplace_back(ak47);
 
 	}

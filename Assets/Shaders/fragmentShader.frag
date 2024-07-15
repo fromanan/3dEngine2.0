@@ -1,5 +1,4 @@
 #version 330 core
-
 // Interpolated values from the vertex shaders
 in vec2 UV;
 in vec3 Position_worldspace;
@@ -19,6 +18,7 @@ uniform mat4 V;
 uniform mat4 M;
 //uniform mat3 MV3x3;
 uniform vec3 LightPosition_worldspace;
+
 
 void main(){
 

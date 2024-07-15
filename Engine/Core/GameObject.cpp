@@ -123,11 +123,12 @@ void GameObject::LoadModel(const char* path) {
 
 //Parent child transformations
 glm::mat4 GameObject::GetModelMatrix() {
+
 	glm::mat4 matrix = transform.to_mat4();
 	if (parentName != "") {
 		GameObject* parent = AssetManager::GetGameObject(parentName);
 		if (parent != NULL) {
-			matrix = transform.to_mat4() * parent->GetModelMatrix();
+			matrix = parent->GetModelMatrix() * transform.to_mat4();
 		}
 	}
 	return  matrix;

@@ -27,11 +27,13 @@ struct Gun {
 	std::string gunModel;
 	GunType type;
 
+	glm::vec3 weaponOffSet = glm::vec3(-0.3, -0.25, 0.5);
+
 	float kickbackOffset = 0;
 	double rotation = 0;
 	int down = 1;
 	void ReloadingAnimation(float deltaTime);
-	void Update(float deltaTime, glm::vec3 position);
+	void Update(float deltaTime);
 	void Shoot();
 
 	//startingPos
