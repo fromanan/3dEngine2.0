@@ -128,4 +128,9 @@
     <None Include="Assets\Shaders\SkyBoxShader.frag" />
     <None Include="Assets\Saves\mainScene.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Pictures\Screenshots\Screenshot (6).png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
