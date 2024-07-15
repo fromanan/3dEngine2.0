@@ -88,7 +88,6 @@ namespace Player
 		{
 			reloading = false;
 			WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
-			WeaponManager::GetGunByName(gunName)->rotation = 0;
 			WeaponManager::GetGunByName(gunName)->down = 1;
 		}
 		
@@ -136,10 +135,7 @@ namespace Player
 		AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
 		AssetManager::GetGameObject("player")->setPosition(rb->GetPostion());
 
-		if (reloading) {
-			WeaponManager::GetGunByName(gunName)->ReloadingAnimation(deltaTime);
-		}
-		WeaponManager::GetGunByName(gunName)->Update(deltaTime);
+		WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading);
 
 	}
 	glm::vec3 Player::getPosition() {

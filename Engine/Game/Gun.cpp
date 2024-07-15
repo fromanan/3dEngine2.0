@@ -2,17 +2,10 @@
 #include "Engine/Core/AssetManager.h"
 
 
-void Gun::ReloadingAnimation(float deltaTime) {
-	if (rotation > 0.8)
-		down = -1;
-	float incerment = (1.6 / reloadtime) * down * deltaTime;
-	rotation += incerment;
-	float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
-	AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + rotation);
-}
-void Gun::Update(float deltaTime) {
+
+void Gun::Update(float deltaTime, bool isReloading) {
 	kickbackOffset = kickbackOffset * 0.96;
-	if (kickbackOffset < 0.001) kickbackOffset = 0;
+	if (kickbackOffset < 0.01) kickbackOffset = 0;
 
 	float verticalAngle = -AssetManager::GetGameObject(gunModel)->getRotation().x;
 	float horizontalAngle = AssetManager::GetGameObject(gunModel)->getRotation().y;
@@ -22,8 +15,23 @@ void Gun::Update(float deltaTime) {
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
+	if (isReloading)
+	{
+		float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
 
-	AssetManager::GetGameObject(gunModel)->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
+		if (currentXRotation > 1.6 / 2)
+			down = -1;			
+		float incerment = (1.6 / reloadtime) * down * deltaTime;
+		std::cout << currentXRotation << std::endl;
+		AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + incerment);
+		AssetManager::GetGameObject(gunModel)->addPosition(glm::vec3(0,-incerment/3,0));
+
+	}
+	else
+	{
+		AssetManager::GetGameObject(gunModel)->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
+		AssetManager::GetGameObject(gunModel)->SetRotationX(0);
+	}
 }
 void Gun::Shoot() {
 	kickbackOffset += kickback;
