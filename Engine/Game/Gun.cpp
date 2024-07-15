@@ -3,7 +3,7 @@
 
 
 
-void Gun::Update(float deltaTime, bool isReloading) {
+void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 	kickbackOffset = kickbackOffset * 0.96;
 	if (kickbackOffset < 0.01) kickbackOffset = 0;
 
@@ -18,14 +18,15 @@ void Gun::Update(float deltaTime, bool isReloading) {
 	if (isReloading)
 	{
 		float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
-
 		if (currentXRotation > 1.6 / 2)
 			down = -1;			
 		float incerment = (1.6 / reloadtime) * down * deltaTime;
 		std::cout << currentXRotation << std::endl;
 		AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + incerment);
 		AssetManager::GetGameObject(gunModel)->addPosition(glm::vec3(0,-incerment/3,0));
-
+	}
+	else if (aiming) {
+		AssetManager::GetGameObject(gunModel)->setPosition(aimingPosition);
 	}
 	else
 	{
@@ -79,7 +80,7 @@ namespace WeaponManager {
 		ak47.kickback = 2;
 		ak47.gunModel = "ak47";
 		ak47.weaponOffSet = glm::vec3(-0.3, -0.3, 0.7);
-
+		ak47.aimingPosition = glm::vec3(0, -0.2, 0.7);
 		guns.emplace_back(ak47);
 
 	}

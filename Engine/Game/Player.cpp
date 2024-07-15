@@ -19,6 +19,8 @@ namespace Player
 
 	//states
 	bool reloading = false;
+	bool aiming = false;
+
 	double reloadingTime = 0;
 
 	void Player::Init() {
@@ -79,10 +81,17 @@ namespace Player
 		if (Input::KeyPressed('e') && Camera::GetLookingAtDistance() <= interactDistance) {
 			interactingWithName = Camera::GetLookingAtName();
 		}
-		if (Input::KeyPressed('r') && !reloading) {
+		if (Input::KeyPressed('r') && !reloading && !aiming) {
 			reloading = true;
 			reloadingTime = glfwGetTime();
 		}
+
+		if (Input::RightMouseDown() && !reloading) {
+			aiming = true;
+		}
+		else 
+			aiming = false;
+		
 		
 		if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 		{
@@ -90,7 +99,6 @@ namespace Player
 			WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
 			WeaponManager::GetGunByName(gunName)->down = 1;
 		}
-		
 		//get ray details
 		if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 			if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
@@ -135,7 +143,7 @@ namespace Player
 		AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
 		AssetManager::GetGameObject("player")->setPosition(rb->GetPostion());
 
-		WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading);
+		WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
 
 	}
 	glm::vec3 Player::getPosition() {

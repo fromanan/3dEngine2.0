@@ -1,6 +1,6 @@
 # OpenGL Engine 2.0
 
-### 3D Engine 2.0 2024/July/14
+### 3D Engine 2.0 2024/July/15
 Lots of changes this week, Rendering pipe line had an upgrade with allowing textures to now having a normal map for increased graphics. Guns have been implemented with an ak47 and a pistol, pickup able weapons have also been added. Doors were also added and a system 
 for scripts to be able to see what the player is interacting with was also added. A very basic animation system has also been added. 
 

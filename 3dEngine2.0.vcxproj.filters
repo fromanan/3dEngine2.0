@@ -127,6 +127,8 @@
     <None Include="Assets\Shaders\SkyBoxShader.vert" />
     <None Include="Assets\Shaders\SkyBoxShader.frag" />
     <None Include="Assets\Saves\mainScene.json" />
+    <None Include="Assets\Shaders\ShadowShader.vert" />
+    <None Include="Assets\Shaders\ShadowShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\Pictures\Screenshots\Screenshot (6).png">

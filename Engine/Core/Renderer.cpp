@@ -232,7 +232,14 @@ namespace Renderer {
 	GLuint ModelMatrixID;
 	GLuint ModelView3x3MatrixID;
 
+	GLuint FramebufferName = 0;
+	GLuint depthTexture;
+
+
+
 	unsigned int quadVAO;
+	unsigned int VBO;
+
 
 
 
@@ -275,11 +282,8 @@ namespace Renderer {
 		LoadShader("Assets/Shaders/shaderSprite.vert", "Assets/Shaders/shaderSprite.frag", "sprite");
 		std::cout << "Loaded sprite shader at: " << GetProgramID("sprite") << std::endl;
 
-		
-
 		UseProgram(GetProgramID("sprite"));
 		// configure VAO/VBO
-		unsigned int VBO;
 		float vertices[] = {
 			// pos      // tex
 			0.0f, 1.0f, 0.0f, 1.0f,
@@ -296,16 +300,10 @@ namespace Renderer {
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
 		glBindVertexArray(Renderer::quadVAO);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
+
 
 		UseProgram(GetProgramID(name));
-
-
 
 		return 0;
 	}
@@ -340,6 +338,10 @@ namespace Renderer {
 	void Renderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color) {
 		UseProgram(GetProgramID("sprite"));
 
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glVertexAttribPointer(VBO, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(position, 0.0f));
 
@@ -365,7 +367,8 @@ namespace Renderer {
 		glBindVertexArray(0);
 	}
 
-	void RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox) {
+
+	void Renderer::RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox) {
 		glDepthMask(GL_FALSE);
 		UseProgram(GetProgramID("skybox"));
 		GLuint projectionid = glGetUniformLocation(GetProgramID("skybox"), "projection");
