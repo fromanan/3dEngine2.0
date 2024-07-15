@@ -232,6 +232,9 @@ namespace Renderer {
 	GLuint ModelMatrixID;
 	GLuint ModelView3x3MatrixID;
 
+	unsigned int quadVAO;
+
+
 
 	GLuint Renderer::GetProgramID(const char* name) {
 		return shaderProgramIds[name];
@@ -260,8 +263,6 @@ namespace Renderer {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
-
 		MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MVP");
 		ViewMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "V");
 		ModelMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "M");
@@ -271,6 +272,39 @@ namespace Renderer {
 		//skybox
 		LoadShader("Assets/Shaders/SkyBoxShader.vert", "Assets/Shaders/SkyBoxShader.frag", "skybox");
 		std::cout << "Loaded skybox shader at: " << GetProgramID("skybox") << std::endl;
+		LoadShader("Assets/Shaders/shaderSprite.vert", "Assets/Shaders/shaderSprite.frag", "sprite");
+		std::cout << "Loaded sprite shader at: " << GetProgramID("sprite") << std::endl;
+
+		
+
+		UseProgram(GetProgramID("sprite"));
+		// configure VAO/VBO
+		unsigned int VBO;
+		float vertices[] = {
+			// pos      // tex
+			0.0f, 1.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+
+			0.0f, 1.0f, 0.0f, 1.0f,
+			1.0f, 1.0f, 1.0f, 1.0f,
+			1.0f, 0.0f, 1.0f, 0.0f
+		};
+
+		glGenVertexArrays(1, &Renderer::quadVAO);
+		glGenBuffers(1, &VBO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glBindVertexArray(Renderer::quadVAO);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		UseProgram(GetProgramID(name));
+
 
 
 		return 0;
@@ -302,6 +336,35 @@ namespace Renderer {
 		Renderer::UseProgram(Text2D::GetProgramID());
 		Text2D::printText2D(text, x, y, size);
 	}
+
+	void Renderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color) {
+		UseProgram(GetProgramID("sprite"));
+
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(position, 0.0f));
+
+		model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+		model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+
+		model = glm::scale(model, glm::vec3(size, 1.0f));
+
+		setVec3(glGetUniformLocation(GetProgramID("sprite"), "spriteColor"),color);
+		setMat4(glGetUniformLocation(GetProgramID("sprite"), "model"),model);
+		
+		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
+
+		GLuint TextureID = glGetUniformLocation(GetProgramID("sprite"), "image");
+
+		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+		glUniform1i(TextureID, texture->GetTextureNumber());
+		
+
+		glBindVertexArray(Renderer::quadVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+	}
+
 	void RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox) {
 		glDepthMask(GL_FALSE);
 		UseProgram(GetProgramID("skybox"));

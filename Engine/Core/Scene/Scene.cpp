@@ -14,6 +14,8 @@ void Scene::Load() {
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
+	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
+
 
 
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
@@ -94,7 +96,6 @@ void Scene::RenderObjects() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Renderer::SetLightPos(lightPos);
-
 
 	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
 

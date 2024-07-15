@@ -33,6 +33,8 @@ struct Gun {
 	void ReloadingAnimation(float deltaTime);
 	void Update(float deltaTime, glm::vec3 position);
 	void Shoot();
+
+	//startingPos
 };
 
 namespace WeaponManager {

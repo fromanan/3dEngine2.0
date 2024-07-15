@@ -42,6 +42,7 @@ namespace WeaponManager {
 
 
 		Gun pistol;
+		
 		pistol.name = "pistol";
 		pistol.ammo = 18;
 		pistol.reloadtime = 1.5;
