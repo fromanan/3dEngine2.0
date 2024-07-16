@@ -65,9 +65,10 @@ void Scene::Load() {
 	Player::setPosition(glm::vec3(3, 5, 0));
 
 	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
-	AudioManager::AddSound("Assets/Audio/test1.wav", "babye", glm::vec3(6, 1, 6), 10);
-	AudioManager::PlaySound("babye");
-	AudioManager::PlaySound("babye", 1);
+
+	//AudioManager::AddSound("Assets/Audio/test1.wav", "babye", glm::vec3(6, 1, 6), 10);
+	//AudioManager::PlaySound("babye");
+	//AudioManager::PlaySound("babye", 1);
 
 
 }

@@ -4,6 +4,7 @@
 #include "Engine/Core/AssetManager.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Game/Player.h"
+#include "Engine/Audio/Audio.h"
 
 class Door
 {
@@ -16,7 +17,7 @@ private:
 	std::string name;
 	bool opened;
 	bool opening;
-
+	glm::vec3 door_position;
 	float rotaion = 0.0f;
 	float openingSpeed = 0.05f;
 };

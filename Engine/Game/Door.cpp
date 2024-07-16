@@ -12,10 +12,18 @@ Door::Door(std::string Name, const char* doorPath, const char* framePath, Textur
 
 	opened = false;
 	opening = false;
+
+	door_position = position;
 }
 void Door::Interact() {
 	if (Player::GetInteractingWithName() == name)
+	{
 		opening = true;
+		if(opened)
+			AudioManager::PlaySound("door_close", door_position);
+		else
+			AudioManager::PlaySound("door_open", door_position);
+	}
 }
 void Door::Update(float deltaTime) {
 	if (opening) {

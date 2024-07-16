@@ -1,7 +1,7 @@
 #include "Audio.h"
 
 
-Sound::Sound(const char* Path, std::string Name, glm::vec3 Position, float Distance) {
+Sound::Sound(const char* Path, std::string Name, glm::vec3 Position, float Distance, float Volume) {
 	position.x = Position.x;
 	position.y = Position.y;
 	position.z = Position.z;
@@ -15,12 +15,16 @@ Sound::Sound(const char* Path, std::string Name, glm::vec3 Position, float Dista
 	if (result != FMOD_OK) {
 		std::cerr << result << " " << FMOD_ErrorString(result) << std::endl;
 	}
-
-
-
+	volume = Volume;
 }
 FMOD::Sound* Sound::GetSound() {
 	return sound;
+}
+void Sound::SetVolume(float Volume) {
+	volume = Volume;
+}
+float Sound::GetVolume() {
+	return volume;
 }
 FMOD_VECTOR* Sound::GetPositionFmod() {
 	return &position;
@@ -39,7 +43,7 @@ std::string Sound::GetName() {
 namespace AudioManager {
 	std::vector<Sound> sounds;
 	std::vector<FMOD::Channel*> channels;
-	int channelSize = 20;
+	int channelSize = 50;
 
 	const float DISTANCEFACTOR = 1.0f;
 
@@ -82,11 +86,13 @@ namespace AudioManager {
 		if (!succeededOrWarn("FMOD: Failed to create system object", result))
 			return;
 
-		FMOD_VECTOR forward = { 0.0f, 0.0f, 1.0f };
-		FMOD_VECTOR up = { 0.0f, 1.0f, 0.0f };
+		AudioManager::AddSound("Assets/Audio/door_close.wav", "door_close", glm::vec3(0, 0, 0), 10, 0.5);
+		AudioManager::AddSound("Assets/Audio/door_open.wav", "door_open", glm::vec3(0, 0, 0), 10, 0.5);
+		AudioManager::AddSound("Assets/Audio/player_step_1.wav", "foot_step1", glm::vec3(0, 0, 0), 10, 0.1);
+		AudioManager::AddSound("Assets/Audio/player_step_2.wav", "foot_step2", glm::vec3(0, 0, 0), 10, 0.1);
+		AudioManager::AddSound("Assets/Audio/player_step_3.wav", "foot_step3", glm::vec3(0, 0, 0), 10, 0.1);
+		AudioManager::AddSound("Assets/Audio/player_step_4.wav", "foot_step4", glm::vec3(0, 0, 0), 10, 0.1);
 
-
-		
 	}
 
 	void AudioManager::CleanUp() {
@@ -97,8 +103,8 @@ namespace AudioManager {
 		return system;
 	}
 
-	void AudioManager::AddSound(const char* Path, std::string Name, glm::vec3 Position, float distance) {
-		sounds.push_back(Sound(Path,Name,Position,distance));
+	void AudioManager::AddSound(const char* Path, std::string Name, glm::vec3 Position, float distance, float Volume) {
+		sounds.push_back(Sound(Path,Name,Position,distance,Volume));
 	}
 	Sound* AudioManager::GetSound(std::string name) {
 		for (int i = 0; i < sounds.size(); i++) {
@@ -127,31 +133,65 @@ namespace AudioManager {
 	void AudioManager::Update() {
 		system->update();
 	}
-
-	void AudioManager::PlaySound(std::string sound) {
+	bool AudioManager::IsChannelPlaying(int channel) {
+		if (channel < 0 || channel > channelSize)
+			return false;
 		bool isPlaying = false;
-		std::cout << "Trying to Play " << sound << std::endl;
+		channels[channel]->isPlaying(&isPlaying);
+		return isPlaying;
 
+	}
+
+	int AudioManager::PlaySound(std::string sound) {
+		bool isPlaying = false;
 		for (int i = 0; i < channelSize; i++) {
 			channels[i]->isPlaying(&isPlaying);
 			if (!isPlaying) {
-				std::cout << "Playing " << sound << std::endl;
+				channels[i]->setVolume(GetSound(sound)->GetVolume());
 				result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[i]);
 				result = channels[i]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
 				result = channels[i]->setPaused(false);
 				if (!succeededOrWarn("FMOD: Failed to create system object", result))
-					return;
-				break;
+					return - 1;
+
+				return i;
 			}
 		}		
 	}
-	void AudioManager::PlaySound(std::string sound, int channel) {
-		std::cout << "Playing " << sound << std::endl;
+	int PlaySound(std::string sound, glm::vec3 Position) {
+		bool isPlaying = false;
+		for (int i = 0; i < channelSize; i++) {
+			channels[i]->isPlaying(&isPlaying);
+			if (!isPlaying) {
+				result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[i]);
+				if (!succeededOrWarn("Error1", result))
+					return -1;
+				GetSound(sound)->SetPosition(Position);
+
+				result = channels[i]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
+				if (!succeededOrWarn("Error2", result))
+					return -1;
+				result = channels[i]->setPaused(false);
+				if (!succeededOrWarn("Error3", result))
+					return -1;
+				channels[i]->setVolume(GetSound(sound)->GetVolume());
+				if (!succeededOrWarn("Error4", result))
+					return -1;
+
+
+				return i;
+			}
+		}
+	}
+
+	int AudioManager::PlaySound(std::string sound, int channel) {
+		channels[channel]->setVolume(GetSound(sound)->GetVolume());
 		result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[channel]);
 		result = channels[channel]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
 		result = channels[channel]->setPaused(false);
-		if (!succeededOrWarn("FMOD: Failed to create system object", result))
-			return;
+		if (!succeededOrWarn("Error", result))
+			return -1;
+		return channel;
 	}
 
 	void AudioManager::PauseSound(std::string sound) {

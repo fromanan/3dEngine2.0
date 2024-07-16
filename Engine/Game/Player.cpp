@@ -23,6 +23,8 @@ namespace Player
 	bool aiming = false;
 
 	double reloadingTime = 0;
+	double footstepTime = 0;
+	double footstep_interval = 0.5;
 
 	void Player::Init() {
 		srand(time(0));
@@ -143,8 +145,13 @@ namespace Player
 		AssetManager::GetGameObject("player")->SetRotationX(-verticalAngle);
 		AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
 		AssetManager::GetGameObject("player")->setPosition(rb->GetPostion());
-
 		WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
+
+		if ((Input::KeyDown('w') || Input::KeyDown('a') || Input::KeyDown('s') || Input::KeyDown('d')) && footstepTime + footstep_interval < glfwGetTime() ) {
+			int randomnum = (rand() % 4) + 1;
+			AudioManager::PlaySound("foot_step" + std::to_string(randomnum),rb->GetPostion());
+			footstepTime = glfwGetTime();
+		}
 
 	}
 	glm::vec3 Player::getPosition() {
