@@ -25,6 +25,7 @@ struct Gun {
 	float kickback;
 	double lastTimeShot = glfwGetTime();
 	std::string gunModel;
+	std::string gunsShotName;
 	GunType type;
 
 	glm::vec3 weaponOffSet = glm::vec3(-0.3, -0.25, 0.5);

@@ -32,8 +32,16 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 		AssetManager::GetGameObject(gunModel)->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
 		AssetManager::GetGameObject(gunModel)->SetRotationX(0);
 	}
+	AudioManager::GetSound(gunsShotName + std::to_string(1))->SetPosition(Player::getPosition());
+	AudioManager::GetSound(gunsShotName + std::to_string(2))->SetPosition(Player::getPosition());
+	AudioManager::GetSound(gunsShotName + std::to_string(3))->SetPosition(Player::getPosition());
+	AudioManager::GetSound(gunsShotName + std::to_string(4))->SetPosition(Player::getPosition());
+
 }
 void Gun::Shoot() {
+	int randomnum = (rand() % 4) + 1;
+	std::cout << randomnum << std::endl;
+	AudioManager::PlaySound(gunsShotName + std::to_string(randomnum));
 	kickbackOffset += kickback;
 }
 
@@ -41,8 +49,8 @@ namespace WeaponManager {
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {
-		AssetManager::AddGameObject("pistol", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false);
-		AssetManager::GetGameObject("pistol")->SetParentName("player");
+		AssetManager::AddGameObject("glock", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false);
+		AssetManager::GetGameObject("glock")->SetParentName("player");
 
 		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
 		AssetManager::AddGameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false);
@@ -50,21 +58,33 @@ namespace WeaponManager {
 		AssetManager::GetGameObject("ak47")->SetParentName("player");
 
 
+		AudioManager::AddSound("Assets/Audio/ak47_fire1.wav", "ak47_fire1", AssetManager::GetGameObject("ak47")->getPosition(), 5,0.1);
+		AudioManager::AddSound("Assets/Audio/ak47_fire2.wav", "ak47_fire2", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.1);
+		AudioManager::AddSound("Assets/Audio/ak47_fire3.wav", "ak47_fire3", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.1);
+		AudioManager::AddSound("Assets/Audio/ak47_fire4.wav", "ak47_fire4", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.1);
 
-		Gun pistol;
+		AudioManager::AddSound("Assets/Audio/glock_fire1.wav", "glock_fire1", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.1);
+		AudioManager::AddSound("Assets/Audio/glock_fire2.wav", "glock_fire2", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.1);
+		AudioManager::AddSound("Assets/Audio/glock_fire3.wav", "glock_fire3", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.1);
+		AudioManager::AddSound("Assets/Audio/glock_fire4.wav", "glock_fire4", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.1);
+
+
+
+		Gun glock;
 		
-		pistol.name = "pistol";
-		pistol.ammo = 18;
-		pistol.reloadtime = 1.5;
-		pistol.firerate = 250;
-		pistol.currentammo = 18;
-		pistol.damage = 10;
-		pistol.type = Semi;
-		pistol.recoil = 0.01;
-		pistol.recoilY = 100;
-		pistol.kickback = 3;
-		pistol.gunModel = "pistol";  
-		guns.emplace_back(pistol);
+		glock.name = "glock";
+		glock.ammo = 18;
+		glock.reloadtime = 1.5;
+		glock.firerate = 250;
+		glock.currentammo = 18;
+		glock.damage = 10;
+		glock.type = Semi;
+		glock.recoil = 0.01;
+		glock.recoilY = 100;
+		glock.kickback = 3;
+		glock.gunModel = "glock"; 
+		glock.gunsShotName = "glock_fire";
+		guns.emplace_back(glock);
 
 		Gun ak47;
 		ak47.name = "ak47";
@@ -78,6 +98,7 @@ namespace WeaponManager {
 		ak47.recoilY = 175;
 		ak47.kickback = 2;
 		ak47.gunModel = "ak47";
+		ak47.gunsShotName = "ak47_fire";
 		ak47.weaponOffSet = glm::vec3(-0.3, -0.3, 0.7);
 		ak47.aimingPosition = glm::vec3(0, -0.2, 0.7);
 		guns.emplace_back(ak47);

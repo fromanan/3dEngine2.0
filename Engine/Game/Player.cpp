@@ -36,7 +36,7 @@ namespace Player
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
 
-		gunName = "pistol";
+		gunName = "glock";
 	}
 
 	void Player::Update(float deltaTime) {
@@ -148,8 +148,7 @@ namespace Player
 		WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
 
 		if ((Input::KeyDown('w') || Input::KeyDown('a') || Input::KeyDown('s') || Input::KeyDown('d')) && footstepTime + footstep_interval < glfwGetTime() ) {
-			int randomnum = (rand() % 4) + 1;
-			AudioManager::PlaySound("foot_step" + std::to_string(randomnum),rb->GetPostion());
+			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1),rb->GetPostion());
 			footstepTime = glfwGetTime();
 		}
 

@@ -134,6 +134,8 @@ void Cube::SetStatic(bool Static) {
 	this->Static = Static;
 }
 bool Cube::GetStatic() {
+	if (this == nullptr)
+		return false;
 	return Static;
 }
 float Cube::getDepth() {

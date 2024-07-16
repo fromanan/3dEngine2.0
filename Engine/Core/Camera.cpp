@@ -16,7 +16,7 @@ namespace Camera {
 	//ray
 	std::string lookingAtName = "Nothing";
 	glm::vec3 normalFace= glm::vec3(0, 0, 0);
-	Cube* LookingAtcollider;
+	Cube* LookingAtcollider = nullptr;
 	float distance = 9999;
 	Ray ray;
 	

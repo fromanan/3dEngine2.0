@@ -46,6 +46,8 @@ namespace AudioManager {
 
 	int PlaySound(std::string sound);
 	int PlaySound(std::string sound,glm::vec3 Position);
+	int PlaySound(std::string sound, glm::vec3 Position, int channel);
+
 	int PlaySound(std::string sound, int channel);
 
 	bool IsChannelPlaying(int channel);

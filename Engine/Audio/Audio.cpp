@@ -85,17 +85,15 @@ namespace AudioManager {
 		result = system->createChannelGroup("channels", &channelGroup);
 		if (!succeededOrWarn("FMOD: Failed to create system object", result))
 			return;
-
+		
 		//thanks to livinamuk for a couple of these sounds
-		AudioManager::AddSound("Assets/Audio/door_close.wav", "door_close", glm::vec3(0, 0, 0), 10, 0.5);
-		AudioManager::AddSound("Assets/Audio/door_open.wav", "door_open", glm::vec3(0, 0, 0), 10, 0.5);
+		AudioManager::AddSound("Assets/Audio/door_close.wav", "door_close", glm::vec3(0, 0, 0), 10, 0.8);
+		AudioManager::AddSound("Assets/Audio/door_open.wav", "door_open", glm::vec3(0, 0, 0), 10, 0.6);
 		AudioManager::AddSound("Assets/Audio/player_step_1.wav", "foot_step1", glm::vec3(0, 0, 0), 10, 0.1);
 		AudioManager::AddSound("Assets/Audio/player_step_2.wav", "foot_step2", glm::vec3(0, 0, 0), 10, 0.1);
 		AudioManager::AddSound("Assets/Audio/player_step_3.wav", "foot_step3", glm::vec3(0, 0, 0), 10, 0.1);
 		AudioManager::AddSound("Assets/Audio/player_step_4.wav", "foot_step4", glm::vec3(0, 0, 0), 10, 0.1);
-		AudioManager::AddSound("Assets/Audio/item_pick_up.wav", "item_pickup", glm::vec3(0, 0, 0), 10, 0.5);
-
-
+		AudioManager::AddSound("Assets/Audio/item_pick_up.wav", "item_pickup", glm::vec3(0, 0, 0), 10, 0.6);
 	}
 
 	void AudioManager::CleanUp() {
@@ -169,9 +167,15 @@ namespace AudioManager {
 				result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[i]);
 				if (!succeededOrWarn("Error1", result))
 					return -1;
-				GetSound(sound)->SetPosition(Position);
+				//GetSound(sound)->SetPosition(Position);
 
-				result = channels[i]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
+				FMOD_VECTOR position;
+				position.x = Position.x;
+				position.y = Position.y;
+				position.z = Position.z;
+				
+
+				result = channels[i]->set3DAttributes(&position, &vel);
 				if (!succeededOrWarn("Error2", result))
 					return -1;
 				result = channels[i]->setPaused(false);
@@ -186,6 +190,21 @@ namespace AudioManager {
 			}
 		}
 	}
+	int PlaySound(std::string sound, glm::vec3 Position, int channel) {
+		FMOD_VECTOR position;
+		position.x = Position.x;
+		position.y = Position.y;
+		position.z = Position.z;
+
+		channels[channel]->setVolume(GetSound(sound)->GetVolume());
+		result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[channel]);
+		result = channels[channel]->set3DAttributes(&position, &vel);
+		result = channels[channel]->setPaused(false);
+		if (!succeededOrWarn("Error", result))
+			return -1;
+		return channel;
+	}
+
 
 	int AudioManager::PlaySound(std::string sound, int channel) {
 		channels[channel]->setVolume(GetSound(sound)->GetVolume());
