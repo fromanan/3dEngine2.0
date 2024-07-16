@@ -1,8 +1,8 @@
 # OpenGL Engine 2.0
 
-### 3D Engine 2.0 2024/July/15
-Lots of changes this week, Rendering pipe line had an upgrade with allowing textures to now having a normal map for increased graphics. Guns have been implemented with an ak47 and a pistol, pickup able weapons have also been added. Doors were also added and a system 
-for scripts to be able to see what the player is interacting with was also added. A very basic animation system has also been added. 
+### 3D Engine 2.0 2024/July/16
+Lots of changes this week, Rendering pipe line had an upgrade with allowing textures to now having a normal map for increased graphics. An Audio system has also been added using FMOD allowing .wav files to be loaded and played with full 3D sound. Guns have been implemented with an ak47 and a pistol, pickup able weapons have also been added. Doors were also added and a system 
+for scripts to be able to see what the player is interacting with was also added. A very basic animation system has also been added using keyframes that record transformations of an object.
 
 ![screenshot](/github/screenshots/gunsnmore.png)
 

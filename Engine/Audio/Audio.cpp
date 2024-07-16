@@ -86,12 +86,15 @@ namespace AudioManager {
 		if (!succeededOrWarn("FMOD: Failed to create system object", result))
 			return;
 
+		//thanks to livinamuk for a couple of these sounds
 		AudioManager::AddSound("Assets/Audio/door_close.wav", "door_close", glm::vec3(0, 0, 0), 10, 0.5);
 		AudioManager::AddSound("Assets/Audio/door_open.wav", "door_open", glm::vec3(0, 0, 0), 10, 0.5);
 		AudioManager::AddSound("Assets/Audio/player_step_1.wav", "foot_step1", glm::vec3(0, 0, 0), 10, 0.1);
 		AudioManager::AddSound("Assets/Audio/player_step_2.wav", "foot_step2", glm::vec3(0, 0, 0), 10, 0.1);
 		AudioManager::AddSound("Assets/Audio/player_step_3.wav", "foot_step3", glm::vec3(0, 0, 0), 10, 0.1);
 		AudioManager::AddSound("Assets/Audio/player_step_4.wav", "foot_step4", glm::vec3(0, 0, 0), 10, 0.1);
+		AudioManager::AddSound("Assets/Audio/item_pick_up.wav", "item_pickup", glm::vec3(0, 0, 0), 10, 0.5);
+
 
 	}
 

@@ -108,6 +108,9 @@ bool GunPickUp::Interact() {
 		AssetManager::RemoveGameObject(objectName);
 		PhysicsManager::RemoveCube(objectName);
 		WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
+
+		AudioManager::PlaySound("item_pickup", Player::getPosition());
+
 		return true;
 	}
 	return false;
