@@ -3,6 +3,7 @@
 
 namespace Player
 {
+	glm::vec3 forward;
 	float horizontalAngle = 3.14f;
 	float verticalAngle = 0.0f;
 	float initialFoV = 45.0f;
@@ -51,7 +52,7 @@ namespace Player
 		{
 			verticalAngle = -maxAngle;
 		}
-		glm::vec3 forward = glm::vec3(
+		forward = glm::vec3(
 			sin(horizontalAngle + 3.14f),
 			0,
 			cos(horizontalAngle + 3.14f)
@@ -149,6 +150,9 @@ namespace Player
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();
 	}
+	glm::vec3 Player::getForward() {
+		return forward;
+	}
 	void Player::setPosition(glm::vec3 pos) {
 		rb->SetPostion(pos);
 		collider->setPosition(pos);
@@ -166,9 +170,7 @@ namespace Player
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
 		gunName = weaponName;
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(true);
-
 		return true;
-
 	}
 
 }

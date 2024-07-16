@@ -1,9 +1,6 @@
 #pragma once
 #include "Scene.h"
 
-
-
-
 Scene::Scene() {
 	
 }
@@ -17,8 +14,6 @@ void Scene::Load() {
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
-
-
 
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	WeaponManager::Init();
@@ -68,7 +63,12 @@ void Scene::Load() {
 
 	Player::Init();
 	Player::setPosition(glm::vec3(3, 5, 0));
+
 	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
+	AudioManager::AddSound("Assets/Audio/test1.wav", "babye", glm::vec3(6, 1, 6), 10);
+	AudioManager::PlaySound("babye");
+	AudioManager::PlaySound("babye", 1);
+
 
 }
 
@@ -83,6 +83,9 @@ void Scene::Update(float deltaTime) {
 		if (gunPickUps[gun].Interact())
 			gunPickUps.erase(gunPickUps.begin() + gun);
 	}
+
+	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());
+	AudioManager::Update();
 }
 
 void Scene::RenderObjects() {

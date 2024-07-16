@@ -21,7 +21,6 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 		if (currentXRotation > 1.6 / 2)
 			down = -1;			
 		float incerment = (1.6 / reloadtime) * down * deltaTime;
-		std::cout << currentXRotation << std::endl;
 		AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + incerment);
 		AssetManager::GetGameObject(gunModel)->addPosition(glm::vec3(0,-incerment/3,0));
 	}

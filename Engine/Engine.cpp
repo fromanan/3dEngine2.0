@@ -10,7 +10,7 @@ namespace Engine {
 		Input::Init();
 		Input::HideCursor();
 		Text2D::initText2D("Assets/Fonts/Holstein.DDS");
-
+		AudioManager::Init();
 
 		Scene basicScene = Scene();
 		SceneManager sceneManager = SceneManager();
@@ -47,6 +47,7 @@ namespace Engine {
 			Input::CenterMouse();
 			PhysicsManager::Update(dt);
 			sceneManager.Update(dt);
+			AudioManager::Update();
 			//AnimationManager::Update(dt);
 			Camera::Update(dt);
 			//Rendering

@@ -112,14 +112,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\Assimp\include;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine\Core;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glew-2.1.0\include;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glfw-3.3.8.bin.WIN64\include;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;C:\Program Files\Assimp\include;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine\Core;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glew-2.1.0\include;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glfw-3.3.8.bin.WIN64\include;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x64;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine\Loaders;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;glu32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\x64;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x64;C:\Program Files\Assimp\lib\x64;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine\Loaders;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;glu32.lib;assimp-vc143-mt.lib;fmodstudioL_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,10 +139,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x64;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\Engine\Loaders;C:\Users\kokok\OneDrive\Desktop\Code\Home\C++\3dEngine2.0\;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\kokok\OneDrive\Desktop\Code\Libaries\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;glu32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;glu32.lib;assimp-vc143-mt.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Core\Animation.cpp" />
     <ClCompile Include="Engine\Game\Door.cpp" />
     <ClCompile Include="Engine\Core\Camera.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="Engine\Game\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Core\Animation.h" />
     <ClInclude Include="Engine\Game\Door.h" />
     <ClInclude Include="Engine\Core\Camera.h" />
