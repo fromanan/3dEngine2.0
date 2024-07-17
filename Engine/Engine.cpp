@@ -13,10 +13,9 @@ namespace Engine {
 		AudioManager::Init();
 
 		Scene basicScene = Scene();
-		SceneManager sceneManager = SceneManager();
-
-		sceneManager.CreateScene(basicScene);
-		sceneManager.LoadScene(1);
+		SceneManager::Init();
+		SceneManager::CreateScene(basicScene);
+		SceneManager::LoadScene(1);
 
 
 		// For speed computation
@@ -46,13 +45,13 @@ namespace Engine {
 			Input::Update();
 			Input::CenterMouse();
 			PhysicsManager::Update(dt);
-			sceneManager.Update(dt);
+			SceneManager::Update(dt);
 			AudioManager::Update();
 			//AnimationManager::Update(dt);
 			Camera::Update(dt);
 			//Rendering
 			Renderer::ClearScreen();
-			sceneManager.Render();
+			SceneManager::Render();
 			std::ostringstream oss;
 			oss << "FPS: " << FPS;
 			Renderer::RenderText(oss.str().c_str(), 660, 585, 15);

@@ -299,7 +299,7 @@ void Cube::Regenerate(GameObject* gameobject) {
 RigidBody::RigidBody() {
 
 }
-RigidBody::RigidBody(glm::vec3 position, const char* name) {
+RigidBody::RigidBody(glm::vec3 position, std::string name) {
 	this->position = position;
 	this->name = name;
 }
@@ -309,7 +309,7 @@ glm::vec3 RigidBody::GetPostion() {
 void RigidBody::SetPostion(glm::vec3 position) {
 	this->position = position;
 }
-const char* RigidBody::GetName() {
+std::string RigidBody::GetName() {
 	return name;
 }
 void RigidBody::NewPosition(float deltaTime) {
@@ -408,7 +408,7 @@ namespace PhysicsManager {
 			rigidbodies[i].NewPosition(deltaTime);
 		}
 	}
-	RigidBody* PhysicsManager::AddRigidbody(glm::vec3 position, const char* name) {
+	RigidBody* PhysicsManager::AddRigidbody(glm::vec3 position, std::string name) {
 		rigidbodies.push_back(RigidBody(position, name));
 		return &rigidbodies[rigidbodies.size() - 1];
 	}
@@ -431,9 +431,9 @@ namespace PhysicsManager {
 				return &coliders[i];
 		}
 	}
-	RigidBody* PhysicsManager::GetRigidbody(const char* name) {
+	RigidBody* PhysicsManager::GetRigidbody(std::string name) {
 		for (int i = 0; i < rigidbodies.size(); i++) {
-			if (std::strcmp(rigidbodies[i].GetName(), name) == 0)
+			if (rigidbodies[i].GetName() == name)
 				return &rigidbodies[i];
 		}
 	}

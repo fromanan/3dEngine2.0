@@ -85,6 +85,60 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
 }
 
+GameObject::GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
+	std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents,
+	std::vector<glm::vec3> bitangents, std::vector<unsigned short> indices, std::vector<glm::vec3> indexed_vertices,
+	std::vector<glm::vec2> indexed_uvs, std::vector<glm::vec3> indexed_normals, std::vector<glm::vec3> indexed_tangents,
+	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete)
+{
+	this->name = name;
+	this->parentName = parentname;
+	this->texture = texture;
+	this->transform.position = position;
+	this->transform.rotation = rotation;
+	this->transform.scale = scale;
+	this->vertices = vertices;
+	this->uvs = uvs;
+	this->normals = normals;
+	this->tangents = tangents;
+	this->bitangents = bitangents;
+	this->indices = indices;
+	this->indexed_vertices = indexed_vertices;
+	this->indexed_uvs = indexed_uvs;
+	this->indexed_normals = indexed_normals;
+	this->indexed_tangents = indexed_tangents;
+	this->indexed_bitangents = indexed_bitangents;
+	this->canSave = canSave;
+	this->render = render;
+	this->shouldDelete = shouldDelete;
+
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_STATIC_DRAW);
+
+
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
+
+
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &elementbuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &tangentbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_tangents.size() * sizeof(glm::vec3), &indexed_tangents[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &bitangentbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
+}
+
 void GameObject::LoadModel(const char* path) {
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -120,6 +174,12 @@ void GameObject::LoadModel(const char* path) {
 	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 }
+
+
+void GameObject::Copy(std::string copyName) {
+	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete));
+}
+
 
 //Parent child transformations
 glm::mat4 GameObject::GetModelMatrix() {
@@ -316,6 +376,10 @@ bool GameObject::CanSave() {
 void GameObject::SetRender(bool render) {
 	this->render = render;
 }
+bool GameObject::ShouldRender() {
+	return render;
+}
+
 void GameObject::SetDelete(bool state) {
 	shouldDelete = state;
 }

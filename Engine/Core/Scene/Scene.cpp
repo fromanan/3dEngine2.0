@@ -44,8 +44,14 @@ void Scene::Load() {
 
 	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
+	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
+
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
+	AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
+	gunPickUps.push_back(GunPickUp("glock", "glock_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
+	AssetManager::GetGameObject("glock_pickup")->SetRender(false);
+
 
 
 	//sets renderer
@@ -103,15 +109,18 @@ void Scene::RenderObjects() {
 
 	Renderer::SetLightPos(lightPos);
 
-	for (int i = 0; i < AssetManager::GetAllGameObjects().size(); i++) {
+	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
 
 		GameObject* gameobjectRender = AssetManager::GetGameObject(i);
-		glm::mat4 ModelMatrix = AssetManager::GetGameObject(i)->GetModelMatrix();
+		if (!gameobjectRender->ShouldRender())
+			continue;
+
+		glm::mat4 ModelMatrix = gameobjectRender->GetModelMatrix();
 		glm::mat4 MVP = PV * ModelMatrix;
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
-		AssetManager::GetGameObject(i)->RenderObject(programid);
+		gameobjectRender->RenderObject(programid);
 	}
 	for (int i = 0; i < AssetManager::GetAllDecals()->size(); i++)
 	{
@@ -132,8 +141,19 @@ void Scene::RenderObjects() {
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
-	oss.str(""); oss.clear();
-	oss << WeaponManager::GetGunByName(Player::getCurrentGun())->currentammo << "/" << WeaponManager::GetGunByName(Player::getCurrentGun())->ammo;
-	Renderer::RenderText(oss.str().c_str(), 660, 0, 15);
+	if (Player::getCurrentGun() != "nothing")
+	{
+		oss.str(""); oss.clear();
+		oss << WeaponManager::GetGunByName(Player::getCurrentGun())->currentammo << "/" << WeaponManager::GetGunByName(Player::getCurrentGun())->ammo;
+		Renderer::RenderText(oss.str().c_str(), 660, 0, 15);
+	}
+	
 }
+void Scene::AddGunPickUp(GunPickUp gunpickup) {
+	gunPickUps.push_back(gunpickup);
+}
+int Scene::GetGunPickUpSize() {
+	return gunPickUps.size();
+}
+
 

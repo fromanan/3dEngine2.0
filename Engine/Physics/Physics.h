@@ -67,13 +67,13 @@ private:
 class RigidBody {
 public:
 	RigidBody();
-	RigidBody(glm::vec3 position,const char* name);
+	RigidBody(glm::vec3 position,std::string name);
 	glm::vec3 GetPostion();
 	void SetPostion(glm::vec3 position);
 	void SetColider(Cube* colider);
 	Cube* GetColider();
 
-	const char* GetName();
+	std::string GetName();
 
 	void NewPosition(float deltaTime);
 	void NewPositionY(float deltaTime);
@@ -98,7 +98,7 @@ public:
 	glm::vec3 GetForce();
 
 private:
-	const char* name = "None";
+	std::string name = "None";
 	glm::vec3 position;
 	glm::vec3 velocity;
 	Cube* colider = NULL;
@@ -108,7 +108,7 @@ private:
 
 
 namespace PhysicsManager {
-	RigidBody* AddRigidbody(glm::vec3 position, const char* name);
+	RigidBody* AddRigidbody(glm::vec3 position, std::string name);
 	Cube* AddCube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, std::string name);
 	Cube* AddCube(glm::vec3 postion, float width, float height, float depth, std::string name);
 	Cube* AddCube(GameObject* gameobject, std::string name);
@@ -116,7 +116,7 @@ namespace PhysicsManager {
 
 
 	Cube* GetColider(std::string name);
-	RigidBody* GetRigidbody(const char* name);
+	RigidBody* GetRigidbody(std::string name);
 
 
 	void Update(float deltaTime);

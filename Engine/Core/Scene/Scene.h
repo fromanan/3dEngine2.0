@@ -15,6 +15,9 @@
 #include <iostream>
 #include <vector>
 #include <ostream>
+#include "Engine/Game/Door.h"
+#include "Engine/Game/Gun.h"
+
 
 class Scene
 {
@@ -24,6 +27,9 @@ public:
 	void Load();
 	void Update(float dt);
 	void RenderObjects();
+
+	void AddGunPickUp(GunPickUp gunpickup);
+	int GetGunPickUpSize();
 
 private:
 	//this is the sun

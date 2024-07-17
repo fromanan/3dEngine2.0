@@ -1,5 +1,4 @@
 #include "Gun.h"
-#include "Engine/Core/AssetManager.h"
 
 
 
@@ -48,7 +47,9 @@ namespace WeaponManager {
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {
+
 		AssetManager::AddGameObject("glock", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false);
+		AssetManager::GetGameObject("glock")->SetRender(false);
 		AssetManager::GetGameObject("glock")->SetParentName("player");
 
 		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
@@ -72,7 +73,6 @@ namespace WeaponManager {
 
 
 		Gun glock;
-		
 		glock.name = "glock";
 		glock.ammo = 18;
 		glock.reloadtime = 1.5;
@@ -125,12 +125,20 @@ GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* ob
 
 	
 }
+GunPickUp::GunPickUp(std::string GunName, GameObject* gameobject) {
+	gunName = GunName;
+	objectName = gameobject->GetName();
+	AssetManager::GetGameObject(objectName)->SetRotationZ(1.5f);
+	PhysicsManager::AddCube(gameobject->getPosition() + glm::vec3(0,0,0.5), 1, 0.3, 3, objectName);
+	PhysicsManager::GetColider(objectName)->SetStatic(false);
+	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
+	PhysicsManager::AddRigidbody(gameobject->getPosition() + glm::vec3(0, 0, 0.5), objectName);
+}
 bool GunPickUp::Interact() {
 	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() != gunName && Player::SelectWeapon(gunName)) {
 		AssetManager::RemoveGameObject(objectName);
 		PhysicsManager::RemoveCube(objectName);
 		WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
-
 		AudioManager::PlaySound("item_pickup", Player::getPosition());
 
 		return true;

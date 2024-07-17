@@ -184,7 +184,9 @@ namespace AssetManager
 	std::vector<GameObject> AssetManager::GetAllGameObjects() {
 		return GameObjects;
 	}
-
+	int AssetManager::GetGameObjectsSize() {
+		return GameObjects.size();
+	}
 	Texture* AssetManager::GetTexture(std::string name) {
 		for (int i = 0; i < Textures.size(); i++) {
 			if (Textures[i].GetName() == name)
