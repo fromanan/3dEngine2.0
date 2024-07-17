@@ -127,6 +127,8 @@ std::string Cube::GetName() {
 }
 void Cube::setPosition(glm::vec3 position) {
 	this->position = position;
+	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
+	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 }
 glm::vec3 Cube::getPosition() {
 	return position;
@@ -331,6 +333,9 @@ std::string RigidBody::GetName() {
 }
 void RigidBody::NewPosition(float deltaTime) {
 	position += velocity * deltaTime;
+	if(colider != "None")
+		PhysicsManager::GetColider(colider)->setPosition(position);
+
 }
 void RigidBody::NewPositionY(float deltaTime) {
 	position.y += velocity.y * deltaTime;
@@ -368,10 +373,10 @@ void RigidBody::RemoveForceY() {
 void RigidBody::RemoveForceZ() {
 	velocity.z = 0;
 }
-void RigidBody::SetColider(Cube* colider) {
+void RigidBody::SetColider(std::string colider) {
 	this->colider = colider;
 }
-Cube* RigidBody::GetColider() {
+std::string RigidBody::GetColider() {
 	return colider;
 }
 glm::vec3 RigidBody::GetForce() {
@@ -397,8 +402,10 @@ namespace PhysicsManager {
 			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x / (1 + (deltaTime * friction)));
 			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z / (1 + (deltaTime * friction)));
 			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity * deltaTime);
+
+			Cube* rb_collider = GetColider(rigidbodies[i].GetColider());
 			//Do colider Calculation
-			if (rigidbodies[i].GetColider() != NULL) {
+			if (rb_collider != NULL) {
 				for (int col = 0; col < coliders.size(); col++) {
 					if (coliders[i].ShouldDelete()) {
 						coliders.erase(coliders.begin() + col);
@@ -407,19 +414,19 @@ namespace PhysicsManager {
 
 					if (!UpdatedCamera)
 						Camera::CheckIntersectingWithRay(&coliders[col]);
-					if (rigidbodies[i].GetColider()->GetName() == coliders[col].GetName() || coliders[col].GetIsTrigger())
+					if (rb_collider->GetName() == coliders[col].GetName() || coliders[col].GetIsTrigger())
 						continue;
-					if (rigidbodies[i].GetForce().x < 0 && rigidbodies[i].GetColider()->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
+					if (rigidbodies[i].GetForce().x < 0 && rb_collider->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
 						rigidbodies[i].RemoveForceX();
-					if (rigidbodies[i].GetForce().x > 0 && rigidbodies[i].GetColider()->TouchingRight(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
+					if (rigidbodies[i].GetForce().x > 0 && rb_collider->TouchingRight(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
 						rigidbodies[i].RemoveForceX();
-					if (rigidbodies[i].GetForce().z > 0 && rigidbodies[i].GetColider()->TouchingBack(&coliders[col], rigidbodies[i].GetForce().z * deltaTime))
+					if (rigidbodies[i].GetForce().z > 0 && rb_collider->TouchingBack(&coliders[col], rigidbodies[i].GetForce().z * deltaTime))
 						rigidbodies[i].RemoveForceZ();
-					if (rigidbodies[i].GetForce().z < 0 && rigidbodies[i].GetColider()->TouchingFront(&coliders[col], rigidbodies[i].GetForce().z * deltaTime))
+					if (rigidbodies[i].GetForce().z < 0 && rb_collider->TouchingFront(&coliders[col], rigidbodies[i].GetForce().z * deltaTime))
 						rigidbodies[i].RemoveForceZ();
-					if (rigidbodies[i].GetForce().y > 0 && rigidbodies[i].GetColider()->TouchingTop(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
+					if (rigidbodies[i].GetForce().y > 0 && rb_collider->TouchingTop(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
 						rigidbodies[i].RemoveForceY();
-					if (rigidbodies[i].GetForce().y < 0 && rigidbodies[i].GetColider()->TouchingBottom(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
+					if (rigidbodies[i].GetForce().y < 0 && rb_collider->TouchingBottom(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
 						rigidbodies[i].RemoveForceY();
 				}
 				if (!UpdatedCamera)
@@ -467,5 +474,12 @@ namespace PhysicsManager {
 				coliders.erase(coliders.begin() + i);
 		}
 	}
+	void RemoveRigidbody(std::string name) {
+		for (int i = 0; i < rigidbodies.size(); i++) {
+			if (rigidbodies[i].GetName() == name)
+				rigidbodies.erase(rigidbodies.begin() + i);
+		}
+	}
+
 
 };

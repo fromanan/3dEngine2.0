@@ -5,6 +5,7 @@
 namespace Camera {
 
 	glm::vec3 position = glm::vec3(0, 0, 5);
+	glm::vec3 direction = glm::vec3(0, 0, 0);
 
 	// horizontal angle : toward -Z
 	float horizontalAngle = 3.14f;
@@ -88,7 +89,7 @@ namespace Camera {
 		lookingAtName = "Nothing";
 
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
-		glm::vec3 direction(
+		direction = glm::vec3(
 			cos(verticalAngle) * sin(horizontalAngle),
 			sin(verticalAngle),
 			cos(verticalAngle) * cos(horizontalAngle)
@@ -113,6 +114,9 @@ namespace Camera {
 
 		ray.UpdateRay(direction, position);
 
+	}
+	glm::vec3 Camera::GetDirection() {
+		return direction;
 	}
 
 }

@@ -79,7 +79,8 @@ void Scene::Update(float deltaTime) {
 		doors[door].Update(deltaTime);
 	}
 	for (int gun = 0; gun < gunPickUps.size(); gun++) {
-		if (gunPickUps[gun].Interact())
+		gunPickUps[gun].Update();
+		if (gunPickUps[gun].Interact() && Player::getCurrentGun() == "nothing")
 			gunPickUps.erase(gunPickUps.begin() + gun);
 	}
 	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());

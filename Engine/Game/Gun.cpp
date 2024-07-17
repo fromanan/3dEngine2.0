@@ -63,12 +63,10 @@ namespace WeaponManager {
 		AudioManager::AddSound("Assets/Audio/ak47_fire2.wav", "ak47_fire2", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5);
 		AudioManager::AddSound("Assets/Audio/ak47_fire3.wav", "ak47_fire3", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5);
 		AudioManager::AddSound("Assets/Audio/ak47_fire4.wav", "ak47_fire4", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5);
-
 		AudioManager::AddSound("Assets/Audio/glock_fire1.wav", "glock_fire1", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5);
 		AudioManager::AddSound("Assets/Audio/glock_fire2.wav", "glock_fire2", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5);
 		AudioManager::AddSound("Assets/Audio/glock_fire3.wav", "glock_fire3", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5);
 		AudioManager::AddSound("Assets/Audio/glock_fire4.wav", "glock_fire4", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5);
-
 		AudioManager::AddSound("Assets/Audio/dry_fire.wav", "dry_fire", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5);
 
 
@@ -120,7 +118,7 @@ GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* ob
 	objectName = ObjectName;
 	AssetManager::AddGameObject(objectName, objectModel, texture, position, false);
 	AssetManager::GetGameObject(objectName)->SetRotationZ(1.5f);
-	PhysicsManager::AddCube(glm::vec3(position.x,position.y,position.z), 1, 0.3, 3, ObjectName);
+	PhysicsManager::AddCube(glm::vec3(position.x,position.y,position.z), 1, 0.5, 2, ObjectName);
 	PhysicsManager::GetColider(objectName)->SetStatic(false);
 	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
 }
@@ -130,15 +128,25 @@ GunPickUp::GunPickUp(std::string GunName, std::string GunObject, glm::vec3 posit
 	objectName = GunObject + std::to_string(SceneManager::GetCurrentScene()->GetGunPickUpSize());
 	AssetManager::GetGameObject(GunObject)->Copy(objectName);
 	AssetManager::GetGameObject(objectName)->SetRender(true);
-	//AssetManager::GetGameObject(objectName)->setPosition(position);
-	PhysicsManager::AddCube(position, 1, 1, 3, objectName);
+	AssetManager::GetGameObject(objectName)->setPosition(position);
+	PhysicsManager::AddCube(position, 1, 0.5, 2, objectName);
 	//PhysicsManager::GetColider(objectName)->SetStatic(false);
-	//PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
+	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
+	PhysicsManager::AddRigidbody(position, objectName);
+	PhysicsManager::GetRigidbody(objectName)->SetColider(objectName);
+	PhysicsManager::GetRigidbody(objectName)->AddForce(Camera::GetDirection() * 30.0f);
 }
+void GunPickUp::Update() {
+	if (PhysicsManager::GetRigidbody(objectName) != NULL) {
+		AssetManager::GetGameObject(objectName)->setPosition(PhysicsManager::GetColider(objectName)->getPosition());
+	}
+}
+
 bool GunPickUp::Interact() {
 	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() != gunName && Player::SelectWeapon(gunName)) {
 		AssetManager::RemoveGameObject(objectName);
 		PhysicsManager::RemoveCube(objectName);
+		PhysicsManager::RemoveRigidbody(objectName);
 		WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
 		AudioManager::PlaySound("item_pickup", Player::getPosition());
 		return true;

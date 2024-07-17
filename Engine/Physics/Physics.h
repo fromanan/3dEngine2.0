@@ -76,8 +76,8 @@ public:
 	RigidBody(glm::vec3 position,std::string name);
 	glm::vec3 GetPostion();
 	void SetPostion(glm::vec3 position);
-	void SetColider(Cube* colider);
-	Cube* GetColider();
+	void SetColider(std::string colliderName);
+	std::string GetColider();
 
 	std::string GetName();
 
@@ -107,7 +107,7 @@ private:
 	std::string name = "None";
 	glm::vec3 position = glm::vec3(0, 0, 0);
 	glm::vec3 velocity = glm::vec3(0,0,0);
-	Cube* colider = NULL;
+	std::string colider = "None";
 
 };
 
@@ -118,7 +118,9 @@ namespace PhysicsManager {
 	Cube* AddCube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, std::string name);
 	Cube* AddCube(glm::vec3 postion, float width, float height, float depth, std::string name);
 	Cube* AddCube(GameObject* gameobject, std::string name);
+
 	void RemoveCube(std::string name);
+	void RemoveRigidbody(std::string name);
 
 
 	Cube* GetColider(std::string name);
