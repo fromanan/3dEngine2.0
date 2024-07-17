@@ -110,14 +110,16 @@ namespace Player
 				WeaponManager::GetGunByName(gunName)->Shoot();
 				verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 				horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
-				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
 				if(Camera::GetLookingAtCollider()->GetStatic())
 					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
 			}
 			else {
 				//click click
+				AudioManager::PlaySound("dry_fire", rb->GetPostion());
 			}
+			WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
+
 		}
 		if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999  && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 			if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
@@ -126,14 +128,17 @@ namespace Player
 				WeaponManager::GetGunByName(gunName)->Shoot();
 				verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 				horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
-				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 				float distance = Camera::GetLookingAtDistance() - 0.015;
 				if (Camera::GetLookingAtCollider()->GetStatic())
 					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
 			}
 			else {
 				//click click
+				std::cout << "dry fire" << std::endl;
+				AudioManager::PlaySound("dry_fire", rb->GetPostion());
 			}
+			WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
+
 		}
 
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());

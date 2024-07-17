@@ -87,13 +87,13 @@ namespace AudioManager {
 			return;
 		
 		//thanks to livinamuk for a couple of these sounds
-		AudioManager::AddSound("Assets/Audio/door_close.wav", "door_close", glm::vec3(0, 0, 0), 10, 0.8);
-		AudioManager::AddSound("Assets/Audio/door_open.wav", "door_open", glm::vec3(0, 0, 0), 10, 0.6);
-		AudioManager::AddSound("Assets/Audio/player_step_1.wav", "foot_step1", glm::vec3(0, 0, 0), 10, 0.1);
-		AudioManager::AddSound("Assets/Audio/player_step_2.wav", "foot_step2", glm::vec3(0, 0, 0), 10, 0.1);
-		AudioManager::AddSound("Assets/Audio/player_step_3.wav", "foot_step3", glm::vec3(0, 0, 0), 10, 0.1);
-		AudioManager::AddSound("Assets/Audio/player_step_4.wav", "foot_step4", glm::vec3(0, 0, 0), 10, 0.1);
-		AudioManager::AddSound("Assets/Audio/item_pick_up.wav", "item_pickup", glm::vec3(0, 0, 0), 10, 0.6);
+		AudioManager::AddSound("Assets/Audio/door_close.wav", "door_close", glm::vec3(0, 0, 0), 10, 1);
+		AudioManager::AddSound("Assets/Audio/door_open.wav", "door_open", glm::vec3(0, 0, 0), 10, 0.8);
+		AudioManager::AddSound("Assets/Audio/player_step_1.wav", "foot_step1", glm::vec3(0, 0, 0), 10, 0.3);
+		AudioManager::AddSound("Assets/Audio/player_step_2.wav", "foot_step2", glm::vec3(0, 0, 0), 10, 0.3);
+		AudioManager::AddSound("Assets/Audio/player_step_3.wav", "foot_step3", glm::vec3(0, 0, 0), 10, 0.3);
+		AudioManager::AddSound("Assets/Audio/player_step_4.wav", "foot_step4", glm::vec3(0, 0, 0), 10, 0.3);
+		AudioManager::AddSound("Assets/Audio/item_pick_up.wav", "item_pickup", glm::vec3(0, 0, 0), 10, 0.8);
 	}
 
 	void AudioManager::CleanUp() {
@@ -148,11 +148,18 @@ namespace AudioManager {
 		for (int i = 0; i < channelSize; i++) {
 			channels[i]->isPlaying(&isPlaying);
 			if (!isPlaying) {
-				channels[i]->setVolume(GetSound(sound)->GetVolume());
+				
 				result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[i]);
+				if (!succeededOrWarn("FMOD2: ", result))
+					return -1;
 				result = channels[i]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
+				if (!succeededOrWarn("FMOD3: ", result))
+					return -1;
+				result = channels[i]->setVolume(GetSound(sound)->GetVolume());
+				if (!succeededOrWarn("FMOD1: ", result))
+					return -1;
 				result = channels[i]->setPaused(false);
-				if (!succeededOrWarn("FMOD: Failed to create system object", result))
+				if (!succeededOrWarn("FMOD4: ", result))
 					return - 1;
 
 				return i;
