@@ -1,5 +1,6 @@
 #include "Physics.h"
 #include "Camera.h"
+#include "Engine/Game/Player.h"
 
 
 
@@ -147,6 +148,22 @@ float Cube::getHeight() {
 float Cube::getWidth() {
 	return width;
 }
+
+void Cube::SetDelete(bool Delete) {
+	shouldDelete = Delete;
+}
+bool Cube::ShouldDelete() {
+	return shouldDelete;
+}
+void Cube::setDimensions(float width,float height, float depth) {
+	this->depth = depth;
+	this->height = height;
+	this->width = width;
+
+	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
+	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
+}
+
 bool Cube::GetIsTrigger() {
 	return isTrigger;
 }
@@ -379,10 +396,15 @@ namespace PhysicsManager {
 			//add friction so your not sliding
 			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x / (1 + (deltaTime * friction)));
 			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z / (1 + (deltaTime * friction)));
-			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity	* deltaTime);
+			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity * deltaTime);
 			//Do colider Calculation
 			if (rigidbodies[i].GetColider() != NULL) {
 				for (int col = 0; col < coliders.size(); col++) {
+					if (coliders[i].ShouldDelete()) {
+						coliders.erase(coliders.begin() + col);
+						continue;
+					}
+
 					if (!UpdatedCamera)
 						Camera::CheckIntersectingWithRay(&coliders[col]);
 					if (rigidbodies[i].GetColider()->GetName() == coliders[col].GetName() || coliders[col].GetIsTrigger())
@@ -399,7 +421,6 @@ namespace PhysicsManager {
 						rigidbodies[i].RemoveForceY();
 					if (rigidbodies[i].GetForce().y < 0 && rigidbodies[i].GetColider()->TouchingBottom(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
 						rigidbodies[i].RemoveForceY();
-						
 				}
 				if (!UpdatedCamera)
 					UpdatedCamera = true;
@@ -430,12 +451,15 @@ namespace PhysicsManager {
 			if (coliders[i].GetName() == name)
 				return &coliders[i];
 		}
+		return NULL;
 	}
 	RigidBody* PhysicsManager::GetRigidbody(std::string name) {
 		for (int i = 0; i < rigidbodies.size(); i++) {
 			if (rigidbodies[i].GetName() == name)
 				return &rigidbodies[i];
 		}
+		return NULL;
+
 	}
 	void PhysicsManager::RemoveCube(std::string name) {
 		for (int i = 0; i < coliders.size(); i++) {

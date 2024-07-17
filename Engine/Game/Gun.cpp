@@ -1,4 +1,5 @@
 #include "Gun.h"
+#include "Engine/Core/Scene/SceneManager.h"
 
 
 
@@ -119,20 +120,20 @@ GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* ob
 	objectName = ObjectName;
 	AssetManager::AddGameObject(objectName, objectModel, texture, position, false);
 	AssetManager::GetGameObject(objectName)->SetRotationZ(1.5f);
-	PhysicsManager::AddCube(glm::vec3(position.x,position.y,position.z + 0.5), 1, 0.3, 3, ObjectName);
+	PhysicsManager::AddCube(glm::vec3(position.x,position.y,position.z), 1, 0.3, 3, ObjectName);
 	PhysicsManager::GetColider(objectName)->SetStatic(false);
 	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
-
-	
 }
-GunPickUp::GunPickUp(std::string GunName, GameObject* gameobject) {
+//dosent work
+GunPickUp::GunPickUp(std::string GunName, std::string GunObject, glm::vec3 position) {
 	gunName = GunName;
-	objectName = gameobject->GetName();
-	AssetManager::GetGameObject(objectName)->SetRotationZ(1.5f);
-	PhysicsManager::AddCube(gameobject->getPosition() + glm::vec3(0,0,0.5), 1, 0.3, 3, objectName);
-	PhysicsManager::GetColider(objectName)->SetStatic(false);
-	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
-	PhysicsManager::AddRigidbody(gameobject->getPosition() + glm::vec3(0, 0, 0.5), objectName);
+	objectName = GunObject + std::to_string(SceneManager::GetCurrentScene()->GetGunPickUpSize());
+	AssetManager::GetGameObject(GunObject)->Copy(objectName);
+	AssetManager::GetGameObject(objectName)->SetRender(true);
+	//AssetManager::GetGameObject(objectName)->setPosition(position);
+	PhysicsManager::AddCube(position, 1, 1, 3, objectName);
+	//PhysicsManager::GetColider(objectName)->SetStatic(false);
+	//PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
 }
 bool GunPickUp::Interact() {
 	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() != gunName && Player::SelectWeapon(gunName)) {
@@ -140,7 +141,6 @@ bool GunPickUp::Interact() {
 		PhysicsManager::RemoveCube(objectName);
 		WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
 		AudioManager::PlaySound("item_pickup", Player::getPosition());
-
 		return true;
 	}
 	return false;

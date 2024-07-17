@@ -29,6 +29,8 @@ public:
 	void RenderObjects();
 
 	void AddGunPickUp(GunPickUp gunpickup);
+	void AddGunPickUp(std::string gunName,std::string gunObject,glm::vec3 Position);
+
 	int GetGunPickUpSize();
 
 private:

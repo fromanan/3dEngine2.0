@@ -18,7 +18,6 @@ void Scene::Load() {
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	WeaponManager::Init();
 
-
 	//AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence1", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
@@ -26,7 +25,6 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
 
-	//AssetManager::AddGameObject("container", "Assets/Objects/container.obj", AssetManager::GetTexture("container"), glm::vec3(20, 2, 0), true);
 
 
 
@@ -35,12 +33,8 @@ void Scene::Load() {
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence2"), "fence2_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence3"), "fence3_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence4"), "fence4_collider");
-
-	//PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
-
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
-	//PhysicsManager::AddCube(AssetManager::GetGameObject("cube3"), "cube_collider");
-	//PhysicsManager::AddCube(AssetManager::GetGameObject("container"), "container_collider");
+
 
 	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
 
@@ -80,8 +74,6 @@ void Scene::Load() {
 }
 
 void Scene::Update(float deltaTime) {
-	Player::Update(deltaTime);
-
 	for (int door = 0; door < doors.size(); door++) {
 		doors[door].Interact();
 		doors[door].Update(deltaTime);
@@ -90,9 +82,11 @@ void Scene::Update(float deltaTime) {
 		if (gunPickUps[gun].Interact())
 			gunPickUps.erase(gunPickUps.begin() + gun);
 	}
-
 	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());
 	AudioManager::Update();
+
+	Player::Update(deltaTime);
+	
 }
 
 void Scene::RenderObjects() {
@@ -122,7 +116,7 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		gameobjectRender->RenderObject(programid);
 	}
-	for (int i = 0; i < AssetManager::GetAllDecals()->size(); i++)
+	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
 		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;
@@ -134,9 +128,10 @@ void Scene::RenderObjects() {
 
 	std::ostringstream oss;
 	oss.precision(2);
-	oss << "Pos x:" << Camera::GetPostion().x << " y:" << Camera::GetPostion().y << " z:" << Camera::GetPostion().z;
+	glm::vec3 pos = Player::getPosition();
+	oss << "Pos x:" << pos.x << " y:" << pos.y << " z:" << pos.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
-	glm::vec3 vel = Player::rb->GetForce();
+	glm::vec3 vel = PhysicsManager::GetRigidbody("PlayerRB")->GetForce();
 	oss.str(""); oss.clear();
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
@@ -147,11 +142,18 @@ void Scene::RenderObjects() {
 		oss << WeaponManager::GetGunByName(Player::getCurrentGun())->currentammo << "/" << WeaponManager::GetGunByName(Player::getCurrentGun())->ammo;
 		Renderer::RenderText(oss.str().c_str(), 660, 0, 15);
 	}
+	oss.str(""); oss.clear();
+	oss << Player::getCurrentGun();
+	Renderer::RenderText(oss.str().c_str(), 0, 500, 15);
 	
 }
 void Scene::AddGunPickUp(GunPickUp gunpickup) {
 	gunPickUps.push_back(gunpickup);
 }
+void Scene::AddGunPickUp(std::string gunName, std::string gunObject, glm::vec3 Position) {
+	gunPickUps.push_back(GunPickUp(gunName, gunObject, Position));
+}
+
 int Scene::GetGunPickUpSize() {
 	return gunPickUps.size();
 }

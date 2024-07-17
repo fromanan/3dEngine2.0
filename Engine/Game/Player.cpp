@@ -35,6 +35,7 @@ namespace Player
 		AssetManager::GetGameObject("player")->SetRender(false);
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
 		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 4, 0.5, "PlayerCollider");
+		collider = PhysicsManager::GetColider("PlayerCollider");
 		rb->SetColider(collider);
 		std::cout << "loading player model" << std::endl;
 
@@ -42,6 +43,13 @@ namespace Player
 	}
 
 	void Player::Update(float deltaTime) {
+		collider = PhysicsManager::GetColider("PlayerCollider");
+		rb = PhysicsManager::GetRigidbody("PlayerRB");
+		rb->SetColider(collider);
+		//std::cout << Camera::GetLookingAtName() << std::endl;
+		//little hack cause idk why max is being changed after a new cube is added after dropping weapon
+		collider->setDimensions(0.5,4,0.5);
+
 		interactingWithName = "Nothing";
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
@@ -99,16 +107,7 @@ namespace Player
 		
 
 		if (gunName != "nothing"){
-			if (Input::KeyPressed('q') && !reloading) {
-				std::string objectName = "gun_pick_up" + std::to_string(SceneManager::GetCurrentScene()->GetGunPickUpSize());
-				//AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
-				AssetManager::GetGameObject("ak47_pickup")->Copy(objectName);
-				AssetManager::GetGameObject(objectName)->SetRender(true);
-				AssetManager::GetGameObject(objectName)->setPosition(Player::getPosition());
-				SceneManager::GetCurrentScene()->AddGunPickUp(GunPickUp(objectName, AssetManager::GetGameObject(objectName)));
-				gunName = "nothing";
-			}
-
+			
 			if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 			{
 				reloading = false;
@@ -151,16 +150,20 @@ namespace Player
 					AudioManager::PlaySound("dry_fire", rb->GetPostion());
 				}
 				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
-
 			}
+
+			
 		}
+
 
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
 
 		Camera::SetHorizontalAngle(horizontalAngle);
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(rb->GetPostion());
-		collider->setPosition(rb->GetPostion()); 
+
+		PhysicsManager::GetColider("PlayerCollider")->setPosition(rb->GetPostion());
+
 		AssetManager::GetGameObject("player")->SetRotationX(-verticalAngle);
 		AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
 		AssetManager::GetGameObject("player")->setPosition(rb->GetPostion());
@@ -171,7 +174,13 @@ namespace Player
 			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1),rb->GetPostion());
 			footstepTime = glfwGetTime();
 		}
-
+		//if (Input::KeyPressed('q') && !reloading && gunName != "nothing") {
+			//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", glm::vec3(2, 1, 2));
+			//AssetManager::GetGameObject(gunName)->SetRender(false);
+			//gunName = "nothing";
+		//}
+		
+		
 	}
 	glm::vec3 Player::getPosition() {
 		return rb->GetPostion();

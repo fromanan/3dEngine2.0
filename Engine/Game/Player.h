@@ -1,7 +1,6 @@
 #pragma once
 #include "Core/Input.h"
 #include "Core/Camera.h"
-#include "Physics/Physics.h"
 #include "Engine/Game/Gun.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -16,8 +15,6 @@
 
 namespace Player
 {
-	extern RigidBody* rb;
-	extern Cube* collider;
 	extern GameObject* playerModel;
 	extern GameObject* gun;
 	glm::vec3 getPosition();

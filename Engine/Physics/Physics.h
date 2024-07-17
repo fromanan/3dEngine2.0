@@ -32,6 +32,8 @@ public:
 	float getDepth();
 	float getHeight();
 	float getWidth();
+	void setDimensions(float width, float height, float depth);
+
 	glm::vec3 getMin();
 	glm::vec3 getMax();
 
@@ -40,6 +42,9 @@ public:
 	void SetIsTrigger(bool trigger);
 	void SetStatic(bool Static);
 	bool GetStatic();
+
+	void SetDelete(bool Delete);
+	bool ShouldDelete();
 
 	
 	bool TouchingLeft(Cube* colider, float velocity);
@@ -63,6 +68,7 @@ private:
 	float width, depth, height;
 	bool isTrigger = false;
 	bool Static = true;
+	bool shouldDelete = false;
 };
 class RigidBody {
 public:
@@ -99,8 +105,8 @@ public:
 
 private:
 	std::string name = "None";
-	glm::vec3 position;
-	glm::vec3 velocity;
+	glm::vec3 position = glm::vec3(0, 0, 0);
+	glm::vec3 velocity = glm::vec3(0,0,0);
 	Cube* colider = NULL;
 
 };

@@ -15,7 +15,7 @@ namespace Engine {
 		Scene basicScene = Scene();
 		SceneManager::Init();
 		SceneManager::CreateScene(basicScene);
-		SceneManager::LoadScene(1);
+		SceneManager::LoadScene(0);
 
 
 		// For speed computation
@@ -44,6 +44,7 @@ namespace Engine {
 			float test = glfwGetTime();
 			Input::Update();
 			Input::CenterMouse();
+
 			PhysicsManager::Update(dt);
 			SceneManager::Update(dt);
 			AudioManager::Update();

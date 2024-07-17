@@ -46,6 +46,7 @@ namespace AssetManager
 	GameObject* GetGameObject(int index);
 	std::vector<GameObject> GetAllGameObjects();
 	int GetGameObjectsSize();
+	int GetDecalsSize();
 
 	Texture* GetTexture(std::string name);
 

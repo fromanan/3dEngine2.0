@@ -187,6 +187,9 @@ namespace AssetManager
 	int AssetManager::GetGameObjectsSize() {
 		return GameObjects.size();
 	}
+	int AssetManager::GetDecalsSize() {
+		return Decals.size();
+	}
 	Texture* AssetManager::GetTexture(std::string name) {
 		for (int i = 0; i < Textures.size(); i++) {
 			if (Textures[i].GetName() == name)
