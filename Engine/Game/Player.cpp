@@ -44,7 +44,7 @@ namespace Player
 	void Player::Update(float deltaTime) {
 		collider = PhysicsManager::GetColider("PlayerCollider");
 		rb = PhysicsManager::GetRigidbody("PlayerRB");
-		std::cout << Camera::GetLookingAtName() << std::endl;
+		//std::cout << Camera::GetRayInfo2()->name << " ray1: " << Camera::GetRayInfo()->name << std::endl;
 		//little hack cause idk why max is being changed after a new cube is added after dropping weapon
 		collider->setDimensions(0.5,4,0.5);
 
@@ -123,6 +123,7 @@ namespace Player
 					float distance = Camera::GetLookingAtDistance() - 0.015;
 					if (Camera::GetLookingAtCollider()->GetStatic())
 						AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
+					
 				}
 				else {
 					//click click
@@ -141,6 +142,9 @@ namespace Player
 					float distance = Camera::GetLookingAtDistance() - 0.015;
 					if (Camera::GetLookingAtCollider()->GetStatic())
 						AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
+					if (SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName()) != NULL) {
+						(SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName())->DealDamage(WeaponManager::GetGunByName(gunName)->damage));
+					}
 				}
 				else {
 					//click click

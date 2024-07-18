@@ -8,6 +8,9 @@
 
 #include <vector>
 #include <string>
+
+
+
 class Ray {
 public:
 	glm::vec3 direction;
@@ -26,6 +29,8 @@ public:
 	Cube(glm::vec3 postion, glm::vec3 min, glm::vec3 max, std::string name);
 
 	std::string GetName();
+	std::string GetTag();
+	void SetTag(std::string Tag);
 
 	void setPosition(glm::vec3 position);
 	glm::vec3 getPosition();
@@ -62,6 +67,7 @@ public:
 
 private:
 	std::string name = "None";
+	std::string tag = "None";
 	glm::vec3 min;
 	glm::vec3 max;
 	glm::vec3 position;
@@ -128,4 +134,12 @@ namespace PhysicsManager {
 
 
 	void Update(float deltaTime);
+};
+
+struct RayInfo {
+	std::string name = "Nothing";
+	float distance = 9999;
+	glm::vec3 position = glm::vec3(0, 0, 0);
+	glm::vec3 normal = glm::vec3(0, 0, 0);
+	Cube* collider = nullptr;
 };

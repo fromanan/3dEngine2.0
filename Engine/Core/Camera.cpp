@@ -15,11 +15,15 @@ namespace Camera {
 	float mouseSpeed = 0.005f;
 
 	//ray
-	std::string lookingAtName = "Nothing";
-	glm::vec3 normalFace= glm::vec3(0, 0, 0);
-	Cube* LookingAtcollider = nullptr;
-	float distance = 9999;
+	//std::string lookingAtName = "Nothing";
+	//glm::vec3 normalFace= glm::vec3(0, 0, 0);
+	//Cube* LookingAtcollider = nullptr;
+	//float distance = 9999;
+
 	Ray ray;
+	RayInfo currentRayInfo;
+	RayInfo currentRayInfo2;
+
 	
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
@@ -43,11 +47,11 @@ namespace Camera {
 		position = pos;
 	}
 	std::string Camera::GetLookingAtName() {
-		return lookingAtName;
+		return currentRayInfo.name;
 	}
 	float GetLookingAtDistance() {
-		if(lookingAtName != "Nothing")
-			return distance;
+		if(currentRayInfo.name != "Nothing")
+			return currentRayInfo.distance;
 		return -1;
 	}
 	glm::vec3 Camera::GetRayDirection() {
@@ -57,10 +61,17 @@ namespace Camera {
 		return ray;
 	}
 	glm::vec3 Camera::GetNormalFace() {
-		return normalFace;
+		return currentRayInfo.normal;
 	}
 	Cube* Camera::GetLookingAtCollider() {
-		return LookingAtcollider;
+		return currentRayInfo.collider;
+	}
+
+	RayInfo* GetRayInfo() {
+		return &currentRayInfo;
+	}
+	RayInfo* GetRayInfo2() {
+		return &currentRayInfo2;
 	}
 
 
@@ -68,25 +79,36 @@ namespace Camera {
 	void Camera::CheckIntersectingWithRay(Cube* cube) {
 
 		float objectDistance = cube->intersect(ray, 0, 100);
-		if (objectDistance > 0 && objectDistance < distance)
+		if (objectDistance > 0 && objectDistance < currentRayInfo.distance)
 		{
-			LookingAtcollider = cube;
-			distance = objectDistance;
-			lookingAtName = cube->GetName();
-			glm::vec3 intersectionPoint(ray.origin + distance * ray.direction);
+			currentRayInfo2.collider = currentRayInfo.collider;
+			currentRayInfo2.distance = currentRayInfo.distance;
+			currentRayInfo2.name = currentRayInfo.name;
+			currentRayInfo2.position = currentRayInfo.position;
+			currentRayInfo2.normal = currentRayInfo.normal;
+
+			currentRayInfo.collider = cube;
+			currentRayInfo.distance = objectDistance;
+			currentRayInfo.name = cube->GetName();
+			currentRayInfo.position = ray.origin + currentRayInfo.distance * ray.direction;
+
 			// Determine which face was hit by checking the intersection point
-			if (fabs(intersectionPoint.x - cube->getMin().x) < 0.001f) normalFace = glm::vec3(-1.0f, 0.0f, 0.0f);
-			if (fabs(intersectionPoint.x - cube->getMax().x) < 0.001f) normalFace = glm::vec3(1.0f, 0.0f, 0.0f);
-			if (fabs(intersectionPoint.y - cube->getMin().y) < 0.001f) normalFace = glm::vec3(0.0f, -1.0f, 0.0f);
-			if (fabs(intersectionPoint.y - cube->getMax().y) < 0.001f) normalFace = glm::vec3(0.0f, 1.0f, 0.0f);
-			if (fabs(intersectionPoint.z - cube->getMin().z) < 0.001f) normalFace = glm::vec3(0.0f, 0.0f, -1.0f);
-			if (fabs(intersectionPoint.z - cube->getMax().z) < 0.001f) normalFace = glm::vec3(0.0f, 0.0f, 1.0f);
+			if (fabs(currentRayInfo.position.x - cube->getMin().x) < 0.001f) currentRayInfo.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+			if (fabs(currentRayInfo.position.x - cube->getMax().x) < 0.001f) currentRayInfo.normal = glm::vec3(1.0f, 0.0f, 0.0f);
+			if (fabs(currentRayInfo.position.y - cube->getMin().y) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, -1.0f, 0.0f);
+			if (fabs(currentRayInfo.position.y - cube->getMax().y) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+			if (fabs(currentRayInfo.position.z - cube->getMin().z) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+			if (fabs(currentRayInfo.position.z - cube->getMax().z) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		}
+
 	}
 
 	void Camera::Update(float dt) {
-		distance = 9999;
-		lookingAtName = "Nothing";
+		currentRayInfo.distance = 9999;
+		currentRayInfo.name = "Nothing";
+
+		currentRayInfo2.distance = 9999;
+		currentRayInfo2.name = "Nothing";
 
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
 		direction = glm::vec3(

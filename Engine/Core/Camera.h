@@ -20,13 +20,19 @@ namespace Camera
 
 
 	void CheckIntersectingWithRay(Cube* cube);
-	std::string GetLookingAtName();
-	float GetLookingAtDistance();
-	glm::vec3 GetRayDirection();
 	Ray GetRay();
+
+	float GetLookingAtDistance();
+	std::string GetLookingAtName();
+	glm::vec3 GetRayDirection();
 	glm::vec3 GetNormalFace();
 	Cube* GetLookingAtCollider();
 	glm::vec3 GetDirection();
+
+	RayInfo* GetRayInfo();
+	//used to get the info of the object behind the first object for windows
+	RayInfo* GetRayInfo2();
+
 
 
 	void Update(float dt);

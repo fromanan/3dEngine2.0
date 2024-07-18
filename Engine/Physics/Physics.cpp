@@ -125,6 +125,12 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 std::string Cube::GetName() {
 	return name;
 }
+std::string Cube::GetTag() {
+	return tag;
+}
+void Cube::SetTag(std::string Tag) {
+	tag = Tag;
+}
 void Cube::setPosition(glm::vec3 position) {
 	this->position = position;
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);

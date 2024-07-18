@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Game\Crate.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Core\Animation.cpp" />
     <ClCompile Include="Engine\Game\Door.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Engine\Game\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Game\Crate.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Core\Animation.h" />
     <ClInclude Include="Engine\Game\Door.h" />

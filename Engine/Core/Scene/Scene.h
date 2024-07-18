@@ -17,6 +17,8 @@
 #include <ostream>
 #include "Engine/Game/Door.h"
 #include "Engine/Game/Gun.h"
+#include "Engine/Game/Crate.h"
+
 
 
 class Scene
@@ -32,6 +34,7 @@ public:
 	void AddGunPickUp(std::string gunName,std::string gunObject,glm::vec3 Position);
 
 	int GetGunPickUpSize();
+	Crate* GetCrate(std::string name);
 
 private:
 	//this is the sun
@@ -39,6 +42,9 @@ private:
 	SkyBox sky;
 	//objects
 	std::vector<Door> doors;
+	std::vector<Crate> crates;
 	std::vector<GunPickUp> gunPickUps;
+
+	
 };
 

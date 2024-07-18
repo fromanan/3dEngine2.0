@@ -7,6 +7,8 @@ Scene::Scene() {
 
 void Scene::Load() {
 	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.png");
+	AssetManager::AddTexture("crate", "Assets/Textures/crate.png");
+
 	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png", "Assets/Normals/container_normal.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
@@ -26,8 +28,6 @@ void Scene::Load() {
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
 
 
-
-
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence1"), "fence1_collider");
 	PhysicsManager::AddCube(AssetManager::GetGameObject("fence2"), "fence2_collider");
@@ -37,6 +37,11 @@ void Scene::Load() {
 
 
 	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
+
+	crates.push_back(Crate(glm::vec3(15, 0, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(13, 0, 5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+
+
 
 	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
 	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
@@ -82,6 +87,9 @@ void Scene::Update(float deltaTime) {
 		gunPickUps[gun].Update();
 		if (gunPickUps[gun].Interact() && Player::getCurrentGun() == "nothing")
 			gunPickUps.erase(gunPickUps.begin() + gun);
+	}
+	for (int crate = 0; crate < crates.size(); crate++) {
+		crates[crate].Update();
 	}
 	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());
 	AudioManager::Update();
@@ -162,5 +170,13 @@ void Scene::AddGunPickUp(std::string gunName, std::string gunObject, glm::vec3 P
 int Scene::GetGunPickUpSize() {
 	return gunPickUps.size();
 }
+Crate* Scene::GetCrate(std::string name) {
+	for (int i = 0; i < crates.size(); i++) {
+		if (crates[i].GetName() == name)
+			return &crates[i];
+	}
+	return NULL;
+}
+
 
 

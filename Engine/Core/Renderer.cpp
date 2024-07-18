@@ -297,11 +297,9 @@ namespace Renderer {
 
 		glGenVertexArrays(1, &Renderer::quadVAO);
 		glGenBuffers(1, &VBO);
-
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		glBindVertexArray(Renderer::quadVAO);
-
 
 		UseProgram(GetProgramID(name));
 
@@ -311,7 +309,6 @@ namespace Renderer {
 	void Renderer::setMat4(GLuint id, glm::mat4& mat4)
 	{
 		glUniformMatrix4fv(id, 1, GL_FALSE, &mat4[0][0]);
-
 	}
 	void Renderer::setVec3(GLuint id, glm::vec3& vec3)
 	{
