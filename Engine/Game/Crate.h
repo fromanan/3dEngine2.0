@@ -23,7 +23,7 @@ public:
 
 private:
 	std::string name = "None";
-	int health = 20;
+	int health = 50;
 	glm::vec3 position;
 };
 

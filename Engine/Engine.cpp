@@ -49,15 +49,14 @@ namespace Engine {
 			SceneManager::Update(dt);
 			AudioManager::Update();
 			//AnimationManager::Update(dt);
-			Camera::Update(dt);
 			//Rendering
+			Camera::Update(dt);
 			Renderer::ClearScreen();
 			SceneManager::Render();
 			std::ostringstream oss;
 			oss << "FPS: " << FPS;
 			Renderer::RenderText(oss.str().c_str(), 660, 585, 15);
 			Renderer::SwapBuffers(Backend::GetWindowPointer());
-
 			//AssetManager::CleanUp();
 		}
 

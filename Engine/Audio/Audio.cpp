@@ -94,6 +94,8 @@ namespace AudioManager {
 		AudioManager::AddSound("Assets/Audio/player_step_3.wav", "foot_step3", glm::vec3(0, 0, 0), 10, 0.3);
 		AudioManager::AddSound("Assets/Audio/player_step_4.wav", "foot_step4", glm::vec3(0, 0, 0), 10, 0.3);
 		AudioManager::AddSound("Assets/Audio/item_pick_up.wav", "item_pickup", glm::vec3(0, 0, 0), 10, 0.8);
+		AudioManager::AddSound("Assets/Audio/glass_impact.wav", "glass_impact", glm::vec3(0, 0, 0), 10, 0.8);
+
 	}
 
 	void AudioManager::CleanUp() {
