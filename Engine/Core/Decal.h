@@ -8,10 +8,11 @@ class Decal
 public:
     Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
     glm::mat4 GetModel();
-
+    glm::vec3 GetNormal();
     void RenderDecal(GLuint& programID);
 private:    
     Texture* texture = NULL;
+    glm::vec3 normal = glm::vec3(0, 0, 0);
 
 
     glm::mat4 modelMatrix;

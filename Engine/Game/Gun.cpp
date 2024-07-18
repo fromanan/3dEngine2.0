@@ -134,7 +134,7 @@ GunPickUp::GunPickUp(std::string GunName, std::string GunObject, glm::vec3 posit
 	PhysicsManager::GetColider(objectName)->SetIsTrigger(true);
 	PhysicsManager::AddRigidbody(position, objectName);
 	PhysicsManager::GetRigidbody(objectName)->SetColider(objectName);
-	PhysicsManager::GetRigidbody(objectName)->AddForce(Camera::GetDirection() * 30.0f);
+	PhysicsManager::GetRigidbody(objectName)->AddForce(Camera::GetDirection() * 50.0f);
 }
 void GunPickUp::Update() {
 	if (PhysicsManager::GetRigidbody(objectName) != NULL) {

@@ -150,7 +150,7 @@ namespace Player
 				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 			}
 			if (Input::KeyPressed('q') && !reloading) {
-				SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 2.0f);
+				SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.0f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
 				gunName = "nothing";
 			}

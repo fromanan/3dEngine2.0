@@ -119,11 +119,15 @@ void Scene::RenderObjects() {
 	}
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
-		glm::mat4 ModelMatrix = AssetManager::GetDecal(i)->GetModel();
+		Decal* decal = AssetManager::GetDecal(i);
+		if (glm::dot(decal->GetNormal(), Player::getForward() * -1.0f) > 90.0f)
+			continue;
+		//do some pre normal calcualtions
+		glm::mat4 ModelMatrix = decal->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
-		AssetManager::GetDecal(i)->RenderDecal(programid);
+		decal->RenderDecal(programid);
 	}
 	glDisable(GL_BLEND);
 

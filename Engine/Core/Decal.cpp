@@ -2,6 +2,7 @@
 
 Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture) {
     this->texture = texture;
+	this->normal = normal;
 
 	glm::vec3 up(0, 1, 0);
 	glm::vec3 rotationAxis = glm::cross(normal, up);
@@ -41,6 +42,9 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 
 glm::mat4 Decal::GetModel() {
     return modelMatrix;
+}
+glm::vec3 Decal::GetNormal() {
+	return normal;
 }
 
 void Decal::RenderDecal(GLuint& programID) {
