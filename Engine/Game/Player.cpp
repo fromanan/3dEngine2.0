@@ -40,11 +40,41 @@ namespace Player
 
 		gunName = "nothing";
 	}
+	void Player::Shoot() {
+		if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
+		{
+			WeaponManager::GetGunByName(gunName)->currentammo--;
+			WeaponManager::GetGunByName(gunName)->Shoot();
+			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
+			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
+			float distance = Camera::GetLookingAtDistance() - 0.015;
+			if (Camera::GetLookingAtCollider()->GetStatic())
+			{
+				if (Camera::GetRayInfo2()->collider->GetStatic() && Camera::GetLookingAtCollider()->GetTag() == "glass") {
+					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.06, 0.06, 0.06), AssetManager::GetTexture("bullet_hole_glass"));
+					AssetManager::AddDecal(Camera::GetRay().origin + (Camera::GetRayInfo2()->distance - 0.015f) * Camera::GetRay().direction, Camera::GetRayInfo2()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
+				}
+				else
+					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
+			}
+
+			if (SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName()) != NULL) {
+				SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName())->DealDamage(WeaponManager::GetGunByName(gunName)->damage);
+			}
+			else if (SceneManager::GetCurrentScene()->GetCrate(Camera::GetRayInfo2()->name) != NULL && Camera::GetLookingAtCollider()->GetTag() == "glass")
+				SceneManager::GetCurrentScene()->GetCrate(Camera::GetRayInfo2()->name)->DealDamage(WeaponManager::GetGunByName(gunName)->damage);
+		}
+		else {
+			//click click
+			AudioManager::PlaySound("dry_fire", rb->GetPostion());
+		}
+		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
+	}
 
 	void Player::Update(float deltaTime) {
 		collider = PhysicsManager::GetColider("PlayerCollider");
 		rb = PhysicsManager::GetRigidbody("PlayerRB");
-		//std::cout << Camera::GetRayInfo2()->name << " ray1: " << Camera::GetRayInfo()->name << std::endl;
+		std::cout << Camera::GetRayInfo2()->name << " ray1: " << Camera::GetRayInfo()->name << std::endl;
 		//little hack cause idk why max is being changed after a new cube is added after dropping weapon
 		collider->setDimensions(0.5,4,0.5);
 
@@ -114,44 +144,10 @@ namespace Player
 			}
 			//get ray details
 			if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
-				if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
-				{
-					WeaponManager::GetGunByName(gunName)->currentammo--;
-					WeaponManager::GetGunByName(gunName)->Shoot();
-					verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
-					horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
-					float distance = Camera::GetLookingAtDistance() - 0.015;
-					if (Camera::GetLookingAtCollider()->GetStatic())
-						AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
-					
-				}
-				else {
-					//click click
-					AudioManager::PlaySound("dry_fire", rb->GetPostion());
-				}
-				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
-
+				Shoot();
 			}
 			if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
-				if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
-				{
-					WeaponManager::GetGunByName(gunName)->currentammo--;
-					WeaponManager::GetGunByName(gunName)->Shoot();
-					verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
-					horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
-					float distance = Camera::GetLookingAtDistance() - 0.015;
-					if (Camera::GetLookingAtCollider()->GetStatic())
-						AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetNormalFace(), glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
-					if (SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName()) != NULL) {
-						(SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName())->DealDamage(WeaponManager::GetGunByName(gunName)->damage));
-					}
-				}
-				else {
-					//click click
-					std::cout << "dry fire" << std::endl;
-					AudioManager::PlaySound("dry_fire", rb->GetPostion());
-				}
-				WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
+				Shoot();
 			}
 			if (Input::KeyPressed('q') && !reloading) {
 				SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.0f);

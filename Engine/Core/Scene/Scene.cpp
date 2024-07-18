@@ -12,10 +12,14 @@ void Scene::Load() {
 	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png", "Assets/Normals/container_normal.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
+	AssetManager::AddTexture("bullet_hole_glass", "Assets/Textures/bullet_hole_glass.png");
+
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
+	AssetManager::AddTexture("window", "Assets/Textures/window.png");
+
 
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	WeaponManager::Init();
@@ -26,6 +30,9 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
+
+
+
 
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
@@ -66,6 +73,14 @@ void Scene::Load() {
 	};
 	sky = SkyBox(faces);
 
+
+
+	AssetManager::AddGameObject("window_frame", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), glm::vec3(9, 0.5, 5), true);
+	AssetManager::AddGameObject("window", "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), true);
+
+	PhysicsManager::AddCube(AssetManager::GetGameObject("window"), "glass_collider");
+	PhysicsManager::GetColider("glass_collider")->SetTag("glass");
+
 	Player::Init();
 	Player::setPosition(glm::vec3(3, 5, 0));
 
@@ -79,6 +94,8 @@ void Scene::Load() {
 }
 
 void Scene::Update(float deltaTime) {
+	Player::Update(deltaTime);
+
 	for (int door = 0; door < doors.size(); door++) {
 		doors[door].Interact();
 		doors[door].Update(deltaTime);
@@ -93,9 +110,6 @@ void Scene::Update(float deltaTime) {
 	}
 	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());
 	AudioManager::Update();
-
-	Player::Update(deltaTime);
-	
 }
 
 void Scene::RenderObjects() {
@@ -125,6 +139,7 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		gameobjectRender->RenderObject(programid);
 	}
+
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
 		Decal* decal = AssetManager::GetDecal(i);

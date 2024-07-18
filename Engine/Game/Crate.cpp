@@ -5,7 +5,7 @@ Crate::Crate(glm::vec3 position, std::string name, const char* path, Texture* te
 	this->name = name;
 	this->position = position;
 	AssetManager::AddGameObject(name, path, texture, position, false);
-	PhysicsManager::AddCube(AssetManager::GetGameObject(name), name);
+	PhysicsManager::AddCube(position,1,1,1, name);
 	PhysicsManager::GetColider(name)->SetStatic(false);
 }
 void Crate::Update() {
