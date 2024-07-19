@@ -76,7 +76,12 @@ void Scene::Load() {
 
 
 	AssetManager::AddGameObject("window_frame", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), glm::vec3(9, 0.5, 5), true);
+	AssetManager::GetGameObject("window_frame")->SetRotationY(1.57079632679f);
 	AssetManager::AddGameObject("window", "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), true);
+	AssetManager::GetGameObject("window")->SetRotationY(1.57079632679f);
+
+
+	windows.push_back(Window("window", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
 	PhysicsManager::AddCube(AssetManager::GetGameObject("window"), "glass_collider");
 	PhysicsManager::GetColider("glass_collider")->SetTag("glass");
@@ -139,12 +144,14 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		gameobjectRender->RenderObject(programid);
 	}
+	for (int i = 0; i < windows.size(); i++)
+	{
+		windows[i].Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
+	}
 
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
 		Decal* decal = AssetManager::GetDecal(i);
-		if (glm::dot(decal->GetNormal(), Player::getForward() * -1.0f) > 90.0f)
-			continue;
 		//do some pre normal calcualtions
 		glm::mat4 ModelMatrix = decal->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;

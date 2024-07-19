@@ -46,18 +46,17 @@ namespace Player
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
-			float distance = Camera::GetLookingAtDistance() - 0.015;
 			if (Camera::GetLookingAtCollider()->GetStatic())
 			{
 				if (Camera::GetRayInfo2()->collider->GetStatic() && Camera::GetLookingAtCollider()->GetTag() == "glass") {
-					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.06, 0.06, 0.06), AssetManager::GetTexture("bullet_hole_glass"));
-					AssetManager::AddDecal(Camera::GetRay().origin +  (distance + 0.1f) * Camera::GetRay().direction, -1.0f * Camera::GetRayInfo()->normal, glm::vec3(0.06, 0.06, 0.06), AssetManager::GetTexture("bullet_hole_glass"));
+					AssetManager::AddDecal(Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.06, 0.06, 0.06), AssetManager::GetTexture("bullet_hole_glass"));
+					AssetManager::AddDecal(Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction, -1.0f * Camera::GetRayInfo()->normal, glm::vec3(0.06, 0.06, 0.06), AssetManager::GetTexture("bullet_hole_glass"));
 					AssetManager::AddDecal(Camera::GetRay().origin + (Camera::GetRayInfo2()->distance - 0.015f) * Camera::GetRay().direction, Camera::GetRayInfo2()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
-					AudioManager::PlaySound("glass_impact" + std::to_string((rand() % 2) + 1), Camera::GetRay().origin + distance * Camera::GetRay().direction);
+					AudioManager::PlaySound("glass_impact" + std::to_string((rand() % 2) + 1), Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction);
 				}
 				else if (Camera::GetRayInfo2()->collider->GetStatic())
 				{
-					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
+					AssetManager::AddDecal(Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
 				}
 			}
 

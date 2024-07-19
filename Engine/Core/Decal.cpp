@@ -8,7 +8,7 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 	glm::vec3 rotationAxis = glm::cross(normal, up);
 	float angle = acos(glm::dot(normal, up));
 
-	modelMatrix = glm::translate(glm::mat4(1), position);
+	modelMatrix = glm::translate(glm::mat4(1), position + normal / 10.0f);
     modelMatrix *= glm::mat4_cast(glm::quat(rotationAxis * -angle));
     modelMatrix = glm::scale(modelMatrix, scale);
 

@@ -18,6 +18,8 @@
 #include "Engine/Game/Door.h"
 #include "Engine/Game/Gun.h"
 #include "Engine/Game/Crate.h"
+#include "Engine/Game/Window.h"
+
 
 
 
@@ -44,6 +46,7 @@ private:
 	std::vector<Door> doors;
 	std::vector<Crate> crates;
 	std::vector<GunPickUp> gunPickUps;
+	std::vector<Window> windows;
 
 	
 };

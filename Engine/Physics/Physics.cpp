@@ -80,12 +80,14 @@ Cube::Cube(glm::vec3 postion, float width, float height, float depth, std::strin
 Cube::Cube(GameObject* gameobject, std::string name) {
 	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
 
-	float minx = vertices[0].x;
-	float maxx = vertices[0].x;
-	float miny = vertices[0].y;
-	float maxy = vertices[0].y;
-	float minz = vertices[0].z;
-	float maxz = vertices[0].z;
+	glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+
+	float minx = startvert.x;
+	float maxx = startvert.x;
+	float miny = startvert.y;
+	float maxy = startvert.y;
+	float minz = startvert.z;
+	float maxz = startvert.z;
 
 	for (int i = 0; i < vertices.size()-1; i++)
 	{
@@ -279,12 +281,15 @@ float Cube::intersect(Ray r, float t0, float t1) {
 void Cube::Regenerate(GameObject* gameobject) {
 	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
 
-	float minx = vertices[0].x;
-	float maxx = vertices[0].x;
-	float miny = vertices[0].y;
-	float maxy = vertices[0].y;
-	float minz = vertices[0].z;
-	float maxz = vertices[0].z;
+	glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+	glm::vec4 lastvert = glm::vec4(vertices[1].x, vertices[1].y, vertices[1].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+
+	float minx = startvert.x;
+	float maxx = startvert.x;
+	float miny = startvert.y;
+	float maxy = lastvert.y;
+	float minz = lastvert.z;
+	float maxz = lastvert.z;
 
 	for (int i = 0; i < vertices.size() - 1; i++)
 	{

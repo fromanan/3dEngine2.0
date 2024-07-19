@@ -3,7 +3,9 @@
 #include "Engine/Core/AssetManager.h"
 
 
+GameObject::GameObject() {
 
+}
 GameObject::GameObject(std::string name, bool save) {
 	this->name = name;
 	parentName = "";

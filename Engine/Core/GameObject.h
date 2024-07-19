@@ -24,6 +24,7 @@
 class GameObject
 {
 public:
+	GameObject();
 	GameObject(std::string name, bool save);
 	GameObject(std::string name, glm::vec3 position, bool save);
 	GameObject(std::string name, const char* path, bool save);
