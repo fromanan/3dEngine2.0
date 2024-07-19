@@ -143,8 +143,6 @@
     <None Include="Assets\Shaders\ShadowShader.frag" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\Pictures\Screenshots\Screenshot (6).png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <Text Include="todo.txt" />
   </ItemGroup>
 </Project>

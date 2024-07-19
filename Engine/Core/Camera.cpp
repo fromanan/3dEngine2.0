@@ -110,6 +110,15 @@ namespace Camera {
 		currentRayInfo2.distance = 9999;
 		currentRayInfo2.name = "Nothing";
 
+		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
+			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());
+
+		else if (verticalAngle > maxAngle)
+			verticalAngle = maxAngle;
+
+		else if (verticalAngle < -maxAngle)
+			verticalAngle = -maxAngle;
+
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
 		direction = glm::vec3(
 			cos(verticalAngle) * sin(horizontalAngle),

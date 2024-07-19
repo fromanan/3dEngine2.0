@@ -1,7 +1,9 @@
 #pragma once
 #include "Engine.h"
-
-
+//rewrite of my first 3D Engine
+//Not sure what im going to call it yet 
+//this Engine is fueled by coffee and sleep deprivation
+//https://github.com/HaydenD100
 
 namespace Engine {
 	
@@ -38,8 +40,6 @@ namespace Engine {
 				previousTime = currentTime;
 			}
 
-
-			
 			//Update Managers
 			float test = glfwGetTime();
 			Input::Update();

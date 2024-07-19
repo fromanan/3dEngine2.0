@@ -16,7 +16,6 @@ namespace Player
 	RigidBody* rb;
 	Cube* collider;
 	std::string gunName = "";
-
 	std::string interactingWithName = "nothing";
 	float interactDistance = 2;
 
@@ -56,8 +55,10 @@ namespace Player
 					AssetManager::AddDecal(Camera::GetRay().origin + (Camera::GetRayInfo2()->distance - 0.015f) * Camera::GetRay().direction, Camera::GetRayInfo2()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
 					AudioManager::PlaySound("glass_impact" + std::to_string((rand() % 2) + 1), Camera::GetRay().origin + distance * Camera::GetRay().direction);
 				}
-				else
+				else if (Camera::GetRayInfo2()->collider->GetStatic())
+				{
 					AssetManager::AddDecal(Camera::GetRay().origin + distance * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.03, 0.03, 0.03), AssetManager::GetTexture("bullet_hole"));
+				}
 			}
 
 			if (SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName()) != NULL) {
@@ -76,24 +77,21 @@ namespace Player
 	void Player::Update(float deltaTime) {
 		collider = PhysicsManager::GetColider("PlayerCollider");
 		rb = PhysicsManager::GetRigidbody("PlayerRB");
-		std::cout << Camera::GetRayInfo2()->name << " ray1: " << Camera::GetRayInfo()->name << std::endl;
+		//std::cout << Camera::GetRayInfo2()->name << " ray1: " << Camera::GetRayInfo()->name << std::endl;
 		//little hack cause idk why max is being changed after a new cube is added after dropping weapon
 		collider->setDimensions(0.5,4,0.5);
 
 		interactingWithName = "Nothing";
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
-		{
 			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());
-		}
+		
 		else if (verticalAngle > maxAngle)
-		{
 			verticalAngle = maxAngle;
-		}
+		
 		else if (verticalAngle < -maxAngle)
-		{
 			verticalAngle = -maxAngle;
-		}
+		
 		forward = glm::vec3(
 			sin(horizontalAngle + 3.14f),
 			0,

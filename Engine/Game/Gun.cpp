@@ -143,7 +143,7 @@ void GunPickUp::Update() {
 }
 
 bool GunPickUp::Interact() {
-	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() != gunName && Player::SelectWeapon(gunName)) {
+	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() == "nothing" && Player::SelectWeapon(gunName)) {
 		AssetManager::RemoveGameObject(objectName);
 		PhysicsManager::RemoveCube(objectName);
 		PhysicsManager::RemoveRigidbody(objectName);
