@@ -33,7 +33,7 @@ namespace Player
 		AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), false);
 		AssetManager::GetGameObject("player")->SetRender(false);
 		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 0, 5), "PlayerRB");
-		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.5, 4, 0.5, "PlayerCollider");
+		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.3, 4, 0.3, "PlayerCollider");
 		rb->SetColider("PlayerCollider");
 		std::cout << "loading player model" << std::endl;
 
@@ -149,7 +149,7 @@ namespace Player
 				Shoot();
 			}
 			if (Input::KeyPressed('q') && !reloading) {
-				SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.0f);
+				SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.5f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
 				gunName = "nothing";
 			}

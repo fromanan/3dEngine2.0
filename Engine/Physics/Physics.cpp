@@ -186,52 +186,56 @@ glm::vec3 Cube::getMax() {
 void Cube::SetIsTrigger(bool trigger) {
 	isTrigger = trigger;
 }
-bool Cube::TouchingLeft(Cube* colider, float velocity) {
-	return this->position.x + velocity - this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
-		this->position.x + this->width / 2 > colider->getPosition().x + colider->getWidth() / 2 &&
-		this->position.z + this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
-		this->position.z - this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
-		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
-		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
-	
-}
 bool Cube::TouchingRight(Cube* colider, float velocity) {
-	return this->position.x + velocity + this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
-		this->position.x - this->width / 2 < colider->getPosition().x - colider->getWidth() / 2 &&
-		this->position.z + this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
-		this->position.z - this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
-		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
-		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
+	return this->getMax().x + velocity > colider->getMin().x &&
+		this->getMin().x < colider->getMin().x &&
+		this->getMax().z > colider->getMin().z &&
+		this->getMin().z < colider->getMax().z &&
+		this->getMin().y < colider->getMax().y &&
+		this->getMax().y > colider->getMin().y;
 }
+
+bool Cube::TouchingLeft(Cube* colider, float velocity) {
+	return this->getMin().x + velocity < colider->getMax().x &&
+		this->getMax().x > colider->getMax().x &&
+		this->getMax().z > colider->getMin().z &&
+		this->getMin().z < colider->getMax().z &&
+		this->getMin().y < colider->getMax().y &&
+		this->getMax().y > colider->getMin().y;
+}
+
 bool Cube::TouchingFront(Cube* colider, float velocity) {
-	return this->position.z + velocity - this->depth / 2 < colider->getPosition().z + colider->getDepth() / 2 &&
-		this->position.z + this->depth / 2 > colider->getPosition().z + colider->getDepth() / 2 && 
-		this->position.x + this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
-		this->position.x - this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
-		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
-		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;
+	return this->getMin().z + velocity < colider->getMax().z &&
+		this->getMax().z > colider->getMax().z &&
+		this->getMax().x > colider->getMin().x &&
+		this->getMin().x < colider->getMax().x &&
+		this->getMin().y < colider->getMax().y &&
+		this->getMax().y > colider->getMin().y;
 }
+
 bool Cube::TouchingBack(Cube* colider, float velocity) {
-	return this->position.z + velocity + this->depth / 2 > colider->getPosition().z - colider->getDepth() / 2 &&
-		this->position.z - this->depth / 2 < colider->getPosition().z - colider->getDepth() / 2 &&
-		this->position.x + this->width / 2 < colider->getPosition().x + colider->getWidth() / 2 &&
-		this->position.x - this->width / 2 > colider->getPosition().x - colider->getWidth() / 2 &&
-		this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
-		this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2;;
+	return this->getMax().z + velocity > colider->getMin().z &&
+		this->getMin().z < colider->getMin().z &&
+		this->getMax().x > colider->getMin().x &&
+		this->getMin().x < colider->getMax().x &&
+		this->getMin().y < colider->getMax().y &&
+		this->getMax().y > colider->getMin().y;
 }
-bool Cube::TouchingBottom(Cube* colider, float velocity) {	
-	return this->position.y - this->height / 2 < colider->getPosition().y + colider->getHeight() / 2 &&
-		this->getPosition().x > colider->getPosition().x - colider->getWidth() / 2 &&
-		this->position.x < colider->getPosition().x + colider->getWidth() / 2 &&
-		this->getPosition().z > colider->getPosition().z - colider->getDepth() / 2 && 
-		this->position.z < colider->getPosition().z + colider->getDepth() / 2;
+
+bool Cube::TouchingBottom(Cube* colider, float velocity) {
+	return this->getMin().y < colider->getMax().y &&
+		this->getMax().x > colider->getMin().x &&
+		this->getMin().x < colider->getMax().x &&
+		this->getMax().z > colider->getMin().z &&
+		this->getMin().z < colider->getMax().z;
 }
+
 bool Cube::TouchingTop(Cube* colider, float velocity) {
-	return this->position.y + this->height / 2 > colider->getPosition().y - colider->getHeight() / 2 &&
-		this->getPosition().x > colider->getPosition().x - colider->getWidth() / 2 && 
-		this->position.x < colider->getPosition().x + colider->getWidth() / 2 &&
-		this->getPosition().z > colider->getPosition().z - colider->getDepth() / 2 && 
-		this->position.z < colider->getPosition().z + colider->getDepth() / 2;
+	return this->getMax().y > colider->getMin().y &&
+		this->getMax().x > colider->getMin().x &&
+		this->getMin().x < colider->getMax().x &&
+		this->getMax().z > colider->getMin().z &&
+		this->getMin().z < colider->getMax().z;
 }
 //Returns -1 if there is no intersection
 float Cube::intersect(Ray r, float t0, float t1) {
