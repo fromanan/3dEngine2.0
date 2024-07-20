@@ -402,7 +402,7 @@ namespace PhysicsManager {
 
 	//forces
 	float friction = 7;
-	float Gravity = -12;
+	float Gravity = -20;
 
 	bool UpdatedCamera = false;
 
@@ -422,23 +422,28 @@ namespace PhysicsManager {
 						coliders.erase(coliders.begin() + col);
 						continue;
 					}
-
 					if (!UpdatedCamera)
 						Camera::CheckIntersectingWithRay(&coliders[col]);
 					if (rb_collider->GetName() == coliders[col].GetName() || coliders[col].GetIsTrigger())
 						continue;
 					if (rigidbodies[i].GetForce().x < 0 && rb_collider->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
-						rigidbodies[i].RemoveForceX();
+						rigidbodies[i].SetForce(-0.2f * rigidbodies[i].GetForce());
+						///rigidbodies[i].RemoveForceX();
 					if (rigidbodies[i].GetForce().x > 0 && rb_collider->TouchingRight(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
-						rigidbodies[i].RemoveForceX();
+						rigidbodies[i].SetForceX(-0.2f * rigidbodies[i].GetForce().x);
+						//rigidbodies[i].RemoveForceX();
 					if (rigidbodies[i].GetForce().z > 0 && rb_collider->TouchingBack(&coliders[col], rigidbodies[i].GetForce().z * deltaTime))
-						rigidbodies[i].RemoveForceZ();
+						rigidbodies[i].SetForceZ(-0.2f * rigidbodies[i].GetForce().z);
+						//rigidbodies[i].RemoveForceZ();
 					if (rigidbodies[i].GetForce().z < 0 && rb_collider->TouchingFront(&coliders[col], rigidbodies[i].GetForce().z * deltaTime))
-						rigidbodies[i].RemoveForceZ();
+						rigidbodies[i].SetForceZ(-0.2f * rigidbodies[i].GetForce().z);
+						//rigidbodies[i].RemoveForceZ();
 					if (rigidbodies[i].GetForce().y > 0 && rb_collider->TouchingTop(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
-						rigidbodies[i].RemoveForceY();
+						rigidbodies[i].SetForceY(-0.9f * rigidbodies[i].GetForce().y);
+						//rigidbodies[i].RemoveForceY();
 					if (rigidbodies[i].GetForce().y < 0 && rb_collider->TouchingBottom(&coliders[col], rigidbodies[i].GetForce().y * deltaTime))
-						rigidbodies[i].RemoveForceY();
+						rigidbodies[i].SetForceY(-0.9f * rigidbodies[i].GetForce().y);
+						//rigidbodies[i].RemoveForceY();
 				}
 				if (!UpdatedCamera)
 					UpdatedCamera = true;
@@ -491,6 +496,4 @@ namespace PhysicsManager {
 				rigidbodies.erase(rigidbodies.begin() + i);
 		}
 	}
-
-
 };
