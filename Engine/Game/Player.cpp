@@ -48,10 +48,11 @@ namespace Player
 			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
 			if (Camera::GetLookingAtCollider()->GetStatic())
 			{
-				if (Camera::GetRayInfo2()->collider->GetStatic() && Camera::GetLookingAtCollider()->GetTag() == "glass") {
+				if (Camera::GetLookingAtCollider()->GetTag() == "glass") {
 					AssetManager::AddDecal(Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction, Camera::GetRayInfo()->normal, glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole_glass"));
 					AssetManager::AddDecal(Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction, -1.0f * Camera::GetRayInfo()->normal, glm::vec3(0.02, 0.02, 0.02), AssetManager::GetTexture("bullet_hole_glass"));
-					AssetManager::AddDecal(Camera::GetRay().origin + (Camera::GetRayInfo2()->distance - 0.015f) * Camera::GetRay().direction, Camera::GetRayInfo2()->normal, glm::vec3(0.02, 0.02, 0.02), AssetManager::GetTexture("bullet_hole"));
+					if(Camera::GetRayInfo2()->collider->GetStatic())
+						AssetManager::AddDecal(Camera::GetRay().origin + (Camera::GetRayInfo2()->distance - 0.015f) * Camera::GetRay().direction, Camera::GetRayInfo2()->normal, glm::vec3(0.02, 0.02, 0.02), AssetManager::GetTexture("bullet_hole"));
 					AudioManager::PlaySound("glass_impact" + std::to_string((rand() % 2) + 1), Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction);
 				}
 				else if (Camera::GetRayInfo2()->collider->GetStatic())

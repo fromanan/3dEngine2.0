@@ -406,7 +406,7 @@ namespace PhysicsManager {
 
 	//forces
 	float friction = 7;
-	float Gravity = -20;
+	float Gravity = -12;
 
 	bool UpdatedCamera = false;
 

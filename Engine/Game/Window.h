@@ -16,7 +16,6 @@ public:
 	Window(std::string name, const char* frame_path, Texture* frame_texture, const char* window_path, Texture* window_texture, glm::vec3 position, glm::vec3 rotation);
 	void Render(GLuint programID, glm::mat4 View, glm::mat4 projection);
 private:
-	GameObject frame;
 	GameObject window;
 	std::string name;
 };

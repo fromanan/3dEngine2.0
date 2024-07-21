@@ -48,7 +48,8 @@ void Scene::Load() {
 	crates.push_back(Crate(glm::vec3(15, 0, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(13, 0, 5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 
-
+	windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
+	windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
 	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
 	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
@@ -57,8 +58,6 @@ void Scene::Load() {
 	AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
 	gunPickUps.push_back(GunPickUp("glock", "glock_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
 	AssetManager::GetGameObject("glock_pickup")->SetRender(false);
-
-
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
@@ -73,18 +72,8 @@ void Scene::Load() {
 	};
 	sky = SkyBox(faces);
 
-
-
-	AssetManager::AddGameObject("window_frame", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), glm::vec3(9, 0.5, 5), true);
-	AssetManager::GetGameObject("window_frame")->SetRotationY(1.57079632679f);
-	AssetManager::AddGameObject("window", "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), true);
-	AssetManager::GetGameObject("window")->SetRotationY(1.57079632679f);
-
-
-	windows.push_back(Window("window", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
-
-	PhysicsManager::AddCube(AssetManager::GetGameObject("window"), "glass_collider");
-	PhysicsManager::GetColider("glass_collider")->SetTag("glass");
+	
+	
 
 	Player::Init();
 	Player::setPosition(glm::vec3(3, 5, 0));
