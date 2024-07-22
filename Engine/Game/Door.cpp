@@ -12,6 +12,7 @@ Door::Door(std::string Name, const char* doorPath, const char* framePath, Textur
 
 	opened = false;
 	opening = false;
+	
 
 	door_position = position;
 }

@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "bullet/btBulletDynamicsCommon.h"
+
 
 #define SCREENWIDTH 1024
 #define SCREENHEIGHT 768
@@ -33,5 +35,8 @@ struct Transform {
     };
 };
 
+
+btVector3 glmToBtVector3(const glm::vec3& vec);
+glm::vec3 btToGlmVector3(const btVector3& vec);
 
 //I do want to add a mesh instead of storing all the obj info in Gameobject this will also make it easy to allow multiple GameObjects to use the same mesh without loading a model each time

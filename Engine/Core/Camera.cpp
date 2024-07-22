@@ -104,6 +104,7 @@ namespace Camera {
 	}
 
 	void Camera::Update(float dt) {
+		position.y += 1.5;
 		currentRayInfo.distance = 9999;
 		currentRayInfo.name = "Nothing";
 

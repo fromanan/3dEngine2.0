@@ -1,5 +1,7 @@
 #pragma once
 #include "Engine.h"
+#include "Engine/Physics/BulletPhysics.h"
+
 //rewrite of my first 3D Engine
 //Not sure what im going to call it yet 
 //this Engine is fueled by coffee and sleep deprivation
@@ -13,6 +15,7 @@ namespace Engine {
 		Input::HideCursor();
 		Text2D::initText2D("Assets/Fonts/Holstein.DDS");
 		AudioManager::Init();
+		PhysicsManagerBullet::Init();
 
 		Scene basicScene = Scene();
 		SceneManager::Init();
@@ -46,13 +49,14 @@ namespace Engine {
 			Input::CenterMouse();
 
 			PhysicsManager::Update(dt);
+			PhysicsManagerBullet::Update(dt);
 			SceneManager::Update(dt);
 			AudioManager::Update();
 			//AnimationManager::Update(dt);
 			//Rendering
-			Camera::Update(dt);
 			Renderer::ClearScreen();
 			SceneManager::Render();
+			Camera::Update(dt);
 			std::ostringstream oss;
 			oss << "FPS: " << FPS;
 			Renderer::RenderText(oss.str().c_str(), 660, 585, 15);

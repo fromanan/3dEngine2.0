@@ -31,22 +31,19 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
 	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
 
+	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("floor"), "floor",Box));
+	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence1"), "fence1_collider", Box));
+	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence2"), "fence2_collider", Box));
+	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence3"), "fence3_collider", Box));
+	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence4"), "fence4_collider", Box));
 
-
-
-
-	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("fence1"), "fence1_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("fence2"), "fence2_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("fence3"), "fence3_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("fence4"), "fence4_collider");
-	PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
+	//PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 
 
 	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
 
-	crates.push_back(Crate(glm::vec3(15, 0, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(13, 0, 5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(15, 10, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(13, 10, 5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 
 	windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 	windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
@@ -155,7 +152,7 @@ void Scene::RenderObjects() {
 	glm::vec3 pos = Player::getPosition();
 	oss << "Pos x:" << pos.x << " y:" << pos.y << " z:" << pos.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
-	glm::vec3 vel = PhysicsManager::GetRigidbody("PlayerRB")->GetForce();
+	glm::vec3 vel = btToGlmVector3(PhysicsManagerBullet::GetCollider("Player_Collider")->GetRigidBody()->getTotalForce());
 	oss.str(""); oss.clear();
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;

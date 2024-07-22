@@ -1,7 +1,4 @@
 #pragma once
-#include "Core/Input.h"
-#include "Core/Camera.h"
-#include "Engine/Game/Gun.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -9,6 +6,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Engine/Audio/Audio.h"
+#include "Core/Input.h"
+#include "Core/Camera.h"
+#include "Engine/Game/Gun.h"
+#include "Engine/Physics/BulletPhysics.h"
+
+#include "Engine/Core/Common.h"
+
+
 
 #include <string>
 
