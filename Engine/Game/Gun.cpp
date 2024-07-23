@@ -55,7 +55,7 @@ namespace WeaponManager {
 
 		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
 		AssetManager::AddGameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box);
-		AssetManager::GetGameObject("ak47")->SetRender(true);
+		AssetManager::GetGameObject("ak47")->SetRender(false);
 		AssetManager::GetGameObject("ak47")->SetParentName("player");
 
 

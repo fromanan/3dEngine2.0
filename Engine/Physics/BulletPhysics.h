@@ -14,7 +14,8 @@
 enum ColliderShape {
 	Box,
 	Sphere,
-	Cylinder
+	Cylinder,
+	Capsule
 };
 
 /*

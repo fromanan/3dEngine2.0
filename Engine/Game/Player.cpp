@@ -13,7 +13,7 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 20000;
+	float speed = 3000;
 	float jumpforce = 50;
 	std::string gunName = "";
 	std::string interactingWithName = "nothing";
@@ -29,9 +29,10 @@ namespace Player
 
 	void Player::Init() {
 		srand(time(0));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Box,0.5,2,0.5));
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Capsule,0.5,2,0.5));
 		AssetManager::GetGameObject("player")->SetRender(false);
-		AssetManager::GetGameObject("player")->GetRigidBody()->setFriction(0.1f);
+		AssetManager::GetGameObject("player")->GetRigidBody()->setFriction(0.4f);
+		AssetManager::GetGameObject("player")->GetRigidBody()->setRestitution(0.0f);
 
 
 		// Add the constraint to the world
@@ -40,13 +41,17 @@ namespace Player
 		gunName = "ak47";
 	}
 	void Player::Shoot() {
-		/*
+		
 		if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
 		{
 			WeaponManager::GetGunByName(gunName)->currentammo--;
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
+
+			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
+			AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
+			/*
 			if (Camera::GetLookingAtCollider()->GetStatic())
 			{
 				if (Camera::GetLookingAtCollider()->GetTag() == "glass") {
@@ -71,13 +76,15 @@ namespace Player
 				glm::vec3 force = Camera::GetRay().origin + (Camera::GetLookingAtDistance() * 1) * Camera::GetRay().direction - Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction;
 				SceneManager::GetCurrentScene()->GetCrate(Camera::GetLookingAtName())->DealDamage(WeaponManager::GetGunByName(gunName)->damage, Camera::GetRay().origin + Camera::GetLookingAtDistance() * Camera::GetRay().direction, force * 10.0f);
 			}
+			*/
 		}
 		else {
 			//click click
 			AudioManager::PlaySound("dry_fire", AssetManager::GetGameObject("player")->getPosition());
 		}
+		
 		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
-		*/
+		
 	}
 
 	void Player::Update(float deltaTime) {
@@ -150,16 +157,11 @@ namespace Player
 			}
 			
 			//get ray details
-			if (Input::LeftMousePressed() && Camera::GetRayHit().hasHit()){ // && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
-				btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-				std::cout << "shoot";
-				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
-				//Shoot();
+			if (Input::LeftMousePressed() && Camera::GetRayHit().hasHit() && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+				Shoot();
 			}
 			else if (Input::LeftMouseDown() && Camera::GetRayHit().hasHit() < 9999 && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
-				btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
-				//Shoot();
+				Shoot();
 			}
 			if (Input::KeyPressed('q') && !reloading) {
 				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.5f);
@@ -190,8 +192,8 @@ namespace Player
 
 		//AssetManager::GetGameObject("player")->GetRigidBody()->setLinearVelocity(btVector3(0.0f, AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity().y(), 0.0f));
 		AssetManager::GetGameObject("player")->setRotation(glm::vec3(0, horizontalAngle, 0));
+		
 
-		std::cout << " x: " << AssetManager::GetGameObject("player")->getRotation().x << " y: " << AssetManager::GetGameObject("player")->getRotation().y << " z: " << AssetManager::GetGameObject("player")->getRotation().z << std::endl;
 
 
 	}

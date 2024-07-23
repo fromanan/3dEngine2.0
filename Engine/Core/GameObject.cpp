@@ -84,6 +84,22 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		dimensions = maxPoint - minPoint;
 		collider = new btSphereShape(btScalar(dimensions.x / 2));
 	}
+	else if (shape == Capsule) {
+		glm::vec3 minPoint(std::numeric_limits<float>::max());
+		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
+
+		for (const auto& vertex : indexed_vertices) {
+			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
+			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
+			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
+
+			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
+			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
+			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
+		}
+		dimensions = maxPoint - minPoint;
+		collider = new btCapsuleShape(btScalar(dimensions.x / 2), (btScalar(dimensions.y / 2)));
+	}
 	std::cout << "width: " << dimensions.x << "height " << dimensions.y << " depth " << dimensions.z << std::endl;
 	std::cout << "posx " << position.x << "posy " << position.y << " posz " << position.z << std::endl;
 
