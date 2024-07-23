@@ -3,15 +3,11 @@
 
 Window::Window(std::string name, const char* frame_path, Texture* frame_texture, const char* window_path, Texture* window_texture, glm::vec3 position, glm::vec3 rotation) {
 	this->name = name;
-	window = GameObject(name, window_path, window_texture, position, false);
+	window = GameObject(name, window_path, window_texture, position, false,0,Box);
 	window.setRotation(rotation);
 	//You want the frame to be rendered before the windows are
-	AssetManager::AddGameObject(name + "_frame", frame_path, frame_texture, position, false);
+	AssetManager::AddGameObject(name + "_frame", frame_path, frame_texture, position, false,0,Box);
 	AssetManager::GetGameObject(name + "_frame")->setRotation(rotation);
-
-	PhysicsManager::AddCube(&window,name);
-	PhysicsManager::GetColider(name)->SetTag("glass");
-
 }
 void Window::Render(GLuint programID, glm::mat4 View, glm::mat4 projection) {
 	if (window.ShouldRender())

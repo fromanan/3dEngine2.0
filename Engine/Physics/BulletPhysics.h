@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Engine/Core/GameObject.h"
+//#include "Engine/Core/GameObject.h"
 
 
 enum ColliderShape {
@@ -17,7 +17,7 @@ enum ColliderShape {
 	Cylinder
 };
 
-
+/*
 class Collider {
 public:
 	Collider();
@@ -49,6 +49,7 @@ private:
 	btTransform transform;
 	btRigidBody* body;
 };
+*/
 
 
 
@@ -56,8 +57,9 @@ namespace PhysicsManagerBullet{
 	void Init();
 	void Update(float deltaTime);
 	void AddColliderShape(btCollisionShape* collider);
-	void AddCollider(Collider collider);
-	void RemoveCollider(std::string name);
+	//void AddCollider(Collider collider);
+	//void RemoveCollider(std::string name);
 	void AddRigidBody(btRigidBody* body);
-	Collider* GetCollider(std::string Name);
+	btDiscreteDynamicsWorld* GetDynamicWorld();
+	//Collider* GetCollider(std::string Name);
 }

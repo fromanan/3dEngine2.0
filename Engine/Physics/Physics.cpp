@@ -395,7 +395,7 @@ std::string RigidBody::GetColider() {
 	return colider;
 }
 glm::vec3 RigidBody::GetForce() {
-	return velocity;
+	return glm::vec3(0,0,0);
 }
 
 

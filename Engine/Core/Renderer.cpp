@@ -301,6 +301,9 @@ namespace Renderer {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		glBindVertexArray(Renderer::quadVAO);
 
+		LoadShader("Assets/Shaders/lineshader.vert", "Assets/Shaders/lineshader.frag", "line");
+
+
 		UseProgram(GetProgramID(name));
 
 		return 0;

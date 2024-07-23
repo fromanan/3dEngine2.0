@@ -2,7 +2,7 @@
 #include "Engine/Core/GameObject.h"
 #include "string"
 #include "Engine/Core/AssetManager.h"
-#include "Engine/Physics/Physics.h"
+//#include "Engine/Physics/Physics.h"
 #include "Engine/Game/Player.h"
 #include "Engine/Audio/Audio.h"
 

@@ -93,6 +93,9 @@
     <ClCompile Include="Engine\Physics\BulletPhysics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Debug\DebugDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Scene\Scene.h">
@@ -152,6 +155,9 @@
     <ClInclude Include="Engine\Backend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Debug\DebugDrawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\SkyBoxShader.vert" />
@@ -159,6 +165,8 @@
     <None Include="Assets\Saves\mainScene.json" />
     <None Include="Assets\Shaders\ShadowShader.vert" />
     <None Include="Assets\Shaders\ShadowShader.frag" />
+    <None Include="Assets\Shaders\lineshader.frag" />
+    <None Include="Assets\Shaders\lineshader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="todo.txt" />

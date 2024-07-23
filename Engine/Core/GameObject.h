@@ -13,6 +13,8 @@
 
 #include "../Loaders/vboindexer.h"
 #include "../Loaders/loader.hpp"
+#include "Engine/Physics/BulletPhysics.h"
+
 
 
 #include <assimp/Importer.hpp>
@@ -25,13 +27,15 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(std::string name, bool save);
-	GameObject(std::string name, glm::vec3 position, bool save);
-	GameObject(std::string name, const char* path, bool save);
-	GameObject(std::string name, const char* path, glm::vec3 position, bool save);
-	GameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save);
+	GameObject(std::string name, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, const char* path, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape,float width, float height, float depth);
+
 	GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
-		std::vector<glm::vec3> indexed_vertices,std::vector<glm::vec2> indexed_uvs,std::vector<glm::vec3> indexed_normals, bool save);
+		std::vector<glm::vec3> indexed_vertices,std::vector<glm::vec2> indexed_uvs,std::vector<glm::vec3> indexed_normals, bool save, float mass, ColliderShape shape);
 	GameObject(std::string name, std::string parentname, Texture* texure, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
 		std::vector<glm::vec3> vertices,
 		std::vector<glm::vec2> uvs,
@@ -46,7 +50,7 @@ public:
 		std::vector<glm::vec3> indexed_bitangents, 
 		bool canSave,
 		bool render,
-		bool shouldDelete);
+		bool shouldDelete, float mass, ColliderShape shape);
 
 	void LoadModel(const char* path);
 	void Copy(std::string copyName);
@@ -105,6 +109,9 @@ public:
 		std::vector<glm::vec3>& bitangents
 	);
 
+	btRigidBody* GetRigidBody();
+	btCollisionShape* GetCollisionShape();
+
 
 
 private:
@@ -136,6 +143,10 @@ private:
 	GLuint VertexArrayID;
 	GLuint tangentbuffer;
 	GLuint bitangentbuffer;
+	//phyiscs stuff
+	btCollisionShape* collider;
+	btTransform Btransform;
+	btRigidBody* body;
 
 
 

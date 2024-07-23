@@ -1,17 +1,21 @@
 #pragma once
 #include "GameObject.h"
 #include "Engine/Core/AssetManager.h"
+#include "Engine/Physics/BulletPhysics.h"
+
 
 
 GameObject::GameObject() {
 
 }
-GameObject::GameObject(std::string name, bool save) {
+GameObject::GameObject(std::string name, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	parentName = "";
 
+
+
 }
-GameObject::GameObject(std::string name, glm::vec3 position, bool save) {
+GameObject::GameObject(std::string name, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	setPosition(position);
 	parentName = "";
@@ -19,7 +23,7 @@ GameObject::GameObject(std::string name, glm::vec3 position, bool save) {
 
 
 }
-GameObject::GameObject(std::string name, const char* path, bool save) {
+GameObject::GameObject(std::string name, const char* path, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	LoadModel(path);
 	parentName = "";
@@ -27,7 +31,7 @@ GameObject::GameObject(std::string name, const char* path, bool save) {
 
 
 }
-GameObject::GameObject(std::string name, const char* path, glm::vec3 position, bool save) {
+GameObject::GameObject(std::string name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	LoadModel(path);
 	setPosition(position);
@@ -36,7 +40,7 @@ GameObject::GameObject(std::string name, const char* path, glm::vec3 position, b
 
 
 }
-GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save) {
+GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	setPosition(position);
 	this->texture = texture;
@@ -44,10 +48,106 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	parentName = "";
 	canSave = save;
 
+	float width = 1;
+	float height = 1;
+	float depth = 1;
+	Btransform.setOrigin(glmToBtVector3(position));
+	
+	if (shape == Box) {
+		std::vector<glm::vec3> vertices = indexed_vertices;
+
+		glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), getScale());
+		float minx = startvert.x;
+		float maxx = startvert.x;
+		float miny = startvert.y;
+		float maxy = startvert.y;
+		float minz = startvert.z;
+		float maxz = startvert.z;
+
+		for (int i = 0; i < vertices.size() - 1; i++)
+		{
+			glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
+			tempVec = tempVec * (glm::rotate(glm::mat4(1), getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), getScale());
+			if (tempVec.x < minx)
+				minx = tempVec.x;
+			if (tempVec.x > maxx)
+				maxx = tempVec.x;
+
+			if (tempVec.y < miny)
+				miny = tempVec.y;
+			if (tempVec.y > maxy)
+				maxy = tempVec.y;
+
+			if (tempVec.z < minz)
+				minz = tempVec.z;
+			if (tempVec.z > maxx)
+				maxz = tempVec.z;
+		}
+
+		//1.05 is for padding because the camera can somtimes clip into the object
+		float width = (maxx - minx);
+		float height = (maxy - miny);
+		float depth = (maxz - minz);
+	}
+
+	
+	collider = new btBoxShape(btVector3(btScalar(width / 2), btScalar(height / 2), btScalar(depth / 2)));
+	PhysicsManagerBullet::AddColliderShape(collider);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic)
+		collider->calculateLocalInertia(btScalar(mass), localInertia);
+
+	Btransform.setIdentity();
+	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
+
+	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
+	body = new btRigidBody(rbInfo);
+
+	body->setActivationState(DISABLE_DEACTIVATION);
+
+
+	//add the body to the dynamics world
+	PhysicsManagerBullet::AddRigidBody(body);
+	
+
+}
+GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth) {
+	this->name = name;
+	setPosition(position);
+	this->texture = texture;
+	LoadModel(path);
+	parentName = "";
+	canSave = save;
+
+	Btransform.setOrigin(glmToBtVector3(position));
+
+	collider = new btBoxShape(btVector3(btScalar(width / 2), btScalar(height / 2), btScalar(depth / 2)));
+	PhysicsManagerBullet::AddColliderShape(collider);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic)
+		collider->calculateLocalInertia(btScalar(mass), localInertia);
+
+	Btransform.setIdentity();
+	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
+
+	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
+	body = new btRigidBody(rbInfo);
+
+	//add the body to the dynamics world
+	PhysicsManagerBullet::AddRigidBody(body);
 }
 
+
 GameObject::GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indice,
-	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms, bool save)
+	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms, bool save, float mass, ColliderShape shape)
 {
 	canSave = save;
 	this->name = name;
@@ -91,7 +191,7 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents,
 	std::vector<glm::vec3> bitangents, std::vector<unsigned short> indices, std::vector<glm::vec3> indexed_vertices,
 	std::vector<glm::vec2> indexed_uvs, std::vector<glm::vec3> indexed_normals, std::vector<glm::vec3> indexed_tangents,
-	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete)
+	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete, float mass, ColliderShape shape)
 {
 	this->name = name;
 	this->parentName = parentname;
@@ -179,7 +279,7 @@ void GameObject::LoadModel(const char* path) {
 
 
 void GameObject::Copy(std::string copyName) {
-	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete));
+	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,Box));
 }
 
 
@@ -187,6 +287,8 @@ void GameObject::Copy(std::string copyName) {
 glm::mat4 GameObject::GetModelMatrix() {
 
 	glm::mat4 matrix = transform.to_mat4();
+	//Btransform.getOpenGLMatrix(glm::value_ptr(matrix));
+
 	if (parentName != "") {
 		GameObject* parent = AssetManager::GetGameObject(parentName);
 		if (parent != NULL) {
@@ -200,7 +302,17 @@ glm::mat4 GameObject::GetLocalModelMatrix() {
 	return transform.to_mat4();
 }
 
+btRigidBody* GameObject::GetRigidBody() {
+	return body;
+}
+btCollisionShape* GameObject::GetCollisionShape() {
+	return collider;
+}
+
 void GameObject::RenderObject(GLuint& programID) {
+	transform.position = glm::vec3(body->getWorldTransform().getOrigin().x(), body->getWorldTransform().getOrigin().y(), body->getWorldTransform().getOrigin().z());
+	transform.rotation = glm::eulerAngles(glm::quat(body->getWorldTransform().getRotation().w(), body->getWorldTransform().getRotation().x(), body->getWorldTransform().getRotation().y(), body->getWorldTransform().getRotation().z()));
+
 	if (!render)
 		return;
 	glUseProgram(programID);
@@ -308,7 +420,7 @@ void GameObject::setScale(glm::vec3 scale) {
 }
 
 glm::vec3 GameObject::getPosition() {
-	return transform.position;
+	return btToGlmVector3(body->getWorldTransform().getOrigin());
 }
 glm::vec3 GameObject::getRotation() {
 	return transform.rotation;

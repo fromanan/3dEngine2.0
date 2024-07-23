@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "Engine/Core/AssetManager.h"
 #include "Engine/Core/Scene/SceneManager.h"
+#include "Engine/Physics/BulletPhysics.h"
+
 
 
 namespace Player
@@ -11,11 +13,8 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 5000;
+	float speed = 4;
 	float jumpforce = 50;
-	RigidBody* rb;
-	Cube* collider;
-	Collider* bCollider;
 	std::string gunName = "";
 	std::string interactingWithName = "nothing";
 	float interactDistance = 2;
@@ -30,17 +29,9 @@ namespace Player
 
 	void Player::Init() {
 		srand(time(0));
-
-		AssetManager::AddGameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 5, 5), false);
-		AssetManager::GetGameObject("player")->SetRender(false);
-		rb = PhysicsManager::AddRigidbody(glm::vec3(0, 5, 5), "PlayerRB");
-		collider = PhysicsManager::AddCube(rb->GetPostion(), 0.3, 4, 0.3, "PlayerCollider");
-		rb->SetColider("PlayerCollider");
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Box,0.5,2,0.5));
+		//AssetManager::GetGameObject("player")->SetRender(false);
 		std::cout << "loading player model" << std::endl;
-
-		PhysicsManagerBullet::AddCollider(Collider(glm::vec3(0, 5, 5), 0.3, 2, 0.3, 1, "Player_Collider",Cylinder));
-		bCollider = PhysicsManagerBullet::GetCollider("Player_Collider");
-
 		gunName = "nothing";
 	}
 	void Player::Shoot() {
@@ -77,18 +68,12 @@ namespace Player
 		}
 		else {
 			//click click
-			AudioManager::PlaySound("dry_fire", bCollider->GetPosition());
+			AudioManager::PlaySound("dry_fire", AssetManager::GetGameObject("player")->getPosition());
 		}
 		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 	}
 
 	void Player::Update(float deltaTime) {
-		//collider = PhysicsManager::GetColider("PlayerCollider");
-		//rb = PhysicsManager::GetRigidbody("PlayerRB");
-		//std::cout << Camera::GetRayInfo2()->name << " ray1: " << Camera::GetRayInfo()->name << std::endl;
-		//little hack cause idk why max is being changed after a new cube is added after dropping weapon
-		collider->setDimensions(0.5,4,0.5);
-
 		interactingWithName = "Nothing";
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
@@ -113,19 +98,23 @@ namespace Player
 		);
 		// Move forward
 		if (Input::KeyDown('w')) {
-			bCollider->GetRigidBody()->applyCentralForce(glmToBtVector3(-forward * speed * deltaTime));
+			AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(-forward * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
+			//AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(-forward * speed * deltaTime));
 		}
 		// Move backward
 		if (Input::KeyDown('s')) {
-			bCollider->GetRigidBody()->applyCentralForce(glmToBtVector3(forward * speed * deltaTime));
+			AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(forward * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
+			//AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(forward * speed * deltaTime));
 		}
 		// Strafe right
 		if (Input::KeyDown('d')) {
-			bCollider->GetRigidBody()->applyCentralForce(glmToBtVector3(right * speed * deltaTime));
+			AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(right * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
+			//AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(right * speed * deltaTime));
 		}
 		// Strafe left
 		if (Input::KeyDown('a')) {
-			bCollider->GetRigidBody()->applyCentralForce(glmToBtVector3(-right * speed * deltaTime));
+			AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(-right * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
+			//AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(-right * speed * deltaTime));
 		}
 		if (Input::KeyPressed('e') && Camera::GetLookingAtDistance() <= interactDistance) {
 			interactingWithName = Camera::GetLookingAtName();
@@ -158,7 +147,7 @@ namespace Player
 				Shoot();
 			}
 			if (Input::KeyPressed('q') && !reloading) {
-				SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.5f);
+				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.5f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
 				gunName = "nothing";
 			}
@@ -168,18 +157,19 @@ namespace Player
 
 		Camera::SetHorizontalAngle(horizontalAngle);
 		Camera::SetVerticalAngle(verticalAngle);
-		Camera::SetPosition(bCollider->GetPosition());
+		Camera::SetPosition(AssetManager::GetGameObject("player")->getPosition());
 
 		//PhysicsManager::GetColider("PlayerCollider")->setPosition(rb->GetPostion());
 
 		AssetManager::GetGameObject("player")->SetRotationX(-verticalAngle);
 		AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
-		AssetManager::GetGameObject("player")->setPosition(bCollider->GetPosition() + glm::vec3(0,1.5,0));
+		//AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setRotation(glmToBtVector3())
+		//AssetManager::GetGameObject("player")->setPosition();
 		if(gunName != "nothing")
 			WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
 
 		if ((Input::KeyDown('w') || Input::KeyDown('a') || Input::KeyDown('s') || Input::KeyDown('d')) && footstepTime + footstep_interval < glfwGetTime() ) {
-			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1), bCollider->GetPosition());
+			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1), AssetManager::GetGameObject("player")->getPosition());
 			footstepTime = glfwGetTime();
 		}
 		
@@ -187,14 +177,14 @@ namespace Player
 		
 	}
 	glm::vec3 Player::getPosition() {
-		return bCollider->GetPosition();
+		return AssetManager::GetGameObject("player")->getPosition();
 	}
 	glm::vec3 Player::getForward() {
 		return forward;
 	}
 	void Player::setPosition(glm::vec3 pos) {
-		bCollider->SetPosition(pos);
-		Camera::SetPosition(bCollider->GetPosition());
+		AssetManager::GetGameObject("player")->setPosition(pos);
+		Camera::SetPosition(AssetManager::GetGameObject("player")->getPosition());
 	}
 	std::string Player::GetInteractingWithName() {
 		return interactingWithName;

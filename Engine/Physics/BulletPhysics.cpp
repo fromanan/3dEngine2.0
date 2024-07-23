@@ -2,13 +2,14 @@
 #include "Engine/Core/AssetManager.h"
 
 
-
+/*
 Collider::Collider() {
 
 }
 Collider::~Collider() {
 
 }
+
 
 Collider::Collider(GameObject* gameobject, std::string Name, float Mass) {
 	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
@@ -72,6 +73,7 @@ Collider::Collider(GameObject* gameobject, std::string Name, float Mass) {
 	//add the body to the dynamics world
 	PhysicsManagerBullet::AddRigidBody(body);
 }
+
 
 //width is radius if Sphere
 Collider::Collider(glm::vec3 position, float width, float height, float depth,float mass, std::string Name, ColliderShape shape) {
@@ -142,9 +144,10 @@ void Collider::SetWidth() {
 void Collider::SetDimensions(float width, float height, float depth) {
 
 }
-void Collider::Regenerate(GameObject* gameobject) {
+//void Collider::Regenerate(GameObject* gameobject) {
 
-}
+//}
+
 
 btRigidBody* Collider::GetRigidBody() {
 	return body;
@@ -152,13 +155,15 @@ btRigidBody* Collider::GetRigidBody() {
 btCollisionShape* Collider::GetCollisionShape() {
 	return collider;
 }
+*/
+
 
 
 
 
 namespace PhysicsManagerBullet {
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
-	std::vector<Collider> colliders;
+	//std::vector<Collider> colliders;
 
 
 	btDiscreteDynamicsWorld* dynamicsWorld;
@@ -166,7 +171,7 @@ namespace PhysicsManagerBullet {
 	btBroadphaseInterface* overlappingPairCache;
 	btCollisionDispatcher* dispatcher;
 	btDefaultCollisionConfiguration* collisionConfiguration;
-
+	/*
 	void AddCollider(Collider collider) {
 		colliders.push_back(collider);
 	}
@@ -183,6 +188,7 @@ namespace PhysicsManagerBullet {
 				colliders.erase(colliders.begin() + i);
 		}
 	}
+	*/
 
 	void AddColliderShape(btCollisionShape* collider) {
 		collisionShapes.push_back(collider);
@@ -190,6 +196,10 @@ namespace PhysicsManagerBullet {
 	void AddRigidBody(btRigidBody* body) {
 		dynamicsWorld->addRigidBody(body);
 	}
+	btDiscreteDynamicsWorld* GetDynamicWorld() {
+		return dynamicsWorld;
+	}
+
 
 	void Init() {
 
@@ -207,11 +217,13 @@ namespace PhysicsManagerBullet {
 
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-		dynamicsWorld->setGravity(btVector3(0, -10, 0));
+		dynamicsWorld->setGravity(btVector3(0, -2, 0));
+
+
 
 	}
 	void Update(float deltaTime) {
-		dynamicsWorld->stepSimulation(deltaTime, deltaTime);
+		dynamicsWorld->stepSimulation(deltaTime,30);
 
 		//print positions of all objects
 		for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
@@ -229,5 +241,7 @@ namespace PhysicsManagerBullet {
 			}
 
 		}
+
+		dynamicsWorld->debugDrawWorld();
 	}
 }

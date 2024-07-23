@@ -53,7 +53,7 @@ namespace AssetManager
 				normal = normal + 2;
 			}
 			bool save = data["GameObjects"][gameobject][16];
-			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save));
+			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box));
 		}
 	}
 
@@ -123,8 +123,8 @@ namespace AssetManager
 		GameObjects.push_back(gameobject);
 		return GameObjects.size() - 1;
 	}
-	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save) {
-		GameObjects.push_back(GameObject(name, path, texture, position,save));
+	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
+		GameObjects.push_back(GameObject(name, path, texture, position,save, mass, shape));
 		return GameObjects.size() - 1;
 	}
 	

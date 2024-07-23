@@ -25,36 +25,39 @@ void Scene::Load() {
 	WeaponManager::Init();
 
 	//AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
-	AssetManager::AddGameObject("fence1", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
-	AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
-	AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
-	AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true);
-	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(3, 0, 0), true);
+	//AssetManager::AddGameObject("fence1", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
+	//AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
+	//AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
+	//AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
+	AssetManager::AddGameObject(GameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box,20,4,200));
 
-	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("floor"), "floor",Box));
-	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence1"), "fence1_collider", Box));
-	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence2"), "fence2_collider", Box));
-	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence3"), "fence3_collider", Box));
-	PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence4"), "fence4_collider", Box));
+	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("floor"), "floor",Box));
+	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence1"), "fence1_collider", Box));
+	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence2"), "fence2_collider", Box));
+	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence3"), "fence3_collider", Box));
+	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence4"), "fence4_collider", Box));
 
 	//PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
 
 
-	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
+	//doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
 
-	crates.push_back(Crate(glm::vec3(15, 10, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(13, 10, 5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	//crates.push_back(Crate(glm::vec3(15, 10, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 
-	windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
-	windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
+	//windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
+	//windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
-	AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
-	AssetManager::GetGameObject("glock_pickup")->SetRender(false);
+	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
+	//gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
+
+	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
+	//AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
+	//gunPickUps.push_back(GunPickUp("glock", "glock_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
+	//AssetManager::GetGameObject("glock_pickup")->SetRender(false);
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
@@ -73,15 +76,9 @@ void Scene::Load() {
 	
 
 	Player::Init();
-	Player::setPosition(glm::vec3(3, 5, 0));
+	Player::setPosition(glm::vec3(3, 10, 0));
 
 	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
-
-	//AudioManager::AddSound("Assets/Audio/test1.wav", "babye", glm::vec3(6, 1, 6), 10);
-	//AudioManager::PlaySound("babye");
-	//AudioManager::PlaySound("babye", 1);
-
-
 }
 
 void Scene::Update(float deltaTime) {
@@ -120,6 +117,7 @@ void Scene::RenderObjects() {
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
 
 		GameObject* gameobjectRender = AssetManager::GetGameObject(i);
+
 		if (!gameobjectRender->ShouldRender())
 			continue;
 
@@ -145,14 +143,14 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		decal->RenderDecal(programid);
 	}
-	glDisable(GL_BLEND);
 
+	glDisable(GL_BLEND);
 	std::ostringstream oss;
 	oss.precision(2);
-	glm::vec3 pos = Player::getPosition();
+	glm::vec3 pos = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
 	oss << "Pos x:" << pos.x << " y:" << pos.y << " z:" << pos.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
-	glm::vec3 vel = btToGlmVector3(PhysicsManagerBullet::GetCollider("Player_Collider")->GetRigidBody()->getTotalForce());
+	glm::vec3 vel = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getTotalForce());
 	oss.str(""); oss.clear();
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;

@@ -47,14 +47,13 @@ namespace Engine {
 			float test = glfwGetTime();
 			Input::Update();
 			Input::CenterMouse();
-
-			PhysicsManager::Update(dt);
+			Renderer::ClearScreen();
+			//PhysicsManager::Update(dt);
 			PhysicsManagerBullet::Update(dt);
 			SceneManager::Update(dt);
 			AudioManager::Update();
 			//AnimationManager::Update(dt);
 			//Rendering
-			Renderer::ClearScreen();
 			SceneManager::Render();
 			Camera::Update(dt);
 			std::ostringstream oss;
