@@ -217,7 +217,7 @@ namespace PhysicsManagerBullet {
 
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-		dynamicsWorld->setGravity(btVector3(0, -2, 0));
+		dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 
 

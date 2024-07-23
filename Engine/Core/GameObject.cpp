@@ -11,9 +11,6 @@ GameObject::GameObject() {
 GameObject::GameObject(std::string name, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	parentName = "";
-
-
-
 }
 GameObject::GameObject(std::string name, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
@@ -52,46 +49,27 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	float height = 1;
 	float depth = 1;
 	Btransform.setOrigin(glmToBtVector3(position));
-	
+	glm::vec3 dimensions(1, 1, 1);
+
 	if (shape == Box) {
-		std::vector<glm::vec3> vertices = indexed_vertices;
+		glm::vec3 minPoint(std::numeric_limits<float>::max());
+		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
-		glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), getScale());
-		float minx = startvert.x;
-		float maxx = startvert.x;
-		float miny = startvert.y;
-		float maxy = startvert.y;
-		float minz = startvert.z;
-		float maxz = startvert.z;
+		for (const auto& vertex : indexed_vertices) {
+			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
+			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
+			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
 
-		for (int i = 0; i < vertices.size() - 1; i++)
-		{
-			glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
-			tempVec = tempVec * (glm::rotate(glm::mat4(1), getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), getScale());
-			if (tempVec.x < minx)
-				minx = tempVec.x;
-			if (tempVec.x > maxx)
-				maxx = tempVec.x;
-
-			if (tempVec.y < miny)
-				miny = tempVec.y;
-			if (tempVec.y > maxy)
-				maxy = tempVec.y;
-
-			if (tempVec.z < minz)
-				minz = tempVec.z;
-			if (tempVec.z > maxx)
-				maxz = tempVec.z;
+			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
+			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
+			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
 		}
-
-		//1.05 is for padding because the camera can somtimes clip into the object
-		float width = (maxx - minx);
-		float height = (maxy - miny);
-		float depth = (maxz - minz);
+		dimensions = maxPoint - minPoint;
 	}
 
+	std::cout << "width: " << dimensions.x << "height " << dimensions.y << " depth " << dimensions.z << std::endl;
 	
-	collider = new btBoxShape(btVector3(btScalar(width / 2), btScalar(height / 2), btScalar(depth / 2)));
+	collider = new btBoxShape(btVector3(btScalar(dimensions.x / 2), btScalar(dimensions.y / 2), btScalar(dimensions.z / 2)));
 	PhysicsManagerBullet::AddColliderShape(collider);
 	bool isDynamic = (mass != 0.f);
 
@@ -308,11 +286,13 @@ btRigidBody* GameObject::GetRigidBody() {
 btCollisionShape* GameObject::GetCollisionShape() {
 	return collider;
 }
-
-void GameObject::RenderObject(GLuint& programID) {
+void GameObject::Update() {
 	transform.position = glm::vec3(body->getWorldTransform().getOrigin().x(), body->getWorldTransform().getOrigin().y(), body->getWorldTransform().getOrigin().z());
 	transform.rotation = glm::eulerAngles(glm::quat(body->getWorldTransform().getRotation().w(), body->getWorldTransform().getRotation().x(), body->getWorldTransform().getRotation().y(), body->getWorldTransform().getRotation().z()));
+}
 
+void GameObject::RenderObject(GLuint& programID) {
+	
 	if (!render)
 		return;
 	glUseProgram(programID);

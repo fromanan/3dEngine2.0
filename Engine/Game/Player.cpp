@@ -30,7 +30,7 @@ namespace Player
 	void Player::Init() {
 		srand(time(0));
 		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Box,0.5,2,0.5));
-		//AssetManager::GetGameObject("player")->SetRender(false);
+		AssetManager::GetGameObject("player")->SetRender(false);
 		std::cout << "loading player model" << std::endl;
 		gunName = "nothing";
 	}

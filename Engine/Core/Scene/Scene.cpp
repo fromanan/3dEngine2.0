@@ -29,7 +29,7 @@ void Scene::Load() {
 	//AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
 	//AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
 	//AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
-	AssetManager::AddGameObject(GameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box,20,4,200));
+	AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
 
 	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("floor"), "floor",Box));
 	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence1"), "fence1_collider", Box));
@@ -84,6 +84,10 @@ void Scene::Load() {
 void Scene::Update(float deltaTime) {
 	Player::Update(deltaTime);
 
+	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
+
+		AssetManager::GetGameObject(i)->Update();
+	}
 	for (int door = 0; door < doors.size(); door++) {
 		doors[door].Interact();
 		doors[door].Update(deltaTime);
@@ -96,6 +100,8 @@ void Scene::Update(float deltaTime) {
 	for (int crate = 0; crate < crates.size(); crate++) {
 		crates[crate].Update();
 	}
+
+	
 	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());
 	AudioManager::Update();
 }
