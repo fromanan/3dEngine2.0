@@ -13,7 +13,7 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 100000;
+	float speed = 20000;
 	float jumpforce = 50;
 	std::string gunName = "";
 	std::string interactingWithName = "nothing";
@@ -37,7 +37,7 @@ namespace Player
 		// Add the constraint to the world
 
 		std::cout << "loading player model" << std::endl;
-		gunName = "nothing";
+		gunName = "ak47";
 	}
 	void Player::Shoot() {
 		/*
@@ -81,9 +81,6 @@ namespace Player
 	}
 
 	void Player::Update(float deltaTime) {
-
-		Camera::GetRayHit();
-		
 		btQuaternion quat;
 		quat.setEuler(0, AssetManager::GetGameObject("player")->getRotation().y, 0);
 		AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setRotation(quat);
@@ -144,26 +141,26 @@ namespace Player
 		else 
 			aiming = false;
 		
-		if (true){//gunName != "nothing"){
-			
-			/*
+		if (gunName != "nothing"){
 			if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 			{
 				reloading = false;
 				WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
 				WeaponManager::GetGunByName(gunName)->down = 1;
 			}
-			*/
+			
 			//get ray details
 			if (Input::LeftMousePressed() && Camera::GetRayHit().hasHit()){ // && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 				btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-				std::cout << "shot";
-				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.0, 0.0, 0.0), AssetManager::GetTexture("bullet_hole"));
+				std::cout << "shoot";
+				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
 				//Shoot();
 			}
-			//if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+			else if (Input::LeftMouseDown() && Camera::GetRayHit().hasHit() < 9999 && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+				btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
+				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
 				//Shoot();
-			//}
+			}
 			if (Input::KeyPressed('q') && !reloading) {
 				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.5f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
@@ -179,8 +176,7 @@ namespace Player
 
 		//PhysicsManager::GetColider("PlayerCollider")->setPosition(rb->GetPostion());
 
-		//AssetManager::GetGameObject("player")->SetRotationX(-verticalAngle);
-		//AssetManager::GetGameObject("player")->SetRotationY(horizontalAngle);
+		//AssetManager::GetGameObject("player")->SetRotationY(-verticalAngle);
 		//AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setRotation(glmToBtVector3())
 		//AssetManager::GetGameObject("player")->setPosition();
 		if(gunName != "nothing")
@@ -192,9 +188,10 @@ namespace Player
 		}
 
 
-		AssetManager::GetGameObject("player")->GetRigidBody()->setLinearVelocity(btVector3(0.0f, AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity().y(), 0.0f));
-		AssetManager::GetGameObject("player")->SetRotationX(0);
-		AssetManager::GetGameObject("player")->SetRotationY(0);
+		//AssetManager::GetGameObject("player")->GetRigidBody()->setLinearVelocity(btVector3(0.0f, AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity().y(), 0.0f));
+		AssetManager::GetGameObject("player")->setRotation(glm::vec3(0, horizontalAngle, 0));
+
+		std::cout << " x: " << AssetManager::GetGameObject("player")->getRotation().x << " y: " << AssetManager::GetGameObject("player")->getRotation().y << " z: " << AssetManager::GetGameObject("player")->getRotation().z << std::endl;
 
 
 	}

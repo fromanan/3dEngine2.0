@@ -420,7 +420,7 @@ void GameObject::setRotation(glm::vec3 rotation) {
 	transform.rotation = rotation;
 	btTransform& t = body->getWorldTransform();
 	btQuaternion quat;
-	quat.setEuler(rotation.x, rotation.y, rotation.z);
+	quat.setEuler(rotation.y, rotation.x, rotation.z);
 	t.setRotation(quat);
 	//body->getMotionState()->setWorldTransform(t);
 }
@@ -465,7 +465,7 @@ void GameObject::SetRotationX(float x) {
 	transform.rotation.x = x;
 	btTransform& t = body->getWorldTransform();
 	btQuaternion quat;
-	quat.setEuler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+	quat.setEuler(transform.rotation.y, transform.rotation.x, transform.rotation.z);
 	t.setRotation(quat);
 	body->getMotionState()->setWorldTransform(t);
 }
@@ -473,7 +473,7 @@ void GameObject::SetRotationY(float y) {
 	transform.rotation.y = y;
 	btTransform& t = body->getWorldTransform();
 	btQuaternion quat;
-	quat.setEuler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+	quat.setEuler(transform.rotation.y, transform.rotation.x, transform.rotation.z);
 	t.setRotation(quat);
 	body->getMotionState()->setWorldTransform(t);
 }
@@ -481,7 +481,7 @@ void GameObject::SetRotationZ(float z) {
 	transform.rotation.z = z;
 	btTransform& t = body->getWorldTransform();
 	btQuaternion quat;
-	quat.setEuler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+	quat.setEuler(transform.rotation.y, transform.rotation.x, transform.rotation.z);
 	t.setRotation(quat);
 	body->getMotionState()->setWorldTransform(t);
 }
