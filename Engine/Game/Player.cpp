@@ -144,18 +144,23 @@ namespace Player
 		else 
 			aiming = false;
 		
-		if (gunName != "nothing"){
+		if (true){//gunName != "nothing"){
 			
+			/*
 			if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 			{
 				reloading = false;
 				WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
 				WeaponManager::GetGunByName(gunName)->down = 1;
 			}
+			*/
 			//get ray details
-			//if (Input::LeftMousePressed() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+			if (Input::LeftMousePressed() && Camera::GetRayHit().hasHit()){ // && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+				btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
+				std::cout << "shot";
+				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.0, 0.0, 0.0), AssetManager::GetTexture("bullet_hole"));
 				//Shoot();
-			//}
+			}
 			//if (Input::LeftMouseDown() && Camera::GetLookingAtDistance() < 9999 && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 				//Shoot();
 			//}

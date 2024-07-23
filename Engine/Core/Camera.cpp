@@ -80,13 +80,6 @@ namespace Camera {
 			btVector3(out_end.x, out_end.y, out_end.z),
 			RayCallback
 		);
-
-		if (RayCallback.hasHit()) {
-			std::cout << "x: " << RayCallback.m_hitPointWorld.getX() << "y: " << RayCallback.m_hitPointWorld.getY() << "z: " << RayCallback.m_hitPointWorld.getZ() << std::endl;
-		}
-		else {
-			std::cout << "None" << std::endl;
-		}
 		return RayCallback;
 	}
 	
