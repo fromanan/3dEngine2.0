@@ -49,8 +49,8 @@ namespace Engine {
 			Input::CenterMouse();
 			Renderer::ClearScreen();
 			//PhysicsManager::Update(dt);
-			PhysicsManagerBullet::Update(dt);
 			SceneManager::Update(dt);
+			PhysicsManagerBullet::Update(dt);
 			AudioManager::Update();
 			//AnimationManager::Update(dt);
 			//Rendering

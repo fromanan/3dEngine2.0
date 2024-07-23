@@ -1,5 +1,7 @@
 #include "Camera.h"
 #include "AssetManager.h"
+#include "Engine/Core/Common.h"
+#include "Engine/Physics/BulletPhysics.h"
 
 
 namespace Camera {
@@ -14,15 +16,6 @@ namespace Camera {
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
 
-	//ray
-	//std::string lookingAtName = "Nothing";
-	//glm::vec3 normalFace= glm::vec3(0, 0, 0);
-	//Cube* LookingAtcollider = nullptr;
-	//float distance = 9999;
-
-	Ray ray;
-	RayInfo currentRayInfo;
-	RayInfo currentRayInfo2;
 
 	
 	glm::mat4 ViewMatrix;
@@ -46,70 +39,60 @@ namespace Camera {
 	void Camera::SetPosition(glm::vec3 pos) {
 		position = pos;
 	}
-	std::string Camera::GetLookingAtName() {
-		return currentRayInfo.name;
-	}
-	float GetLookingAtDistance() {
-		if(currentRayInfo.name != "Nothing")
-			return currentRayInfo.distance;
-		return -1;
-	}
-	glm::vec3 Camera::GetRayDirection() {
-		return ray.direction;
-	}
-	Ray Camera::GetRay() {
-		return ray;
-	}
-	glm::vec3 Camera::GetNormalFace() {
-		return currentRayInfo.normal;
-	}
-	Cube* Camera::GetLookingAtCollider() {
-		return currentRayInfo.collider;
-	}
+	glm::vec3 Camera::ComputeRay() {
+		glm::vec4 lRayStart_NDC(
+			((float)Input::GetMouseX() / (float)SCREENWIDTH - 0.5f) * 2.0f, // [0,1024] -> [-1,1]
+			((float)Input::GetMouseY() / (float)SCREENHEIGHT - 0.5f) * 2.0f, // [0, 768] -> [-1,1]
+			-1.0, // The near plane maps to Z=-1 in Normalized Device Coordinates
+			1.0f
+		);
+		glm::vec4 lRayEnd_NDC(
+			((float)Input::GetMouseX() / (float)SCREENWIDTH - 0.5f) * 2.0f,
+			((float)Input::GetMouseY() / (float)SCREENHEIGHT - 0.5f) * 2.0f,
+			0.0,
+			1.0f
+		);
 
-	RayInfo* GetRayInfo() {
-		return &currentRayInfo;
+		glm::mat4 InverseProjectionMatrix = glm::inverse(ProjectionMatrix);
+
+		// The View Matrix goes from World Space to Camera Space.
+		// So inverse(ViewMatrix) goes from Camera Space to World Space.
+		glm::mat4 InverseViewMatrix = glm::inverse(ViewMatrix);
+
+		glm::vec4 lRayStart_camera = InverseProjectionMatrix * lRayStart_NDC;    lRayStart_camera /= lRayStart_camera.w;
+		glm::vec4 lRayStart_world = InverseViewMatrix * lRayStart_camera; lRayStart_world /= lRayStart_world.w;
+		glm::vec4 lRayEnd_camera = InverseProjectionMatrix * lRayEnd_NDC;      lRayEnd_camera /= lRayEnd_camera.w;
+		glm::vec4 lRayEnd_world = InverseViewMatrix * lRayEnd_camera;   lRayEnd_world /= lRayEnd_world.w;
+
+		glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
+
+		return glm::normalize(lRayDir_world);
 	}
-	RayInfo* GetRayInfo2() {
-		return &currentRayInfo2;
-	}
+	btCollisionWorld::ClosestRayResultCallback Camera::GetRayHit() {
+		glm::vec3 out_end = Camera::position + ComputeRay() * 1000.0f;
 
+		btCollisionWorld::ClosestRayResultCallback RayCallback(
+			btVector3(Camera::position.x, Camera::position.y, Camera::position.z),
+			btVector3(out_end.x, out_end.y, out_end.z)
+		);
+		PhysicsManagerBullet::GetDynamicWorld()->rayTest(
+			btVector3(Camera::position.x, Camera::position.y, Camera::position.z),
+			btVector3(out_end.x, out_end.y, out_end.z),
+			RayCallback
+		);
 
-
-	void Camera::CheckIntersectingWithRay(Cube* cube) {
-
-		float objectDistance = cube->intersect(ray, 0, 100);
-		if (objectDistance > 0 && objectDistance < currentRayInfo.distance)
-		{
-			currentRayInfo2.collider = currentRayInfo.collider;
-			currentRayInfo2.distance = currentRayInfo.distance;
-			currentRayInfo2.name = currentRayInfo.name;
-			currentRayInfo2.position = currentRayInfo.position;
-			currentRayInfo2.normal = currentRayInfo.normal;
-
-			currentRayInfo.collider = cube;
-			currentRayInfo.distance = objectDistance;
-			currentRayInfo.name = cube->GetName();
-			currentRayInfo.position = ray.origin + currentRayInfo.distance * ray.direction;
-
-			// Determine which face was hit by checking the intersection point
-			if (fabs(currentRayInfo.position.x - cube->getMin().x) < 0.001f) currentRayInfo.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-			if (fabs(currentRayInfo.position.x - cube->getMax().x) < 0.001f) currentRayInfo.normal = glm::vec3(1.0f, 0.0f, 0.0f);
-			if (fabs(currentRayInfo.position.y - cube->getMin().y) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, -1.0f, 0.0f);
-			if (fabs(currentRayInfo.position.y - cube->getMax().y) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-			if (fabs(currentRayInfo.position.z - cube->getMin().z) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-			if (fabs(currentRayInfo.position.z - cube->getMax().z) < 0.001f) currentRayInfo.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		if (RayCallback.hasHit()) {
+			std::cout << "x: " << RayCallback.m_hitPointWorld.getX() << "y: " << RayCallback.m_hitPointWorld.getY() << "z: " << RayCallback.m_hitPointWorld.getZ() << std::endl;
 		}
-
+		else {
+			std::cout << "None" << std::endl;
+		}
+		return RayCallback;
 	}
+	
 
 	void Camera::Update(float dt) {
 		position.y += 0.75;
-		currentRayInfo.distance = 9999;
-		currentRayInfo.name = "Nothing";
-
-		currentRayInfo2.distance = 9999;
-		currentRayInfo2.name = "Nothing";
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
 			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());
@@ -143,9 +126,6 @@ namespace Camera {
 			position + direction, // and looks here : at the same position, plus "direction"
 			up                  // Head is up (set to 0,-1,0 to look upside-down)
 		);
-
-		ray.UpdateRay(direction, position);
-
 	}
 	glm::vec3 Camera::GetDirection() {
 		return direction;

@@ -39,7 +39,6 @@ GameObject::GameObject(std::string name, const char* path, glm::vec3 position, b
 }
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
-	setPosition(position);
 	this->texture = texture;
 	LoadModel(path);
 	parentName = "";
@@ -65,11 +64,29 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
 		}
 		dimensions = maxPoint - minPoint;
-	}
+		collider = new btBoxShape(btVector3(btScalar(dimensions.x / 2), btScalar(dimensions.y / 2), btScalar(dimensions.z / 2)));
 
+	}
+	else if (shape == Sphere)
+	{
+		glm::vec3 minPoint(std::numeric_limits<float>::max());
+		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
+
+		for (const auto& vertex : indexed_vertices) {
+			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
+			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
+			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
+
+			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
+			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
+			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
+		}
+		dimensions = maxPoint - minPoint;
+		collider = new btSphereShape(btScalar(dimensions.x / 2));
+	}
 	std::cout << "width: " << dimensions.x << "height " << dimensions.y << " depth " << dimensions.z << std::endl;
-	
-	collider = new btBoxShape(btVector3(btScalar(dimensions.x / 2), btScalar(dimensions.y / 2), btScalar(dimensions.z / 2)));
+	std::cout << "posx " << position.x << "posy " << position.y << " posz " << position.z << std::endl;
+
 	PhysicsManagerBullet::AddColliderShape(collider);
 	bool isDynamic = (mass != 0.f);
 
@@ -86,16 +103,16 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	body = new btRigidBody(rbInfo);
 
 	body->setActivationState(DISABLE_DEACTIVATION);
+	body->setFriction(0.7f);
+
 
 
 	//add the body to the dynamics world
 	PhysicsManagerBullet::AddRigidBody(body);
-	
-
+	setPosition(position);
 }
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth) {
 	this->name = name;
-	setPosition(position);
 	this->texture = texture;
 	LoadModel(path);
 	parentName = "";
@@ -118,9 +135,13 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 	body = new btRigidBody(rbInfo);
+	body->setFriction(0.7f);
 
 	//add the body to the dynamics world
 	PhysicsManagerBullet::AddRigidBody(body);
+	body->setActivationState(DISABLE_DEACTIVATION);
+	setPosition(position);
+
 }
 
 
@@ -391,9 +412,17 @@ void GameObject::RenderObject(GLuint& programID) {
 
 void GameObject::setPosition(glm::vec3 position) {
 	transform.position = position;
+	btTransform& t = body->getWorldTransform();
+	t.setOrigin(btVector3(position.x,position.y,position.z));
+	body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::setRotation(glm::vec3 rotation) {
 	transform.rotation = rotation;
+	btTransform& t = body->getWorldTransform();
+	btQuaternion quat;
+	quat.setEuler(rotation.x, rotation.y, rotation.z);
+	t.setRotation(quat);
+	//body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::setScale(glm::vec3 scale) {
 	transform.scale = scale;
@@ -403,35 +432,58 @@ glm::vec3 GameObject::getPosition() {
 	return btToGlmVector3(body->getWorldTransform().getOrigin());
 }
 glm::vec3 GameObject::getRotation() {
-	return transform.rotation;
+	return btQuatToGLMVec(body->getWorldTransform().getRotation());
 }
 glm::vec3 GameObject::getScale() {
 	return transform.scale;
 }
 void GameObject::addPosition(glm::vec3 position) {
 	transform.position += position;
+	body->getWorldTransform().setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
+	//body->getMotionState()->setWorldTransform(t);
 }
 
 
 void GameObject::setPositionX(float x) {
 	transform.position.x = x;
+	body->getWorldTransform().setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
+	//body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::setPositionY(float y) {
 	transform.position.y = y;
+	body->getWorldTransform().setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
+	//body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::setPositionZ(float z) {
 	transform.position.z = z;
+	btTransform& t = body->getWorldTransform();
+	t.setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
+	body->getMotionState()->setWorldTransform(t);
 }
 
 void GameObject::SetRotationX(float x) {
 	transform.rotation.x = x;
+	btTransform& t = body->getWorldTransform();
+	btQuaternion quat;
+	quat.setEuler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+	t.setRotation(quat);
+	body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::SetRotationY(float y) {
 	transform.rotation.y = y;
+	btTransform& t = body->getWorldTransform();
+	btQuaternion quat;
+	quat.setEuler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+	t.setRotation(quat);
+	body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::SetRotationZ(float z) {
 	transform.rotation.z = z;
-
+	btTransform& t = body->getWorldTransform();
+	btQuaternion quat;
+	quat.setEuler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+	t.setRotation(quat);
+	body->getMotionState()->setWorldTransform(t);
 }
 
 void GameObject::SetScale(float scale) {

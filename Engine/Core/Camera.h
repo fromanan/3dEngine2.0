@@ -17,25 +17,10 @@ namespace Camera
 	void SetHorizontalAngle(float angle);
 	void SetVerticalAngle(float angle);
 	void SetPosition(glm::vec3 pos);
-
-
-	void CheckIntersectingWithRay(Cube* cube);
-	Ray GetRay();
-
-	float GetLookingAtDistance();
-	std::string GetLookingAtName();
-	glm::vec3 GetRayDirection();
-	glm::vec3 GetNormalFace();
-	Cube* GetLookingAtCollider();
 	glm::vec3 GetDirection();
-
-	RayInfo* GetRayInfo();
-	//used to get the info of the object behind the first object for windows
-	RayInfo* GetRayInfo2();
-
-
-
 	void Update(float dt);
 
+	glm::vec3 ComputeRay();
+	btCollisionWorld::ClosestRayResultCallback GetRayHit();
 };
 

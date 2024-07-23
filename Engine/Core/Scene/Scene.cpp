@@ -13,32 +13,20 @@ void Scene::Load() {
 	AssetManager::AddTexture("container", "Assets/Textures/Container.png", "Assets/Normals/container_normal.png");
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
 	AssetManager::AddTexture("bullet_hole_glass", "Assets/Textures/bullet_hole_glass.png");
-
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("window", "Assets/Textures/window.png");
 
-
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	WeaponManager::Init();
-
-	//AssetManager::AddGameObject("enemy1", "Assets/Objects/Enemy.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 0, 0), true);
-	//AssetManager::AddGameObject("fence1", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
-	//AssetManager::AddGameObject("fence2", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
-	//AssetManager::AddGameObject("fence3", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
-	//AssetManager::AddGameObject("fence4", "Assets/Objects/fence4.obj", AssetManager::GetTexture("concrete"), glm::vec3(0, 0, 0), true, 0, Box);
+	//2-9  -2,9  
+	AssetManager::AddGameObject("fence1", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(5, 0, 2), true, 0, Box);
+	AssetManager::AddGameObject("fence2", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(-9, 0, 2), true, 0, Box);
+	AssetManager::AddGameObject("fence3", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(2, 0, -9), true, 0, Box);
+	AssetManager::AddGameObject("fence4", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(-1, 0, 5), true, 0, Box);
 	AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
-
-	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("floor"), "floor",Box));
-	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence1"), "fence1_collider", Box));
-	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence2"), "fence2_collider", Box));
-	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence3"), "fence3_collider", Box));
-	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject("fence4"), "fence4_collider", Box));
-
-	//PhysicsManager::AddCube(AssetManager::GetGameObject("floor"), "floor_collider");
-
 
 	//doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(7, 0, 3)));
 

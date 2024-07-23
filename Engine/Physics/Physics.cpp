@@ -426,8 +426,7 @@ namespace PhysicsManager {
 						coliders.erase(coliders.begin() + col);
 						continue;
 					}
-					if (!UpdatedCamera)
-						Camera::CheckIntersectingWithRay(&coliders[col]);
+
 					if (rb_collider->GetName() == coliders[col].GetName() || coliders[col].GetIsTrigger())
 						continue;
 					if (rigidbodies[i].GetForce().x < 0 && rb_collider->TouchingLeft(&coliders[col], rigidbodies[i].GetForce().x * deltaTime))
