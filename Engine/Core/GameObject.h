@@ -146,7 +146,8 @@ private:
 	GLuint tangentbuffer;
 	GLuint bitangentbuffer;
 	//phyiscs stuff
-	btCollisionShape* collider;
+	btCollisionShape* collider = nullptr;
+	btConvexHullShape* convexHullShape = nullptr;
 	btTransform Btransform;
 	btRigidBody* body;
 

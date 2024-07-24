@@ -67,6 +67,13 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		collider = new btBoxShape(btVector3(btScalar(dimensions.x / 2), btScalar(dimensions.y / 2), btScalar(dimensions.z / 2)));
 
 	}
+	else if (shape == Convex) {
+		convexHullShape = new btConvexHullShape();
+		for (const auto& vertex : indexed_vertices) {
+			convexHullShape->addPoint(glmToBtVector3(vertex));
+		}
+		convexHullShape->optimizeConvexHull();
+	}
 	else if (shape == Sphere)
 	{
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
@@ -100,23 +107,30 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		dimensions = maxPoint - minPoint;
 		collider = new btCapsuleShape(btScalar(dimensions.x / 2), (btScalar(dimensions.y / 2)));
 	}
-	std::cout << "width: " << dimensions.x << "height " << dimensions.y << " depth " << dimensions.z << std::endl;
-	std::cout << "posx " << position.x << "posy " << position.y << " posz " << position.z << std::endl;
 
 	PhysicsManagerBullet::AddColliderShape(collider);
 	bool isDynamic = (mass != 0.f);
 
 	btVector3 localInertia(0, 0, 0);
-	if (isDynamic)
+	if (isDynamic && collider != nullptr)
 		collider->calculateLocalInertia(btScalar(mass), localInertia);
+	else if (isDynamic && convexHullShape != nullptr)
+		convexHullShape->calculateLocalInertia(btScalar(mass), localInertia);
 
 	Btransform.setIdentity();
 	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
 
 	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
-	body = new btRigidBody(rbInfo);
+	if (convexHullShape == nullptr)
+	{
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
+		body = new btRigidBody(rbInfo);
+	}
+	else {
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, convexHullShape, localInertia);
+		body = new btRigidBody(rbInfo);
+	}
 
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.7f);

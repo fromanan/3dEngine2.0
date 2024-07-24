@@ -4,7 +4,7 @@
 
 Crate::Crate(glm::vec3 position, std::string name, const char* path, Texture* texture) {
 	this->name = name;
-	AssetManager::AddGameObject(name, path, texture, position, false,1,Box);
+	AssetManager::AddGameObject(name, path, texture, position, false,1,Convex);
 	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject(name), name, 1));
 }
 void Crate::Update() {

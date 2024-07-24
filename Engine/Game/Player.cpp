@@ -29,7 +29,7 @@ namespace Player
 
 	void Player::Init() {
 		srand(time(0));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,6,Capsule,0.5,2,0.5));
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Capsule,0.5,2,0.5));
 		AssetManager::GetGameObject("player")->SetRender(false);
 		AssetManager::GetGameObject("player")->GetRigidBody()->setFriction(0.0f);
 		AssetManager::GetGameObject("player")->GetRigidBody()->setRestitution(0.0f);
@@ -37,7 +37,6 @@ namespace Player
 
 
 		// Add the constraint to the world
-
 		std::cout << "loading player model" << std::endl;
 		gunName = "ak47";
 	}
@@ -51,7 +50,7 @@ namespace Player
 			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
 
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-			AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
+			AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.021, 0.021, 0.021), AssetManager::GetTexture("bullet_hole"));
 			/*
 			if (Camera::GetLookingAtCollider()->GetStatic())
 			{
