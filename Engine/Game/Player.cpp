@@ -13,8 +13,8 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 3000;
-	float jumpforce = 50;
+	float speed = 2000;
+	float jumpforce = 80;
 	std::string gunName = "";
 	std::string interactingWithName = "nothing";
 	float interactDistance = 2;
@@ -29,10 +29,11 @@ namespace Player
 
 	void Player::Init() {
 		srand(time(0));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Capsule,0.5,2,0.5));
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,6,Capsule,0.5,2,0.5));
 		AssetManager::GetGameObject("player")->SetRender(false);
-		AssetManager::GetGameObject("player")->GetRigidBody()->setFriction(0.4f);
+		AssetManager::GetGameObject("player")->GetRigidBody()->setFriction(0.0f);
 		AssetManager::GetGameObject("player")->GetRigidBody()->setRestitution(0.0f);
+		AssetManager::GetGameObject("player")->GetRigidBody()->setGravity(btVector3(0, -10 * 3.0f, 0));
 
 
 		// Add the constraint to the world
@@ -86,11 +87,37 @@ namespace Player
 		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
 		
 	}
+	bool Player::OnGround() {
+		GameObject* player = AssetManager::GetGameObject("player");
+		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-1,0) * 1.5f;
+
+		btCollisionWorld::ClosestRayResultCallback RayCallback(
+			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
+			btVector3(out_end.x, out_end.y, out_end.z)
+		);
+		PhysicsManagerBullet::GetDynamicWorld()->rayTest(
+			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
+			btVector3(out_end.x, out_end.y, out_end.z),
+			RayCallback
+		);
+		if(RayCallback.hasHit())
+			return true;
+		return false;
+	}
 
 	void Player::Update(float deltaTime) {
+		GameObject* player =  AssetManager::GetGameObject("player");
+		bool IsGrounded = OnGround();
+		std::cout << OnGround() << std::endl;
+		if (IsGrounded){
+			player->GetRigidBody()->setAngularVelocity(btVector3(0, player->GetRigidBody()->getAngularVelocity().y(), 0));
+		}
+		
+
+			
 		btQuaternion quat;
-		quat.setEuler(0, AssetManager::GetGameObject("player")->getRotation().y, 0);
-		AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setRotation(quat);
+		quat.setEuler(0, player->getRotation().y, 0);
+		player->GetRigidBody()->getWorldTransform().setRotation(quat);
 
 		interactingWithName = "Nothing";
 
@@ -115,25 +142,34 @@ namespace Player
 			cos(horizontalAngle - 3.14f / 2.0f)
 		);
 		// Move forward
-		if (Input::KeyDown('w')) {
-			//AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(-forward * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
-			AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(-forward * speed * deltaTime));
+		btVector3 movement = btVector3(0,player->GetRigidBody()->getLinearVelocity().y(), 0);
+		if (IsGrounded)
+		{
+			if (Input::KeyDown('w')) {
+				movement += glmToBtVector3(-forward);
+			}
+			// Move backward
+			if (Input::KeyDown('s')) {
+				movement += glmToBtVector3(forward);
+			}
+			// Strafe right
+			if (Input::KeyDown('d')) {
+				movement += glmToBtVector3(right);
+			}
+			// Strafe left
+			if (Input::KeyDown('a')) {
+				movement += glmToBtVector3(-right);
+			}
+			if (Input::KeyDown(' ')) {
+				movement += glmToBtVector3(vec3(0, 1, 0) * jumpforce * deltaTime);
+			}
+			movement.setX(movement.x() * speed * deltaTime);
+			movement.setZ(movement.z() * speed * deltaTime);
+
+
+			player->GetRigidBody()->setLinearVelocity(movement);
 		}
-		// Move backward
-		if (Input::KeyDown('s')) {
-			//AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(forward * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
-			AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(forward * speed * deltaTime));
-		}
-		// Strafe right
-		if (Input::KeyDown('d')) {
-			//AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(right * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
-			AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(right * speed * deltaTime));
-		}
-		// Strafe left
-		if (Input::KeyDown('a')) {
-			//AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().setOrigin(glmToBtVector3(-right * speed * deltaTime) + AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
-			AssetManager::GetGameObject("player")->GetRigidBody()->applyCentralForce(glmToBtVector3(-right * speed * deltaTime));
-		}
+		
 		//if (Input::KeyPressed('e') && Camera::GetLookingAtDistance() <= interactDistance) {
 			//interactingWithName = Camera::GetLookingAtName();
 		//}

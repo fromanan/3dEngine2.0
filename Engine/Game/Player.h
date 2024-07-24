@@ -29,6 +29,7 @@ namespace Player
 	std::string getCurrentGun();
 
 	bool SelectWeapon(std::string weaponName);
+	bool OnGround();
 
 	void Shoot();
 };
