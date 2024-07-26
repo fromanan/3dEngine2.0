@@ -80,7 +80,7 @@ namespace Player
 				if (gameobject != NULL)
 				{
 					btRigidBody* body = gameobject->GetRigidBody();
-					body->applyForce(100.0f * glmToBtVector3(Camera::ComputeRay()), hit.m_hitPointWorld - hit.m_hitNormalWorld);					
+					body->applyImpulse(2 * glmToBtVector3(Camera::ComputeRay()),  body->getWorldTransform().inverse() * hit.m_hitPointWorld );
 					if(body->getBroadphaseHandle()->m_collisionFilterGroup == GROUP_STATIC)
 						AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
 				}

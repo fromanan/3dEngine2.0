@@ -242,7 +242,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	}
 
 	body->setActivationState(DISABLE_DEACTIVATION);
-	body->setFriction(0.7f);
+	body->setFriction(0.9f);
 	body->setUserIndex(-1);
 	//add the body to the dynamics world
 	if (mass != 0)

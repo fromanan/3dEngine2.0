@@ -4,7 +4,7 @@
 
 Crate::Crate(glm::vec3 position, std::string name, const char* path, Texture* texture) {
 	this->name = name;
-	AssetManager::AddGameObject(name, path, texture, position, false,2,Convex);
+	AssetManager::AddGameObject(name, path, texture, position, false,3,Convex);
 	//PhysicsManagerBullet::AddCollider(Collider(AssetManager::GetGameObject(name), name, 1));
 	AssetManager::GetGameObject(name)->GetRigidBody()->setCcdMotionThreshold(0.1);
 	AssetManager::GetGameObject(name)->GetRigidBody()->setCcdSweptSphereRadius(0.2); // Set the radius for CCD
