@@ -36,11 +36,11 @@ namespace Player
 
 		btRigidBody* body = AssetManager::GetGameObject("player")->GetRigidBody();
 		AssetManager::GetGameObject("player")->SetRender(false);
-		body->setFriction(0.5f);
+		body->setFriction(0.0f);
 		body->setRestitution(0.0f);
 		body->setGravity(btVector3(0, -10 * 3.0f, 0));
 		player_head->GetRigidBody()->setFriction(0.0f);
-		player_head->GetRigidBody()->setFriction(0.0f);
+		player_head->GetRigidBody()->setRestitution(0.0f);
 		player_head->GetRigidBody()->setActivationState(false);
 
 
@@ -88,7 +88,7 @@ namespace Player
 	
 	bool Player::OnGround() {
 		GameObject* player = AssetManager::GetGameObject("player");
-		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-1,0) * 1.5f;
+		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-0.5,0);
 
 		btCollisionWorld::ClosestRayResultCallback RayCallback(
 			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
@@ -108,6 +108,7 @@ namespace Player
 		GameObject* player =  AssetManager::GetGameObject("player");
 		bool IsGrounded = OnGround();
 		if (IsGrounded){
+			std::cout << "onground" << std::endl;
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
 		}
 			
