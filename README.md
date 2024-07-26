@@ -1,5 +1,12 @@
 # OpenGL Engine 2.0
 
+### 3D Engine 2.0 2024/July/26
+There is a new branch called bullet physics, this is the new current branch that use the Bullet Physics library. Over the last week I have ported my engine to use this physics libray. This allowed me to add better rigidbodies as well as dynamic objects, shown in the 
+screenshot below. There is now multiple Collider shapes including spheres/boxes/capsules and convex meshs base on the model.
+
+![screenshot](/github/screenshots/bullet_physics.png)
+
+
 ### 3D Engine 2.0 2024/July/16
 Lots of changes this week, Rendering pipe line had an upgrade with allowing textures to now having a normal map for increased graphics. An Audio system has also been added using FMOD allowing .wav files to be loaded and played with full 3D sound. Guns have been implemented with an ak47 and a pistol, pickup able weapons have also been added. Doors were also added and a system 
 for scripts to be able to see what the player is interacting with was also added. A very basic animation system has also been added using keyframes that record transformations of an object.
