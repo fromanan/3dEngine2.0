@@ -229,13 +229,15 @@ namespace Player
 		}
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
 
+		GameObject* head = AssetManager::GetGameObject("player_head");
+		player->setRotation(glm::vec3(0, horizontalAngle, 0));
+		head->setRotation(glm::vec3(-verticalAngle, horizontalAngle, 0));
+		head->setPosition(player->getPosition() + glm::vec3(0, 1.5, 0));
+
 		Camera::SetHorizontalAngle(horizontalAngle);
 		Camera::SetVerticalAngle(verticalAngle);
-		Camera::SetPosition(player->getPosition());
-		player->setRotation(glm::vec3(0, horizontalAngle, 0));
-		GameObject* head =  AssetManager::GetGameObject("player_head");
-		head->setRotation(glm::vec3(-verticalAngle, horizontalAngle, 0));
-		head->setPosition(player->getPosition() + glm::vec3(0,1,0));
+		Camera::SetPosition(head->getPosition());
+		
 
 		if(gunName != "nothing")
 			WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);

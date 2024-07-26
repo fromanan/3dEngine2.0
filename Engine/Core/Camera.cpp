@@ -85,7 +85,6 @@ namespace Camera {
 	
 
 	void Camera::Update(float dt) {
-		position.y += 1.5;
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
 			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());

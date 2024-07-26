@@ -14,6 +14,7 @@ void Scene::Load() {
 	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
 	AssetManager::AddTexture("bullet_hole_glass", "Assets/Textures/bullet_hole_glass.png");
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
+
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
