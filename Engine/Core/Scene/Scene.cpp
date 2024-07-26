@@ -28,21 +28,22 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(-1, 1.3, 5), true, 0, Box);
 	AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
 
-	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(2, 0, 3)));
 
 	//crates.push_back(Crate(glm::vec3(15, 10, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(0.5, 20, 1.5), "crate2", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47")));
 
-
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
 
 	//windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 	//windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
-	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, 1, -5)));
-	//gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, 1, -6)));
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
+	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(1,25, 0)));
+
+	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(2, 0, 3)));
+
 
 	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
 	//AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
@@ -166,7 +167,9 @@ void Scene::AddGunPickUp(GunPickUp gunpickup) {
 	gunPickUps.push_back(gunpickup);
 }
 void Scene::AddGunPickUp(std::string gunName, std::string gunObject, glm::vec3 Position) {
-	gunPickUps.push_back(GunPickUp(gunName, gunObject, Position));
+	GunPickUp pickup = GunPickUp(gunName, gunObject, Position);
+	std::cout << " testing";
+	gunPickUps.push_back(pickup);
 }
 
 int Scene::GetGunPickUpSize() {

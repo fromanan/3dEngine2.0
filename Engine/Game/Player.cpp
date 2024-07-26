@@ -12,7 +12,7 @@ namespace Player
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
 	float speed = 2000;
-	float jumpforce = 8;
+	float jumpforce = 9;
 	std::string gunName = "ak47";
 	std::string interactingWithName = "nothing";
 	float interactDistance = 3;
@@ -214,10 +214,11 @@ namespace Player
 				Shoot();
 			}
 			if (Input::KeyPressed('q') && !reloading) {
-				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", rb->GetPostion() + Camera::GetDirection() * 1.5f);
+				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", getPosition() + Camera::GetDirection() * 1.5f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
 				gunName = "nothing";
 			}
+			
 		}
 		if (Input::KeyPressed('1')) {
 			SelectWeapon(inv[0]);

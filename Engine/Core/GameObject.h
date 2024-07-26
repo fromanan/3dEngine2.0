@@ -52,7 +52,8 @@ public:
 		std::vector<glm::vec3> indexed_bitangents, 
 		bool canSave,
 		bool render,
-		bool shouldDelete, float mass, ColliderShape shape);
+		bool shouldDelete, float mass, 
+		btConvexHullShape* collidershape);
 
 	void LoadModel(const char* path);
 	void Copy(std::string copyName);
@@ -117,6 +118,7 @@ public:
 
 	btRigidBody* GetRigidBody();
 	btCollisionShape* GetCollisionShape();
+	btConvexHullShape* GetConvexHull();
 
 
 

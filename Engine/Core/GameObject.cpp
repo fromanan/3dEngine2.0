@@ -340,8 +340,9 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents,
 	std::vector<glm::vec3> bitangents, std::vector<unsigned short> indices, std::vector<glm::vec3> indexed_vertices,
 	std::vector<glm::vec2> indexed_uvs, std::vector<glm::vec3> indexed_normals, std::vector<glm::vec3> indexed_tangents,
-	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete, float mass, ColliderShape shape)
+	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete, float mass, btConvexHullShape* collidershape)
 {
+	std::cout << "test1";
 	this->name = name;
 	this->parentName = parentname;
 	this->texture = texture;
@@ -362,6 +363,9 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	this->canSave = canSave;
 	this->render = render;
 	this->shouldDelete = shouldDelete;
+	convexHullShape = collidershape;
+	std::cout << "here2" << std::endl;
+
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -388,6 +392,49 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	glGenBuffers(1, &bitangentbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
+
+	float width = 1;
+	float height = 1;
+	float depth = 1;
+	Btransform.setOrigin(glmToBtVector3(position));
+	std::cout << "here3" << std::endl;
+
+
+
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic && collider != nullptr)
+		collider->calculateLocalInertia(btScalar(mass), localInertia);
+	else if (isDynamic && convexHullShape != nullptr)
+		convexHullShape->calculateLocalInertia(btScalar(mass), localInertia);
+
+	Btransform.setIdentity();
+	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
+
+	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
+	if (convexHullShape == nullptr)
+	{
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
+		body = new btRigidBody(rbInfo);
+	}
+	else {
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, convexHullShape, localInertia);
+		body = new btRigidBody(rbInfo);
+	}
+
+	body->setActivationState(DISABLE_DEACTIVATION);
+	body->setFriction(0.7f);
+	body->setUserIndex(-1);
+	//add the body to the dynamics world
+	if (mass != 0)
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	else
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	setPosition(position);
+	std::cout << "here4" << std::endl;
+
 }
 
 void GameObject::LoadModel(const char* path) {
@@ -428,7 +475,9 @@ void GameObject::LoadModel(const char* path) {
 
 
 void GameObject::Copy(std::string copyName) {
-	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,Box));
+	std::cout << "damn";
+	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,convexHullShape));
+
 }
 void GameObject::SetUserPoint(void* pointer) {
 	body->setUserPointer(pointer);
@@ -665,6 +714,9 @@ std::vector<glm::vec2>  GameObject::getIndexedUvs() {
 }
 std::vector<glm::vec3>  GameObject::getIndexedNormals() {
 	return indexed_normals;
+}
+btConvexHullShape* GameObject::GetConvexHull() {
+	return convexHullShape;
 }
 const char* GameObject::GetTextureName() {
 	return texture->GetName();

@@ -122,14 +122,15 @@ namespace WeaponManager {
 GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* objectModel, Texture* texture, glm::vec3 position) {
 	gunName = GunName;
 	objectName = ObjectName;
-	AssetManager::AddGameObject(objectName, objectModel, texture, position, false,0,Box);
-	AssetManager::GetGameObject(objectName)->SetRotationZ(1.5f);
+	AssetManager::AddGameObject(objectName, objectModel, texture, position, false,1,Convex);
 }
 //dosent work
 GunPickUp::GunPickUp(std::string GunName, std::string GunObject, glm::vec3 position) {
 	gunName = GunName;
 	objectName = GunObject + std::to_string(SceneManager::GetCurrentScene()->GetGunPickUpSize());
+	std::cout << "here" << std::endl;
 	AssetManager::GetGameObject(GunObject)->Copy(objectName);
+	std::cout << "here1" << std::endl;
 	AssetManager::GetGameObject(objectName)->SetRender(true);
 	AssetManager::GetGameObject(objectName)->setPosition(position);
 
@@ -138,7 +139,7 @@ void GunPickUp::Update() {
 }
 
 bool GunPickUp::Interact() {
-	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() == "nothing" && Player::SelectWeapon(gunName)) {
+	if (Player::GetInteractingWithName() == objectName && Player::SelectWeapon(gunName)) {
 		GameObject* object = AssetManager::GetGameObject(objectName);
 
 		PhysicsManagerBullet::GetDynamicWorld()->removeRigidBody(object->GetRigidBody());
