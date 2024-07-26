@@ -33,18 +33,27 @@ namespace Player
 		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5, 0.7, 0.5));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
 		player_head->SetRender(false);
+		btBroadphaseProxy*  proxy = player_head->GetRigidBody()->getBroadphaseHandle();
+		if (proxy) {
+			proxy->m_collisionFilterGroup = GROUP_PLAYER;
+			proxy->m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
+			// Add the constraint to the world
+		}
 
 		btRigidBody* body = AssetManager::GetGameObject("player")->GetRigidBody();
 		AssetManager::GetGameObject("player")->SetRender(false);
 		body->setFriction(0.0f);
 		body->setRestitution(0.0f);
+		body->setCcdMotionThreshold(0.05);
+		body->setCcdSweptSphereRadius(0.2); // Set the radius for CCD
+
 		body->setGravity(btVector3(0, -10 * 3.0f, 0));
 		player_head->GetRigidBody()->setFriction(0.0f);
 		player_head->GetRigidBody()->setRestitution(0.0f);
 		player_head->GetRigidBody()->setActivationState(false);
 
 
-		btBroadphaseProxy* proxy = body->getBroadphaseHandle();
+		proxy = body->getBroadphaseHandle();
 		if (proxy) {
 			proxy->m_collisionFilterGroup = GROUP_PLAYER;
 			proxy->m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
@@ -108,7 +117,6 @@ namespace Player
 		GameObject* player =  AssetManager::GetGameObject("player");
 		bool IsGrounded = OnGround();
 		if (IsGrounded){
-			std::cout << "onground" << std::endl;
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
 		}
 			
@@ -158,7 +166,6 @@ namespace Player
 				movement += glmToBtVector3(-right);
 			}
 			if (Input::KeyDown(' ')) {
-				std::cout << "jump" << std::endl;
 				movement.setY(1 * jumpforce);
 			}
 			//deltatime was making it jittery will fix later
@@ -174,10 +181,9 @@ namespace Player
 			if (hit.m_collisionObject != nullptr)
 			{
 				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
-				if (gameobject != NULL && glm::distance(gameobject->getPosition(),getPosition()) <= interactDistance)
+				if (gameobject != NULL && glm::distance(gameobject->getPosition(), getPosition()) <= interactDistance)
 				{
 					interactingWithName = gameobject->GetName();
-					std::cout << interactingWithName << std::endl;
 				}
 			}
 		}

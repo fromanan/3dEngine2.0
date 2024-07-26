@@ -32,6 +32,8 @@ public:
 	GameObject(std::string name, const char* path, bool save, float mass, ColliderShape shape);
 	GameObject(std::string name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape);
 	GameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape,float margin);
+
 	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape,float width, float height, float depth);
 
 	GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,

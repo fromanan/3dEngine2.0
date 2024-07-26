@@ -142,6 +142,116 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	setPosition(position);
 }
+GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float margin) {
+	this->name = name;
+	this->texture = texture;
+	LoadModel(path);
+	parentName = "";
+	canSave = save;
+
+	float width = 1;
+	float height = 1;
+	float depth = 1;
+	Btransform.setOrigin(glmToBtVector3(position));
+	glm::vec3 dimensions(1, 1, 1);
+
+	if (shape == Box) {
+		glm::vec3 minPoint(std::numeric_limits<float>::max());
+		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
+
+		for (const auto& vertex : indexed_vertices) {
+			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
+			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
+			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
+
+			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
+			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
+			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
+		}
+		dimensions = maxPoint - minPoint;
+		collider = new btBoxShape(btVector3(btScalar(dimensions.x / 2), btScalar(dimensions.y / 2), btScalar(dimensions.z / 2)));
+	}
+	else if (shape == Convex) {
+		convexHullShape = new btConvexHullShape();
+		for (const auto& vertex : indexed_vertices) {
+			convexHullShape->addPoint(glmToBtVector3(vertex));
+		}
+		convexHullShape->optimizeConvexHull();
+	}
+	else if (shape == Sphere)
+	{
+		glm::vec3 minPoint(std::numeric_limits<float>::max());
+		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
+
+		for (const auto& vertex : indexed_vertices) {
+			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
+			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
+			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
+
+			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
+			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
+			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
+		}
+		dimensions = maxPoint - minPoint;
+		collider = new btSphereShape(btScalar(dimensions.x / 2));
+
+	}
+	else if (shape == Capsule) {
+		glm::vec3 minPoint(std::numeric_limits<float>::max());
+		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
+
+		for (const auto& vertex : indexed_vertices) {
+			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
+			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
+			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
+
+			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
+			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
+			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
+		}
+		dimensions = maxPoint - minPoint;
+		collider = new btCapsuleShape(btScalar(dimensions.x / 2), (btScalar(dimensions.y / 2)));
+	}
+	if(collider != nullptr)
+		collider->setMargin(margin);
+	if (convexHullShape != nullptr)
+		convexHullShape->setMargin(margin);
+
+	PhysicsManagerBullet::AddColliderShape(collider);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic && collider != nullptr)
+		collider->calculateLocalInertia(btScalar(mass), localInertia);
+	else if (isDynamic && convexHullShape != nullptr)
+		convexHullShape->calculateLocalInertia(btScalar(mass), localInertia);
+
+	Btransform.setIdentity();
+	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
+
+	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
+	if (convexHullShape == nullptr)
+	{
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
+		body = new btRigidBody(rbInfo);
+	}
+	else {
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, convexHullShape, localInertia);
+		body = new btRigidBody(rbInfo);
+	}
+
+	body->setActivationState(DISABLE_DEACTIVATION);
+	body->setFriction(0.7f);
+	body->setUserIndex(-1);
+	//add the body to the dynamics world
+	if (mass != 0)
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	else
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	setPosition(position);
+}
+
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth) {
 	this->name = name;
 	this->texture = texture;
