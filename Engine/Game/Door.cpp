@@ -14,7 +14,6 @@ Door::Door(std::string Name, const char* doorPath, const char* framePath, Textur
 	door_position = position;
 }
 void Door::Interact() {
-	std::cout << Player::GetInteractingWithName() << std::endl;
 	if (Player::GetInteractingWithName() == name+"_door")
 	{
 		opening = true;

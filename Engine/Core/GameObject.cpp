@@ -460,7 +460,7 @@ void GameObject::setRotation(glm::vec3 rotation) {
 	btQuaternion quat;
 	quat.setEuler(rotation.y, rotation.x, rotation.z);
 	t.setRotation(quat);
-	//body->getMotionState()->setWorldTransform(t);
+	body->getMotionState()->setWorldTransform(t);
 }
 void GameObject::setScale(glm::vec3 scale) {
 	transform.scale = scale;

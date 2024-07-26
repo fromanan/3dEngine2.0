@@ -4,11 +4,14 @@
 
 
 void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
+	GameObject* gun = AssetManager::GetGameObject(gunModel);
+	gun->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
+	gun->GetRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
 	kickbackOffset = kickbackOffset * 0.96;
 	if (kickbackOffset < 0.01) kickbackOffset = 0;
 
-	float verticalAngle = -AssetManager::GetGameObject(gunModel)->getRotation().x;
-	float horizontalAngle = AssetManager::GetGameObject(gunModel)->getRotation().y;
+	float verticalAngle = -gun->getRotation().x;
+	float horizontalAngle = gun->getRotation().y;
 
 	glm::vec3 direction(
 		cos(verticalAngle) * sin(horizontalAngle),
@@ -21,16 +24,16 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 		if (currentXRotation > 1.6 / 2)
 			down = -1;			
 		float incerment = (1.6 / reloadtime) * down * deltaTime;
-		AssetManager::GetGameObject(gunModel)->SetRotationX(currentXRotation + incerment);
-		AssetManager::GetGameObject(gunModel)->addPosition(glm::vec3(0,-incerment/3,0));
+		gun->SetRotationX(currentXRotation + incerment);
+		gun->addPosition(glm::vec3(0,-incerment/3,0));
 	}
 	else if (aiming) {
 		AssetManager::GetGameObject(gunModel)->setPosition(aimingPosition);
 	}
 	else
 	{
-		AssetManager::GetGameObject(gunModel)->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
-		AssetManager::GetGameObject(gunModel)->SetRotationX(0);
+		gun->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
+		gun->SetRotationX(0);
 	}
 	AudioManager::GetSound(gunsShotName + std::to_string(1))->SetPosition(Player::getPosition());
 	AudioManager::GetSound(gunsShotName + std::to_string(2))->SetPosition(Player::getPosition());
@@ -49,14 +52,14 @@ namespace WeaponManager {
 
 	void WeaponManager::Init() {
 
-		AssetManager::AddGameObject("glock", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false,0,Box);
+		AssetManager::AddGameObject(GameObject("glock", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false,0,Box,0,0,0));
 		AssetManager::GetGameObject("glock")->SetRender(false);
-		AssetManager::GetGameObject("glock")->SetParentName("player");
+		AssetManager::GetGameObject("glock")->SetParentName("player_head");
 
 		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
-		AssetManager::AddGameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box);
+		AssetManager::AddGameObject(GameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box, 0, 0, 0));
 		AssetManager::GetGameObject("ak47")->SetRender(false);
-		AssetManager::GetGameObject("ak47")->SetParentName("player");
+		AssetManager::GetGameObject("ak47")->SetParentName("player_head");
 
 
 		AudioManager::AddSound("Assets/Audio/ak47_fire1.wav", "ak47_fire1", AssetManager::GetGameObject("ak47")->getPosition(), 5,0.5);
@@ -82,6 +85,9 @@ namespace WeaponManager {
 		glock.recoil = 0.01;
 		glock.recoilY = 100;
 		glock.kickback = 3;
+		glock.weaponOffSet = glm::vec3(-0.3, -0.6, 0.9);
+		glock.aimingPosition = glm::vec3(0, -0.6, 0.7);
+
 		glock.gunModel = "glock"; 
 		glock.gunsShotName = "glock_fire";
 		guns.emplace_back(glock);
@@ -99,8 +105,8 @@ namespace WeaponManager {
 		ak47.kickback = 2;
 		ak47.gunModel = "ak47";
 		ak47.gunsShotName = "ak47_fire";
-		ak47.weaponOffSet = glm::vec3(-0.3, -0.3, 0.9);
-		ak47.aimingPosition = glm::vec3(0, -0.2, 0.7);
+		ak47.weaponOffSet = glm::vec3(-0.3, -0.7, 0.9);
+		ak47.aimingPosition = glm::vec3(0, -0.7, 0.7);
 		guns.emplace_back(ak47);
 
 	}
@@ -133,7 +139,11 @@ void GunPickUp::Update() {
 
 bool GunPickUp::Interact() {
 	if (Player::GetInteractingWithName() == objectName && Player::getCurrentGun() == "nothing" && Player::SelectWeapon(gunName)) {
-		AssetManager::RemoveGameObject(objectName);
+		GameObject* object = AssetManager::GetGameObject(objectName);
+
+		PhysicsManagerBullet::GetDynamicWorld()->removeRigidBody(object->GetRigidBody());
+		object->SetRender(false);
+		
 		WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
 		AudioManager::PlaySound("item_pickup", Player::getPosition());
 		return true;

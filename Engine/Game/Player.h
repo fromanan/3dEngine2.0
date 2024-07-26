@@ -31,6 +31,7 @@ namespace Player
 	bool SelectWeapon(std::string weaponName);
 	bool OnGround();
 
+	void SwitchWeapons(int index);
 	void Shoot();
 };
 
