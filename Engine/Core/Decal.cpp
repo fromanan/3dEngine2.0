@@ -1,15 +1,14 @@
 #include "Decal.h"
 
-Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* textur, btRigidBody* parentbody) {
+Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture) {
     this->texture = texture;
 	this->normal = normal;
-	this->parent = parentbody;
 
 	glm::vec3 up(0, 1, 0);
 	glm::vec3 rotationAxis = glm::cross(normal, up);
 	float angle = acos(glm::dot(normal, up));
 
-	modelMatrix = glm::translate(glm::mat4(1), position + normal / 100.0f);
+	modelMatrix = glm::translate(glm::mat4(1), position + normal / 1000.0f);
     modelMatrix *= glm::mat4_cast(glm::quat(rotationAxis * -angle));
     modelMatrix = glm::scale(modelMatrix, scale);
 

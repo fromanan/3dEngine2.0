@@ -8,7 +8,7 @@
 class Decal
 {
 public:
-    Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, btRigidBody* parentbody);
+    Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
     glm::mat4 GetModel();
     glm::vec3 GetNormal();
     bool CheckParentIsNull();

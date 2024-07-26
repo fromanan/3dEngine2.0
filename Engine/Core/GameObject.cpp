@@ -151,7 +151,12 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 
 	Btransform.setOrigin(glmToBtVector3(position));
 
-	collider = new btBoxShape(btVector3(btScalar(width / 2), btScalar(height / 2), btScalar(depth / 2)));
+
+	if(shape == Sphere)
+		collider = new btSphereShape(btScalar(height / 2));
+	else
+		collider = new btBoxShape(btVector3(btScalar(width / 2), btScalar(height / 2), btScalar(depth / 2)));
+
 	PhysicsManagerBullet::AddColliderShape(collider);
 	bool isDynamic = (mass != 0.f);
 

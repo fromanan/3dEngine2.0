@@ -132,8 +132,6 @@ void Scene::RenderObjects() {
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
 		Decal* decal = AssetManager::GetDecal(i);
-		//if (decal->CheckParentIsNull())
-			//continue;
 		//do some pre normal calcualtions
 		glm::mat4 ModelMatrix = decal->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;

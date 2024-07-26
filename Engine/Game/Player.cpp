@@ -15,7 +15,7 @@ namespace Player
 	float jumpforce = 8;
 	std::string gunName = "ak47";
 	std::string interactingWithName = "nothing";
-	float interactDistance = 2;
+	float interactDistance = 3;
 
 	//states
 	bool reloading = false;
@@ -29,14 +29,10 @@ namespace Player
 
 	void Player::Init() {
 		srand(time(0));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 2, 0.5));
-		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0, 0, 0));
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 1, 0.5));
+		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5, 0.7, 0.5));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
-		btBroadphaseProxy* proxy = player_head->GetRigidBody()->getBroadphaseHandle();
-		if (proxy) {
-			proxy->m_collisionFilterGroup = GROUP_PLAYER;
-			proxy->m_collisionFilterMask = GROUP_PLAYER;
-		}
+		player_head->SetRender(false);
 
 		btRigidBody* body = AssetManager::GetGameObject("player")->GetRigidBody();
 		AssetManager::GetGameObject("player")->SetRender(false);
@@ -48,7 +44,7 @@ namespace Player
 		player_head->GetRigidBody()->setActivationState(false);
 
 
-		proxy = body->getBroadphaseHandle();
+		btBroadphaseProxy* proxy = body->getBroadphaseHandle();
 		if (proxy) {
 			proxy->m_collisionFilterGroup = GROUP_PLAYER;
 			proxy->m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
@@ -75,9 +71,9 @@ namespace Player
 				if (gameobject != NULL)
 				{
 					btRigidBody* body = gameobject->GetRigidBody();
-					body->applyForce(100.0f * glmToBtVector3(Camera::ComputeRay()), hit.m_hitPointWorld - hit.m_hitNormalWorld);
+					body->applyForce(100.0f * glmToBtVector3(Camera::ComputeRay()), hit.m_hitPointWorld - hit.m_hitNormalWorld);					
 					if(body->getBroadphaseHandle()->m_collisionFilterGroup == GROUP_STATIC)
-						AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"), body);
+						AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
 				}
 			}
 
@@ -113,7 +109,6 @@ namespace Player
 		bool IsGrounded = OnGround();
 		if (IsGrounded){
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
-			player->GetRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
 		}
 			
 		btQuaternion quat;
@@ -162,6 +157,7 @@ namespace Player
 				movement += glmToBtVector3(-right);
 			}
 			if (Input::KeyDown(' ')) {
+				std::cout << "jump" << std::endl;
 				movement.setY(1 * jumpforce);
 			}
 			//deltatime was making it jittery will fix later

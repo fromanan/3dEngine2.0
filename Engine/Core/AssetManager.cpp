@@ -130,8 +130,8 @@ namespace AssetManager
 		return GameObjects.size() - 1;
 	}
 	
-	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, btRigidBody* parentbody) {
-		Decals.push_back(Decal(position, normal, scale, texture,parentbody));
+	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture) {
+		Decals.push_back(Decal(position, normal, scale, texture));
 		return Decals.size() - 1;
 	}
 	Decal* GetDecal(int index) {

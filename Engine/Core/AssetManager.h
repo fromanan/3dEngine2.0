@@ -28,7 +28,7 @@ namespace AssetManager
 	int AddGameObject(GameObject gameobject);
 	int AddGameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
 
-	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, btRigidBody* parentbody);
+	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
 	Decal* GetDecal(int index);
 	std::vector<Decal>* GetAllDecals();
 

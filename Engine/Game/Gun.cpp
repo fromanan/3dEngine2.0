@@ -85,8 +85,8 @@ namespace WeaponManager {
 		glock.recoil = 0.01;
 		glock.recoilY = 100;
 		glock.kickback = 3;
-		glock.weaponOffSet = glm::vec3(-0.3, -0.6, 0.9);
-		glock.aimingPosition = glm::vec3(0, -0.6, 0.7);
+		glock.weaponOffSet = glm::vec3(-0.3, 0.2, 0.9);
+		glock.aimingPosition = glm::vec3(0, 0.2, 0.7);
 
 		glock.gunModel = "glock"; 
 		glock.gunsShotName = "glock_fire";
@@ -105,8 +105,8 @@ namespace WeaponManager {
 		ak47.kickback = 2;
 		ak47.gunModel = "ak47";
 		ak47.gunsShotName = "ak47_fire";
-		ak47.weaponOffSet = glm::vec3(-0.3, -0.7, 0.9);
-		ak47.aimingPosition = glm::vec3(0, -0.7, 0.7);
+		ak47.weaponOffSet = glm::vec3(-0.3, 0.2, 0.9);
+		ak47.aimingPosition = glm::vec3(0, 0.2, 0.7);
 		guns.emplace_back(ak47);
 
 	}
