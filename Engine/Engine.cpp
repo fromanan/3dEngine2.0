@@ -36,6 +36,7 @@ namespace Engine {
 			float dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
 			frameCount++;
+
 			if (currentTime - previousTime >= 1.0)
 			{
 				FPS = frameCount;

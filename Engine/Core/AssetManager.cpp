@@ -121,15 +121,17 @@ namespace AssetManager
 	//returns index of object
 	int AssetManager::AddGameObject(GameObject gameobject) {
 		GameObjects.push_back(gameobject);
+		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserPointer((void*)(GameObjects.size() - 1));
 		return GameObjects.size() - 1;
 	}
 	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 		GameObjects.push_back(GameObject(name, path, texture, position,save, mass, shape));
+		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex(GameObjects.size() - 1);
 		return GameObjects.size() - 1;
 	}
 	
-	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture) {
-		Decals.push_back(Decal(position, normal, scale, texture));
+	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, btRigidBody* parentbody) {
+		Decals.push_back(Decal(position, normal, scale, texture,parentbody));
 		return Decals.size() - 1;
 	}
 	Decal* GetDecal(int index) {
@@ -177,7 +179,7 @@ namespace AssetManager
 		return NULL;
 	}
 	GameObject* AssetManager::GetGameObject(int index) {
-		if (index >= GameObjects.size())
+		if (index >= GameObjects.size() || index < 0)
 			return NULL;
 		return &GameObjects[index];
 	}

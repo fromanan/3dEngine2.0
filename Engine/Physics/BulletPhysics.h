@@ -19,49 +19,17 @@ enum ColliderShape {
 	Convex
 };
 
-/*
-class Collider {
-public:
-	Collider();
-	~Collider();
-
-	Collider(GameObject* gameobject,std::string Name, float Mass);
-	Collider(glm::vec3 position, float width, float height, float depth,float mass, std::string Name, ColliderShape shape);
-
-	std::string GetName();
-	std::string GetTag();
-	void SetTag(std::string Tag);
-
-	void SetPosition(glm::vec3 position);
-	glm::vec3 GetPosition();
-	glm::vec3 GetRotation();
-
-	void SetDepth();
-	void SetHeight();
-	void SetWidth();
-	void SetDimensions(float width, float height, float depth);
-	void Regenerate(GameObject* gameobject);
-
-	btRigidBody* GetRigidBody();
-	btCollisionShape* GetCollisionShape();
-private:
-	std::string name = "None";
-	std::string tag = "None";
-	btCollisionShape* collider;
-	btTransform transform;
-	btRigidBody* body;
+enum CollisionGroups {
+	GROUP_PLAYER = 1,
+	GROUP_STATIC = 2,
+	GROUP_DYNAMIC = 4,
+	// Add more groups as needed
 };
-*/
-
-
 
 namespace PhysicsManagerBullet{
 	void Init();
 	void Update(float deltaTime);
 	void AddColliderShape(btCollisionShape* collider);
-	//void AddCollider(Collider collider);
-	//void RemoveCollider(std::string name);
 	void AddRigidBody(btRigidBody* body);
 	btDiscreteDynamicsWorld* GetDynamicWorld();
-	//Collider* GetCollider(std::string Name);
 }

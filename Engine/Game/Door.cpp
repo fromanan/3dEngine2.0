@@ -4,8 +4,8 @@
 Door::Door(std::string Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, glm::vec3 position) {
 	name = Name;
 
-	AssetManager::AddGameObject(name+"_frame", framePath, frameTexture, position, false,0,Box);
-	AssetManager::AddGameObject(name+"_door", doorPath, doorTexture, position, false,0,Box);
+	AssetManager::AddGameObject(name+"_frame", framePath, frameTexture, position, false,0,Convex);
+	AssetManager::AddGameObject(name+"_door", doorPath, doorTexture, position, false,0,Convex);
 
 	//PhysicsManager::AddCube(AssetManager::GetGameObject(name + "_door"),name);
 	//PhysicsManager::GetColider(name)->SetStatic(false);
@@ -32,7 +32,6 @@ void Door::Update(float deltaTime) {
 			rotaion = 0;
 			opening = false;
 			opened = !opened;
-			//PhysicsManager::GetColider(name)->Regenerate(AssetManager::GetGameObject(name + "_door"));
 			return;
 		}
 		if(!opened)

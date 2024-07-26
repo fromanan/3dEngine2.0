@@ -1,19 +1,23 @@
 #pragma once
 #include "Engine/Core/Common.h"
 #include "Engine/Core/Renderer.h"
+#include "Engine/Physics/BulletPhysics.h"
+
 #include <vector>
 #include "string"
 class Decal
 {
 public:
-    Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
+    Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, btRigidBody* parentbody);
     glm::mat4 GetModel();
     glm::vec3 GetNormal();
+    bool CheckParentIsNull();
     void RenderDecal(GLuint& programID);
 private:    
     Texture* texture = NULL;
     glm::vec3 normal = glm::vec3(0, 0, 0);
 
+    btRigidBody* parent = nullptr;
 
     glm::mat4 modelMatrix;
     std::vector<unsigned short> indices = { 0, 1, 2, 0, 3, 1 };

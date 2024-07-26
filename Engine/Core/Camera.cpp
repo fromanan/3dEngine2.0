@@ -65,6 +65,7 @@ namespace Camera {
 		glm::vec4 lRayEnd_world = InverseViewMatrix * lRayEnd_camera;   lRayEnd_world /= lRayEnd_world.w;
 
 		glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
+		
 
 		return glm::normalize(lRayDir_world);
 	}
@@ -75,11 +76,9 @@ namespace Camera {
 			btVector3(Camera::position.x, Camera::position.y, Camera::position.z),
 			btVector3(out_end.x, out_end.y, out_end.z)
 		);
-		PhysicsManagerBullet::GetDynamicWorld()->rayTest(
-			btVector3(Camera::position.x, Camera::position.y, Camera::position.z),
-			btVector3(out_end.x, out_end.y, out_end.z),
-			RayCallback
-		);
+		RayCallback.m_collisionFilterGroup = GROUP_PLAYER;
+		RayCallback.m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
+		PhysicsManagerBullet::GetDynamicWorld()->rayTest(btVector3(Camera::position.x, Camera::position.y, Camera::position.z),btVector3(out_end.x, out_end.y, out_end.z),RayCallback);
 		return RayCallback;
 	}
 	

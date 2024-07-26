@@ -3,8 +3,6 @@
 #include "Engine/Core/Scene/SceneManager.h"
 #include "Engine/Physics/BulletPhysics.h"
 
-
-
 namespace Player
 {
 	glm::vec3 forward;
@@ -14,7 +12,7 @@ namespace Player
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
 	float speed = 2000;
-	float jumpforce = 80;
+	float jumpforce = 8;
 	std::string gunName = "";
 	std::string interactingWithName = "nothing";
 	float interactDistance = 2;
@@ -29,28 +27,58 @@ namespace Player
 
 	void Player::Init() {
 		srand(time(0));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false,1,Capsule,0.5,2,0.5));
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 2, 0.5));
+		btRigidBody* body = AssetManager::GetGameObject("player")->GetRigidBody();
 		AssetManager::GetGameObject("player")->SetRender(false);
-		AssetManager::GetGameObject("player")->GetRigidBody()->setFriction(0.0f);
-		AssetManager::GetGameObject("player")->GetRigidBody()->setRestitution(0.0f);
-		AssetManager::GetGameObject("player")->GetRigidBody()->setGravity(btVector3(0, -10 * 3.0f, 0));
+		body->setFriction(0.5f);
+		body->setRestitution(0.0f);
+		body->setGravity(btVector3(0, -10 * 3.0f, 0));
+
+		btBroadphaseProxy* proxy = body->getBroadphaseHandle();
+		if (proxy) {
+			proxy->m_collisionFilterGroup = GROUP_PLAYER;
+			proxy->m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
 
 
-		// Add the constraint to the world
-		std::cout << "loading player model" << std::endl;
-		gunName = "ak47";
+			// Add the constraint to the world
+			std::cout << "loading player model" << std::endl;
+			gunName = "ak47";
+		}
 	}
 	void Player::Shoot() {
-		
+
 		if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
 		{
 			WeaponManager::GetGunByName(gunName)->currentammo--;
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
-
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-			AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.021, 0.021, 0.021), AssetManager::GetTexture("bullet_hole"));
+			if (hit.m_collisionObject != nullptr)
+			{
+				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
+				if (gameobject != NULL)
+				{
+					std::cout << gameobject->GetName() << std::endl;
+					//body->applyForce(100.0f * glmToBtVector3(Camera::ComputeRay()), hit.m_hitPointWorld - hit.m_hitNormalWorld);
+					//std::cout << "x: " << body->getWorldTransform().getOrigin().getX() << std::endl;
+					//AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"),body)
+				}
+			}
+
+
+			/*
+			btRigidBody* body = const_cast<btRigidBody*>(btRigidBody::upcast(hit.m_collisionObject));
+			if (body != nullptr)
+			{
+				body->applyForce(100.0f * glmToBtVector3(Camera::ComputeRay()), hit.m_hitPointWorld - hit.m_hitNormalWorld);
+				std::cout << "x: " << body->getWorldTransform().getOrigin().getX() << std::endl;
+				AssetManager::AddDecal(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"));
+
+
+			}
+			*/
+
 			/*
 			if (Camera::GetLookingAtCollider()->GetStatic())
 			{
@@ -82,10 +110,11 @@ namespace Player
 			//click click
 			AudioManager::PlaySound("dry_fire", AssetManager::GetGameObject("player")->getPosition());
 		}
-		
+
 		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
-		
+
 	}
+	
 	bool Player::OnGround() {
 		GameObject* player = AssetManager::GetGameObject("player");
 		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-1,0) * 1.5f;
@@ -107,12 +136,9 @@ namespace Player
 	void Player::Update(float deltaTime) {
 		GameObject* player =  AssetManager::GetGameObject("player");
 		bool IsGrounded = OnGround();
-		std::cout << OnGround() << std::endl;
 		if (IsGrounded){
-			player->GetRigidBody()->setAngularVelocity(btVector3(0, player->GetRigidBody()->getAngularVelocity().y(), 0));
+			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
 		}
-		
-
 			
 		btQuaternion quat;
 		quat.setEuler(0, player->getRotation().y, 0);
@@ -141,7 +167,7 @@ namespace Player
 			cos(horizontalAngle - 3.14f / 2.0f)
 		);
 		// Move forward
-		btVector3 movement = btVector3(0,player->GetRigidBody()->getLinearVelocity().y(), 0);
+		btVector3 movement = btVector3(0,0, 0);
 		if (IsGrounded)
 		{
 			if (Input::KeyDown('w')) {
@@ -160,11 +186,11 @@ namespace Player
 				movement += glmToBtVector3(-right);
 			}
 			if (Input::KeyDown(' ')) {
-				movement += glmToBtVector3(vec3(0, 1, 0) * jumpforce * deltaTime);
+				movement.setY(1 * jumpforce);
 			}
-			movement.setX(movement.x() * speed * deltaTime);
-			movement.setZ(movement.z() * speed * deltaTime);
-
+			//deltatime was making it jittery will fix later
+			movement.setX(movement.x() * speed * 0.003);
+			movement.setZ(movement.z() * speed * 0.003);
 
 			player->GetRigidBody()->setLinearVelocity(movement);
 		}
@@ -192,10 +218,10 @@ namespace Player
 			}
 			
 			//get ray details
-			if (Input::LeftMousePressed() && Camera::GetRayHit().hasHit() && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+			if (Input::LeftMousePressed() && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 				Shoot();
 			}
-			else if (Input::LeftMouseDown() && Camera::GetRayHit().hasHit() < 9999 && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
+			else if (Input::LeftMouseDown() && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 				Shoot();
 			}
 			if (Input::KeyPressed('q') && !reloading) {

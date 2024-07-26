@@ -134,11 +134,9 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.7f);
-
-
-
+	body->setUserIndex(-1);
 	//add the body to the dynamics world
-	PhysicsManagerBullet::AddRigidBody(body);
+	PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	setPosition(position);
 }
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth) {
@@ -166,7 +164,8 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 	body = new btRigidBody(rbInfo);
 	body->setFriction(0.7f);
-
+	body->setUserIndex(12);
+	body->setUserIndex(-1);
 	//add the body to the dynamics world
 	PhysicsManagerBullet::AddRigidBody(body);
 	body->setActivationState(DISABLE_DEACTIVATION);
@@ -309,6 +308,9 @@ void GameObject::LoadModel(const char* path) {
 
 void GameObject::Copy(std::string copyName) {
 	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,Box));
+}
+void GameObject::SetUserPoint(void* pointer) {
+	body->setUserPointer(pointer);
 }
 
 

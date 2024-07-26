@@ -101,6 +101,8 @@ public:
 	void SetDelete(bool state);
 	bool ShouldDlete();
 
+	void SetUserPoint(void* pointer);
+
 	void computeTangentBasis(
 		// inputs
 		std::vector<glm::vec3>& vertices,
@@ -156,4 +158,5 @@ private:
 	bool canSave = false;
 	bool render = true;
 	bool shouldDelete = false;
+
 };

@@ -28,7 +28,7 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(-1, 0, 5), true, 0, Box);
 	AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
 
-	//doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(2, 0, 3)));
+	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(2, 0, 3)));
 
 	//crates.push_back(Crate(glm::vec3(15, 10, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
@@ -132,6 +132,8 @@ void Scene::RenderObjects() {
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
 		Decal* decal = AssetManager::GetDecal(i);
+		//if (decal->CheckParentIsNull())
+			//continue;
 		//do some pre normal calcualtions
 		glm::mat4 ModelMatrix = decal->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;
