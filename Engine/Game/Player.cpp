@@ -195,9 +195,18 @@ namespace Player
 			player->GetRigidBody()->setLinearVelocity(movement);
 		}
 		
-		//if (Input::KeyPressed('e') && Camera::GetLookingAtDistance() <= interactDistance) {
-			//interactingWithName = Camera::GetLookingAtName();
-		//}
+		if (Input::KeyPressed('e')) {
+			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
+			if (hit.m_collisionObject != nullptr)
+			{
+				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
+				if (gameobject != NULL && glm::distance(gameobject->getPosition(),getPosition()) <= interactDistance)
+				{
+					interactingWithName = gameobject->GetName();
+					std::cout << interactingWithName << std::endl;
+				}
+			}
+		}
 		if (Input::KeyPressed('r') && !reloading && !aiming) {
 			reloading = true;
 			reloadingTime = glfwGetTime();

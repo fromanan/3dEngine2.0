@@ -4,11 +4,8 @@
 Door::Door(std::string Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, glm::vec3 position) {
 	name = Name;
 
-	AssetManager::AddGameObject(name+"_frame", framePath, frameTexture, position, false,0,Convex);
+	AssetManager::AddGameObject(GameObject(name+"_frame", framePath, frameTexture, position,false,0,Box,0,0,0));
 	AssetManager::AddGameObject(name+"_door", doorPath, doorTexture, position, false,0,Convex);
-
-	//PhysicsManager::AddCube(AssetManager::GetGameObject(name + "_door"),name);
-	//PhysicsManager::GetColider(name)->SetStatic(false);
 
 	opened = false;
 	opening = false;
@@ -17,7 +14,8 @@ Door::Door(std::string Name, const char* doorPath, const char* framePath, Textur
 	door_position = position;
 }
 void Door::Interact() {
-	if (Player::GetInteractingWithName() == name)
+	std::cout << Player::GetInteractingWithName() << std::endl;
+	if (Player::GetInteractingWithName() == name+"_door")
 	{
 		opening = true;
 		if(opened)

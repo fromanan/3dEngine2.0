@@ -136,7 +136,10 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	body->setFriction(0.7f);
 	body->setUserIndex(-1);
 	//add the body to the dynamics world
-	PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	if(mass != 0)
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	else
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	setPosition(position);
 }
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth) {
@@ -163,13 +166,16 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 	body = new btRigidBody(rbInfo);
+	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.7f);
-	body->setUserIndex(12);
 	body->setUserIndex(-1);
 	//add the body to the dynamics world
-	PhysicsManagerBullet::AddRigidBody(body);
-	body->setActivationState(DISABLE_DEACTIVATION);
+	if (mass != 0)
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	else
+		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	setPosition(position);
+	//add the body to the dynamics world
 
 }
 
