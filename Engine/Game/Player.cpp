@@ -12,8 +12,10 @@ namespace Player
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
 	float speed = 2000;
+	float airSpeed = 1000;
+	float MaxSpeed = 2000;
 	float jumpforce = 9;
-	std::string gunName = "ak47";
+	std::string gunName = "nothing";
 	std::string interactingWithName = "nothing";
 	float interactDistance = 3;
 
@@ -97,7 +99,7 @@ namespace Player
 	
 	bool Player::OnGround() {
 		GameObject* player = AssetManager::GetGameObject("player");
-		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-0.5,0);
+		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-0.65,0);
 
 		btCollisionWorld::ClosestRayResultCallback RayCallback(
 			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
@@ -118,6 +120,7 @@ namespace Player
 		bool IsGrounded = OnGround();
 		if (IsGrounded){
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
+			player->GetRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
 		}
 			
 		btQuaternion quat;
@@ -147,34 +150,44 @@ namespace Player
 			cos(horizontalAngle - 3.14f / 2.0f)
 		);
 		// Move forward
-		btVector3 movement = btVector3(0,0, 0);
-		if (IsGrounded)
-		{
-			if (Input::KeyDown('w')) {
-				movement += glmToBtVector3(-forward);
-			}
-			// Move backward
-			if (Input::KeyDown('s')) {
-				movement += glmToBtVector3(forward);
-			}
-			// Strafe right
-			if (Input::KeyDown('d')) {
-				movement += glmToBtVector3(right);
-			}
-			// Strafe left
-			if (Input::KeyDown('a')) {
-				movement += glmToBtVector3(-right);
-			}
-			if (Input::KeyDown(' ')) {
-				movement.setY(1 * jumpforce);
-			}
-			//deltatime was making it jittery will fix later
-			movement.setX(movement.x() * speed * 0.003);
-			movement.setZ(movement.z() * speed * 0.003);
-
-			player->GetRigidBody()->setLinearVelocity(movement);
-			//player->GetRigidBody()->applyCentralForce(movement * 50);
+		btVector3 movement = btVector3(0, player->GetRigidBody()->getLinearVelocity().y(), 0);
+		if (Input::KeyDown('w')) {
+			movement += glmToBtVector3(-forward);
 		}
+		// Move backward
+		if (Input::KeyDown('s')) {
+			movement += glmToBtVector3(forward);
+		}
+		// Strafe right
+		if (Input::KeyDown('d')) {
+			movement += glmToBtVector3(right);
+		}
+		// Strafe left
+		if (Input::KeyDown('a')) {
+			movement += glmToBtVector3(-right);
+		}
+		if (Input::KeyDown(' ') && IsGrounded) {
+			movement.setY(jumpforce);
+		}
+		
+		movement.setX(movement.x() * speed);
+		movement.setZ(movement.z() * speed);
+		//movement += player->GetRigidBody()->getLinearVelocity();
+
+		if (movement.x() > MaxSpeed) 
+			movement.setX(MaxSpeed);
+		else if (movement.x() < -MaxSpeed) 
+			movement.setX(-MaxSpeed);
+		if (movement.z() > MaxSpeed) 
+			movement.setX(MaxSpeed);
+		else if (movement.z() < -MaxSpeed) 
+			movement.setX(-MaxSpeed);
+
+		//deltatime was making it jittery will fix later
+		movement.setX(movement.x() * 0.003);
+		movement.setZ(movement.z() * 0.003);
+		player->GetRigidBody()->setLinearVelocity(movement);
+		
 		
 		if (Input::KeyPressed('e')) {
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
@@ -265,12 +278,13 @@ namespace Player
 		return gunName;
 	}
 	bool Player::SelectWeapon(std::string weaponName) {
-		if (reloading)
+		if (reloading || weaponName == gunName)
 			return false;
 		if(gunName != "nothing")
 			AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
 		gunName = weaponName;
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(true);
+		AudioManager::PlaySound("item_pickup", getPosition());
 		return true;
 	}
 	void Player::SwitchWeapons(int index) {
