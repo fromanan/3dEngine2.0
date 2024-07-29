@@ -2,13 +2,14 @@
 #include "Engine/Core/Common.h"
 #include "Engine/Core/Renderer.h"
 #include "Engine/Physics/BulletPhysics.h"
+#include "Engine/Core/GameObject.h"
 
 #include <vector>
 #include "string"
 class Decal
 {
 public:
-    Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture);
+    Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* Parent);
     glm::mat4 GetModel();
     glm::vec3 GetNormal();
     bool CheckParentIsNull();
@@ -17,9 +18,10 @@ private:
     Texture* texture = NULL;
     glm::vec3 normal = glm::vec3(0, 0, 0);
 
-    btRigidBody* parent = nullptr;
+    GameObject* parent = nullptr;
 
-    glm::mat4 modelMatrix;
+    Transform transform;
+
     std::vector<unsigned short> indices = { 0, 1, 2, 0, 3, 1 };
     std::vector<glm::vec3> indexed_vertices = { glm::vec3(1.0, 0.0,1.0),glm::vec3(-1.0,0.0,-1.0),glm::vec3(-1.0, 0.0,1.0),glm::vec3(1.0,0.0,-1.0) };
     std::vector<glm::vec2> indexed_uvs = { glm::vec2(1.0,-0.0),glm::vec2(0.0,-1.0),glm::vec2(0.0,-0.0),glm::vec2(1.0,-1.0) };

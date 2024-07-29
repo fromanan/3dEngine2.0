@@ -1,16 +1,23 @@
 #include "Decal.h"
 
-Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture) {
+Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* Parent) {
     this->texture = texture;
 	this->normal = normal;
+	parent = Parent;
+
 
 	glm::vec3 up(0, 1, 0);
 	glm::vec3 rotationAxis = glm::cross(normal, up);
 	float angle = acos(glm::dot(normal, up));
 
-	modelMatrix = glm::translate(glm::mat4(1), position + normal / 1000.0f);
-    modelMatrix *= glm::mat4_cast(glm::quat(rotationAxis * -angle));
-    modelMatrix = glm::scale(modelMatrix, scale);
+	transform.position = position;
+	transform.rotation = (rotationAxis * -angle);
+	std::cout << "debug" << std::endl;
+	std::cout << angle << std::endl;
+	std::cout << "x: " << normal.x << " y: " << position.y << " z: " << position.z << std::endl;
+	std::cout << "x: " << transform.rotation.x << " y: " << transform.rotation.y << " z: " << transform.rotation.z << std::endl;
+
+	transform.scale = scale;
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -47,11 +54,7 @@ bool Decal::CheckParentIsNull() {
 
 
 glm::mat4 Decal::GetModel() {
-	//btScalar transform[16];
-	//parent->getWorldTransform().getOpenGLMatrix(transform);
-	//glm::mat4 modelmatrix = btScalar2mat4(transform);
-	//glm::mat4 modelmatrix = worldToLocal(parent->getWorldTransform().getOrigin(), glmToBtVector3(btQuatToGLMVec(parent->getWorldTransform().getRotation())));
-	return modelMatrix;// * modelmatrix;
+	return parent->GetModelMatrix() * transform.to_mat4();
 }
 glm::vec3 Decal::GetNormal() {
 	return normal;

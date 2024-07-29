@@ -1,0 +1,24 @@
+# Blender 4.1.1 MTL File: 'None'
+# www.blender.org
+
+newmtl Door
+Ns 96.078453
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:/Users/kokok/Downloads/dugjmokoercw-Room-Door/Room-Door/Door_C.jpg
+map_Ks C:/Users/kokok/Downloads/dugjmokoercw-Room-Door/Room-Door/Door_C.jpg
+map_Bump -bm 0.100000 C:/Users/kokok/Downloads/dugjmokoercw-Room-Door/Room-Door/Door_C.jpg
+
+newmtl Glossy_Reflexion.jpg
+Ns 96.078453
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:/Users/kokok/Downloads/dugjmokoercw-Room-Door/Room-Door/Reflexion.jpg
+map_refl C:/Users/kokok/Downloads/dugjmokoercw-Room-Door/Room-Door/Reflexion.jpg

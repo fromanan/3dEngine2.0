@@ -19,6 +19,9 @@ void Scene::Load() {
 	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("window", "Assets/Textures/window.png");
+	
+
+	AssetManager::AddTexture("door2", "Assets/Textures/Door_C.jpg");
 
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 	WeaponManager::Init();
@@ -43,7 +46,8 @@ void Scene::Load() {
 	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
 	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(1,25, 0)));
 
-	doors.push_back(Door("door1", "Assets/Objects/door1.obj", "Assets/Objects/door_frame1.obj", AssetManager::GetTexture("uvmap"), AssetManager::GetTexture("uvmap"), glm::vec3(-3, 0, -3)));
+	doors.push_back(Door("door1", "Assets/Objects/door2.obj", "Assets/Objects/frame2.obj", AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3)));
+
 
 
 	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
@@ -134,6 +138,8 @@ void Scene::RenderObjects() {
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
 	{
 		Decal* decal = AssetManager::GetDecal(i);
+		if (decal->CheckParentIsNull())
+			continue;
 		//do some pre normal calcualtions
 		glm::mat4 ModelMatrix = decal->GetModel();
 		glm::mat4 MVP = PV * ModelMatrix;

@@ -3,17 +3,13 @@
 
 Door::Door(std::string Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, glm::vec3 position) {
 	name = Name;
-
 	AssetManager::AddGameObject(GameObject(name+"_frame", framePath, frameTexture, position,false,0,Box,0,0,0));
 	AssetManager::AddGameObject(name+"_door", doorPath, doorTexture, position, false,0,Convex);
-	
-	AssetManager::GetGameObject(name + "_door")->GetRigidBody()->setCcdMotionThreshold(0.1);
-	AssetManager::GetGameObject(name + "_door")->GetRigidBody()->setCcdSweptSphereRadius(0.2); // Set the radius for CCD
-
+	GameObject* gameobject = AssetManager::GetGameObject(name + "_door");
+	gameobject->GetRigidBody()->setCcdMotionThreshold(0.1);
+	gameobject->GetRigidBody()->setCcdSweptSphereRadius(0.2); // Set the radius for CCD
 	opened = false;
 	opening = false;
-	
-
 	door_position = position;
 }
 void Door::Interact() {
