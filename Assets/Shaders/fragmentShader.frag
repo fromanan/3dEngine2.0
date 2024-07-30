@@ -9,7 +9,8 @@ in vec3 LightDirection_tangentspace;
 in vec3 EyeDirection_tangentspace;
 
 // Output data
-out vec4 color;
+layout(location = 0) out vec4 color;
+
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D DiffuseTextureSampler;
@@ -37,7 +38,7 @@ void main(){
 	
 	// Distance to the light
 	float distance = length( LightPosition_worldspace - Position_worldspace );
-	float alpha = texture( DiffuseTextureSampler, UV ).a;
+	float alpha = texture( DiffuseTextureSampler, UV ).a; 
 
 	// Normal of the computed fragment, in camera space
 	vec3 n = TextureNormal_tangentspace;

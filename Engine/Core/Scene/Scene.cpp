@@ -57,7 +57,7 @@ void Scene::Load() {
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	lightPos = glm::vec3(100, 100, 100);
-	std::vector<std::string> faces{
+	std::vector<std::string> faces{ 
 		"Assets/Skybox/daylight/right.png",
 			"Assets/Skybox/daylight/left.png",
 			"Assets/Skybox/daylight/top.png",
@@ -129,6 +129,7 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		gameobjectRender->RenderObject(programid);
 	}
+
 	for (int i = 0; i < windows.size(); i++)
 	{
 		windows[i].Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
