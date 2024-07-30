@@ -39,7 +39,7 @@ namespace Engine {
 
 			if (currentTime - previousTime >= 1.0)
 			{ 
-				FPS = frameCount;
+				FPS = frameCount; 
 				frameCount = 0;
 				previousTime = currentTime;
 			}
