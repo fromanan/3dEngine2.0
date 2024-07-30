@@ -153,7 +153,7 @@ void Scene::RenderObjects() {
 	glm::vec3 pos = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
 	oss << "Pos x:" << pos.x << " y:" << pos.y << " z:" << pos.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
-	glm::vec3 vel = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getTotalForce());
+	glm::vec3 vel = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity());
 	oss.str(""); oss.clear();
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
@@ -177,6 +177,35 @@ void Scene::AddGunPickUp(std::string gunName, std::string gunObject, glm::vec3 P
 	std::cout << " testing";
 	gunPickUps.push_back(pickup);
 }
+void Scene::RenderObjects(const char* shaderName) {
+	glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
+	glm::mat4 ViewMatrix = Camera::getViewMatrix();
+	glm::mat4 PV = ProjectionMatrix * ViewMatrix;
+
+	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, sky);
+	GLuint programid = Renderer::GetProgramID(shaderName);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	Renderer::SetLightPos(lightPos);
+
+	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
+
+		GameObject* gameobjectRender = AssetManager::GetGameObject(i);
+
+		if (!gameobjectRender->ShouldRender())
+			continue;
+
+		glm::mat4 ModelMatrix = gameobjectRender->GetModelMatrix();
+		glm::mat4 MVP = PV * ModelMatrix;
+		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
+
+		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
+		gameobjectRender->RenderObject(programid);
+	}
+}
+
 
 int Scene::GetGunPickUpSize() {
 	return gunPickUps.size();

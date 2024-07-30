@@ -201,6 +201,8 @@
     <None Include="Assets\Shaders\lineshader.vert" />
     <None Include="Assets\Shaders\ShadowShader.frag" />
     <None Include="Assets\Shaders\ShadowShader.vert" />
+    <None Include="Assets\Shaders\Shadows\shadows.frag" />
+    <None Include="Assets\Shaders\Shadows\shadows.vert" />
     <None Include="Assets\Shaders\SkyBoxShader.frag" />
     <None Include="Assets\Shaders\SkyBoxShader.vert" />
     <None Include="Assets\Shaders\SSAO\ssao.vert" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "Renderer.h"
+#include "Scene/SceneManager.h"
 
 Texture::Texture(const char* name, const char* path) {
 	this->name = name;
@@ -241,6 +242,10 @@ namespace Renderer {
 	unsigned int quadVAO;
 	unsigned int VBO;
 
+	unsigned int depthMapFBO;
+	unsigned int depthMap;
+
+
 
 
 
@@ -302,12 +307,50 @@ namespace Renderer {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		glBindVertexArray(Renderer::quadVAO);
 
-		LoadShader("Assets/Shaders/lineshader.vert", "Assets/Shaders/lineshader.frag", "line");
-
 		UseProgram(GetProgramID(name));
 
 		return 0;
 	}
+
+	void Renderer::RenderShadowMap() {
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		//ConfigureShaderAndMatrices();
+		//RenderScene();
+		glm::vec3 lightpos = glm::vec3(100, 100, 100);
+		float near_plane = 1.0f, far_plane = 7.5f;
+		glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
+		glm::mat4 lightView = glm::lookAt(lightpos,
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f));
+
+		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+		UseProgram(GetProgramID("shadow"));
+		
+		glUniformMatrix4fv(glGetUniformLocation(Renderer::GetCurrentProgramID(), "lightSpaceMatrix") , 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+		glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		SceneManager::GetCurrentScene()->RenderObjects("shadow");
+		
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+
 
 	void Renderer::setMat4(GLuint id, glm::mat4& mat4)
 	{

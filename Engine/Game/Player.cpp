@@ -11,9 +11,9 @@ namespace Player
 	float initialFoV = 45.0f;
 	float maxAngle = 1.5;
 	float mouseSpeed = 0.005f;
-	float speed = 2000;
+	float speed = 3000;
 	float airSpeed = 1000;
-	float MaxSpeed = 2000;
+	float MaxSpeed = 5;
 	float jumpforce = 9;
 	std::string gunName = "nothing";
 	std::string interactingWithName = "nothing";
@@ -120,10 +120,23 @@ namespace Player
 
 	void Player::Update(float deltaTime) {
 		GameObject* player =  AssetManager::GetGameObject("player");
+
+		GameObject* head = AssetManager::GetGameObject("player_head");
+		player->setRotation(glm::vec3(0, horizontalAngle, 0));
+		head->setRotation(glm::vec3(-verticalAngle, horizontalAngle, 0));
+		head->setPosition(player->getPosition() + glm::vec3(0, 1.5, 0));
+
+		Camera::SetHorizontalAngle(horizontalAngle);
+		Camera::SetVerticalAngle(verticalAngle);
+		Camera::SetPosition(head->getPosition());
+
+		if (gunName != "nothing")
+			WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
+
 		bool IsGrounded = OnGround();
 		if (IsGrounded){
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
-			player->GetRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
+			player->GetRigidBody()->setLinearVelocity(btVector3(player->GetRigidBody()->getLinearVelocity().x() * 0.9, 0, player->GetRigidBody()->getLinearVelocity().z() * 0.9));
 		}
 			
 		btQuaternion quat;
@@ -175,20 +188,24 @@ namespace Player
 		
 		movement.setX(movement.x() * speed);
 		movement.setZ(movement.z() * speed);
-		//movement += player->GetRigidBody()->getLinearVelocity();
 
-		if (movement.x() > MaxSpeed) 
-			movement.setX(MaxSpeed);
-		else if (movement.x() < -MaxSpeed) 
-			movement.setX(-MaxSpeed);
-		if (movement.z() > MaxSpeed) 
-			movement.setX(MaxSpeed);
-		else if (movement.z() < -MaxSpeed) 
-			movement.setX(-MaxSpeed);
+
 
 		//deltatime was making it jittery will fix later
-		movement.setX(movement.x() * 0.003);
-		movement.setZ(movement.z() * 0.003);
+		
+		movement.setX(movement.x() + player->GetRigidBody()->getLinearVelocity().x());
+		movement.setZ(movement.z() + player->GetRigidBody()->getLinearVelocity().z());
+		movement.setX(movement.x() * deltaTime);
+		movement.setZ(movement.z() * deltaTime);
+
+		if (movement.x() > MaxSpeed) movement.setX(MaxSpeed);
+		if (movement.x() < -MaxSpeed) movement.setX(-MaxSpeed);
+		if (movement.z() > MaxSpeed) movement.setZ(MaxSpeed);
+		if (movement.z() < -MaxSpeed) movement.setZ(-MaxSpeed);
+		if (movement.y() < -10) movement.setY(-10);
+		if (movement.y() > 10) movement.setY(10);
+
+		
 		player->GetRigidBody()->setLinearVelocity(movement);
 		
 		
@@ -245,18 +262,10 @@ namespace Player
 		}
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
 
-		GameObject* head = AssetManager::GetGameObject("player_head");
-		player->setRotation(glm::vec3(0, horizontalAngle, 0));
-		head->setRotation(glm::vec3(-verticalAngle, horizontalAngle, 0));
-		head->setPosition(player->getPosition() + glm::vec3(0, 1.5, 0));
-
-		Camera::SetHorizontalAngle(horizontalAngle);
-		Camera::SetVerticalAngle(verticalAngle);
-		Camera::SetPosition(head->getPosition());
+		
 		
 
-		if(gunName != "nothing")
-			WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
+		
 
 		if ((Input::KeyDown('w') || Input::KeyDown('a') || Input::KeyDown('s') || Input::KeyDown('d')) && footstepTime + footstep_interval < glfwGetTime() ) {
 			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1), AssetManager::GetGameObject("player")->getPosition());

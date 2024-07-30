@@ -33,6 +33,7 @@ public:
 	void Load();
 	void Update(float dt);
 	void RenderObjects();
+	void RenderObjects(const char* shaderName);
 
 	void AddGunPickUp(GunPickUp gunpickup);
 	void AddGunPickUp(std::string gunName,std::string gunObject,glm::vec3 Position);
