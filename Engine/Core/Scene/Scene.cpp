@@ -129,6 +129,7 @@ void Scene::RenderObjects() {
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
 		gameobjectRender->RenderObject(programid);
 	}
+
 	for (int i = 0; i < windows.size(); i++)
 	{
 		windows[i].Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
