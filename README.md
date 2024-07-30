@@ -1,36 +1,34 @@
 # OpenGL Engine 2.0
 
 ### Showcase
-https://www.youtube.com/watch?v=pT29-X6VxYc
+
+[![Showcase Video](https://img.youtube.com/vi/pT29-X6VxYc/0.jpg)](https://youtu.be/pT29-X6VxYc)
+
+## Changelog
 
 ### 3D Engine 2.0 2024/July/26
-There is a new branch called bullet physics, this is the new current branch that use the Bullet Physics library. Over the last week I have ported my engine to use this physics libray. This allowed me to add better rigidbodies as well as dynamic objects, shown in the 
-screenshot below. There is now multiple Collider shapes including spheres/boxes/capsules and convex meshs base on the model.
+There is a new branch called bullet physics, this is the new current branch that use the Bullet Physics library. Over the last week I have ported my engine to use this physics library. This allowed me to add better rigidbodies as well as dynamic objects, shown in the screenshot below. There are now multiple Collider shapes including spheres/boxes/capsules and convex mesh's base on the model.
 
-![screenshot](/github/screenshots/bullet_physics.png)
-
-
-### 3D Engine 2.0 2024/July/16
-Lots of changes this week, Rendering pipe line had an upgrade with allowing textures to now having a normal map for increased graphics. An Audio system has also been added using FMOD allowing .wav files to be loaded and played with full 3D sound. Guns have been implemented with an ak47 and a pistol, pickup able weapons have also been added. Doors were also added and a system 
-for scripts to be able to see what the player is interacting with was also added. A very basic animation system has also been added using keyframes that record transformations of an object.
-
-![screenshot](/github/screenshots/gunsnmore.png)
-
-### 3D Engine 2.0 2024/July/08
-Rendering pipeline had a few changes most notably transparent textures and decals were added. Raycasting was also added, the camerea casts a ray giving you the intersection point at any AABB in the screenshot below I use this for bullet holes. GameObjects also
-now have a parent-child hierarchy and there model matrix gets updated correctly. Soon I will have to redo the model system to incoperate assimp for animations.
-
-![screenshot](/github/screenshots/Decals.png)
+![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/bullet_physics.png)
 
 
+### 3D Engine 2.0 – 2024/July/16
+Lots of changes this week, Rendering pipeline had an upgrade with allowing textures to now having a normal map for increased graphics. An Audio system has also been added using FMOD allowing .wav files to be loaded and played with full 3D sound. Guns have been implemented with an ak47 and a pistol, pickup able weapons have also been added. Doors were also added and a system for scripts to be able to see what the player is interacting with was also added. A very basic animation system has also been added using keyframes that record transformations of an object.
 
-### 3D Engine 2.0 2024/July/04
-This week I have implemented phyiscs, my implementation includes rigidbodies and axis alined boxes for collision, GameObjects can be used to produce a collider with the same demensions as the model. A Map editor is also in the works making it easier for 
-me to edit the scenes, you can also save gameobjects in the scene to json files and load them through the Asset Manager. The Player was changed to work with the new physics system and the movement has been changed to add inertia making the movement more "realistic".
+![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/gunsnmore.png)
 
 
-### 3D Engine 2.0 2024/June/30
-This is a full rewrite of my first 3D OpenGL engine, the first engine succumbed to poorly written spaghetti code from when I was first learning OpenGl. This Engine has been more thoroughly thought out and will hopefully
-allow me to make a simple FPS shooter game. So far the Engine has basic Rendering and Text Rendering, Basic Lighting, Scene Managment, Input Managment, Asset Managment. The next step for the engine is basic Physics and Audio which. 
+### 3D Engine 2.0 – 2024/July/08
+Rendering pipeline had a few changes most notably transparent textures and decals were added. Raycasting was also added, the camera casts a ray giving you the intersection point at any AABB in the screenshot below I use this for bullet holes. GameObjects also now have a parent-child hierarchy and there model matrix gets updated correctly. Soon I will have to redo the model system to incorporate Assimp for animations.
 
-![screenshot](/github/screenshots/3Dengine.png)
+![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/Decals.png)
+
+
+### 3D Engine 2.0 – 2024/July/04
+This week I have implemented physics, my implementation includes rigidbodies and axis aligned boxes for collision, GameObjects can be used to produce a collider with the same dimensions as the model. A Map editor is also in the works making it easier for me to edit the scenes, you can also save gameobjects in the scene to json files and load them through the Asset Manager. The Player was changed to work with the new physics system and the movement has been changed to add inertia making the movement more "realistic".
+
+
+### 3D Engine 2.0 – 2024/June/30
+This is a full rewrite of my first 3D OpenGL engine, the first engine succumbed to poorly written spaghetti code from when I was first learning OpenGl. This Engine has been more thoroughly thought out and will hopefully allow me to make a simple FPS shooter game. So far the Engine has basic Rendering and Text Rendering, Basic Lighting, Scene Management, Input Management, Asset Management. The next step for the engine is basic Physics and Audio.
+
+![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/3Dengine.png)
