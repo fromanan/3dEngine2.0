@@ -9,8 +9,7 @@ in vec3 LightDirection_tangentspace;
 in vec3 EyeDirection_tangentspace;
 
 // Output data
-layout(location = 0) out vec4 color;
-
+out vec4 color;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D DiffuseTextureSampler;
