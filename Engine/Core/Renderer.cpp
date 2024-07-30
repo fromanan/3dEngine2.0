@@ -369,9 +369,9 @@ namespace Renderer {
 		glUseProgram(ProgramID);
 	}
 	int Renderer::LoadShader(const char* vertex, const char* fragment, const char* name) {
-		shaderProgramIds[name] = LoadShaders::LoadShaders(vertex, fragment);
+		shaderProgramIds[name] = LoadShaders::LoadShaders(vertex, fragment); 
 		return shaderProgramIds[name];
-	}
+	} 
 
 	void Renderer::RenderText(const char* text,int x, int y, int size) {
 		Renderer::UseProgram(Text2D::GetProgramID());
