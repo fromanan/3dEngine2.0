@@ -27,7 +27,7 @@ public:
 
 private:
     const char* name;
-    int textureNumber;
+    int textureNumber; 
     int textureNormalNumber;
     GLuint texture;
     GLuint textureNormal;

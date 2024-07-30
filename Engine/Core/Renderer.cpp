@@ -372,7 +372,7 @@ namespace Renderer {
 		shaderProgramIds[name] = LoadShaders::LoadShaders(vertex, fragment);
 		return shaderProgramIds[name];
 	}
-
+	 
 	void Renderer::RenderText(const char* text,int x, int y, int size) {
 		Renderer::UseProgram(Text2D::GetProgramID());
 		Text2D::printText2D(text, x, y, size);

@@ -37,7 +37,7 @@ void main(){
 	
 	// Distance to the light
 	float distance = length( LightPosition_worldspace - Position_worldspace );
-	float alpha = texture( DiffuseTextureSampler, UV ).a;
+	float alpha = texture( DiffuseTextureSampler, UV ).a; 
 
 	// Normal of the computed fragment, in camera space
 	vec3 n = TextureNormal_tangentspace;

@@ -57,7 +57,7 @@ void Scene::Load() {
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	lightPos = glm::vec3(100, 100, 100);
-	std::vector<std::string> faces{
+	std::vector<std::string> faces{ 
 		"Assets/Skybox/daylight/right.png",
 			"Assets/Skybox/daylight/left.png",
 			"Assets/Skybox/daylight/top.png",
