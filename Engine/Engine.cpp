@@ -51,7 +51,7 @@ namespace Engine {
 			Renderer::ClearScreen();
 			SceneManager::Update(dt);
 			Camera::Update(dt);
-			SceneManager::Render();
+			SceneManager::Render(); 
 			AudioManager::Update();
 
 			PhysicsManagerBullet::Update(dt);
