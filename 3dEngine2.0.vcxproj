@@ -145,55 +145,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Debug\DebugDrawer.cpp" />
-    <ClCompile Include="Engine\Physics\BulletPhysics.cpp" />
-    <ClCompile Include="Engine\Game\Crate.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Engine\Core\Animation.cpp" />
-    <ClCompile Include="Engine\Game\Door.cpp" />
-    <ClCompile Include="Engine\Core\Camera.cpp" />
     <ClCompile Include="Engine\Backend.cpp" />
+    <ClCompile Include="Engine\Core\Animation.cpp" />
     <ClCompile Include="Engine\Core\AssetManager.cpp" />
+    <ClCompile Include="Engine\Core\Camera.cpp" />
     <ClCompile Include="Engine\Core\Common.cpp" />
     <ClCompile Include="Engine\Core\Decal.cpp" />
     <ClCompile Include="Engine\Core\GameObject.cpp" />
+    <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="Engine\Core\Renderer.cpp" />
+    <ClCompile Include="Engine\Core\Scene\Scene.cpp" />
+    <ClCompile Include="Engine\Core\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\Core\UI\Text2D.cpp" />
+    <ClCompile Include="Engine\Debug\DebugDrawer.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Engine\Game\Crate.cpp" />
+    <ClCompile Include="Engine\Game\Door.cpp" />
+    <ClCompile Include="Engine\Game\Gun.cpp" />
+    <ClCompile Include="Engine\Game\Player.cpp" />
     <ClCompile Include="Engine\Game\Window.cpp" />
     <ClCompile Include="Engine\Loaders\loader.cpp" />
     <ClCompile Include="Engine\Loaders\ShaderLoader.cpp" />
     <ClCompile Include="Engine\Loaders\stb_image.cpp" />
     <ClCompile Include="Engine\Loaders\vboindexer.cpp" />
-    <ClCompile Include="Engine\Core\Input.cpp" />
+    <ClCompile Include="Engine\Physics\BulletPhysics.cpp" />
     <ClCompile Include="Engine\Physics\Physics.cpp" />
-    <ClCompile Include="Engine\Game\Gun.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Core\Scene\Scene.cpp" />
-    <ClCompile Include="Engine\Core\Scene\SceneManager.cpp" />
-    <ClCompile Include="Engine\Core\UI\Text2D.cpp" />
-    <ClCompile Include="Engine\Game\Player.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Engine\Debug\DebugDrawer.h" />
-    <ClInclude Include="Engine\Backend.h" />
-    <ClInclude Include="Engine\Engine.h" />
-    <ClInclude Include="Engine\Physics\BulletPhysics.h" />
-    <ClInclude Include="Engine\Game\Crate.h" />
-    <ClInclude Include="Engine\Audio\Audio.h" />
-    <ClInclude Include="Engine\Core\Animation.h" />
-    <ClInclude Include="Engine\Game\Door.h" />
-    <ClInclude Include="Engine\Core\Camera.h" />
-    <ClInclude Include="Engine\Core\Decal.h" />
-    <ClInclude Include="Engine\Core\Scene\Scene.h" />
-    <ClInclude Include="Engine\Core\Scene\SceneManager.h" />
-    <ClInclude Include="Engine\Core\Input.h" />
-    <ClInclude Include="Engine\Core\UI\Text2D.h" />
-    <ClInclude Include="Engine\Game\Window.h" />
-    <ClInclude Include="Engine\Loaders\nlohmann\json.hpp" />
-    <ClInclude Include="Engine\Loaders\nlohmann\json_fwd.hpp" />
-    <ClInclude Include="Engine\Physics\Physics.h" />
-    <ClInclude Include="Engine\Game\Player.h" />
-    <ClInclude Include="Engine\Game\Gun.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Saves\mainScene.json" />
@@ -209,6 +187,37 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\Audio\Audio.h" />
+    <ClInclude Include="Engine\Backend.h" />
+    <ClInclude Include="Engine\Core\Animation.h" />
+    <ClInclude Include="Engine\Core\AssetManager.h" />
+    <ClInclude Include="Engine\Core\Camera.h" />
+    <ClInclude Include="Engine\Core\Common.h" />
+    <ClInclude Include="Engine\Core\Decal.h" />
+    <ClInclude Include="Engine\Core\GameObject.h" />
+    <ClInclude Include="Engine\Core\Input.h" />
+    <ClInclude Include="Engine\Core\Renderer.h" />
+    <ClInclude Include="Engine\Core\Scene\Scene.h" />
+    <ClInclude Include="Engine\Core\Scene\SceneManager.h" />
+    <ClInclude Include="Engine\Core\shader_s.h" />
+    <ClInclude Include="Engine\Core\UI\Text2D.h" />
+    <ClInclude Include="Engine\Debug\DebugDrawer.h" />
+    <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="Engine\Game\Crate.h" />
+    <ClInclude Include="Engine\Game\Door.h" />
+    <ClInclude Include="Engine\Game\Gun.h" />
+    <ClInclude Include="Engine\Game\Player.h" />
+    <ClInclude Include="Engine\Game\Window.h" />
+    <ClInclude Include="Engine\Loaders\loader.hpp" />
+    <ClInclude Include="Engine\Loaders\nlohmann\json.hpp" />
+    <ClInclude Include="Engine\Loaders\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="Engine\Loaders\ShaderLoader.hpp" />
+    <ClInclude Include="Engine\Loaders\stb_image.h" />
+    <ClInclude Include="Engine\Loaders\vboindexer.h" />
+    <ClInclude Include="Engine\Physics\BulletPhysics.h" />
+    <ClInclude Include="Engine\Physics\Physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
