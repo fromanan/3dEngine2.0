@@ -231,6 +231,7 @@ namespace Renderer {
 	GLuint ViewMatrixID;
 	GLuint ModelMatrixID;
 	GLuint ModelView3x3MatrixID;
+	GLuint gPosition;
 
 	GLuint FramebufferName = 0;
 	GLuint depthTexture;
@@ -302,7 +303,6 @@ namespace Renderer {
 		glBindVertexArray(Renderer::quadVAO);
 
 		LoadShader("Assets/Shaders/lineshader.vert", "Assets/Shaders/lineshader.frag", "line");
-
 
 		UseProgram(GetProgramID(name));
 

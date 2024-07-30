@@ -167,6 +167,7 @@
     <None Include="Assets\Shaders\ShadowShader.frag" />
     <None Include="Assets\Shaders\lineshader.frag" />
     <None Include="Assets\Shaders\lineshader.vert" />
+    <None Include="Assets\Shaders\SSAO\ssao.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="todo.txt" />

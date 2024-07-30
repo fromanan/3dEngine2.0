@@ -203,6 +203,7 @@
     <None Include="Assets\Shaders\ShadowShader.vert" />
     <None Include="Assets\Shaders\SkyBoxShader.frag" />
     <None Include="Assets\Shaders\SkyBoxShader.vert" />
+    <None Include="Assets\Shaders\SSAO\ssao.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="todo.txt" />

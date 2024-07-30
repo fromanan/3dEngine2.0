@@ -52,7 +52,7 @@ namespace WeaponManager {
 
 	void WeaponManager::Init() {
 
-		AssetManager::AddGameObject(GameObject("glock", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0.2, -0.25, 0.2), false,0,Box,0,0,0));
+		AssetManager::AddGameObject(GameObject("glock", "Assets/Objects/glock_17.obj", AssetManager::GetTexture("glock"), glm::vec3(0.2, -0.25, 0.2), false,0,Box,0,0,0));
 		AssetManager::GetGameObject("glock")->SetRender(false);
 		AssetManager::GetGameObject("glock")->SetParentName("player_head");
 

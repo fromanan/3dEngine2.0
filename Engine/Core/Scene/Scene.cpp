@@ -20,7 +20,7 @@ void Scene::Load() {
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png	", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("window", "Assets/Textures/window.png");
 	
-
+	AssetManager::AddTexture("glock", "Assets/Textures/glock_17.png", "Assets/Normals/glock_17_normal.png");
 	AssetManager::AddTexture("door2", "Assets/Textures/Door_C.jpg");
 
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
@@ -38,17 +38,16 @@ void Scene::Load() {
 	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 
+
+
 	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
 
 	//windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 	//windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup1", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(1,25, 0)));
+	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock_17.obj", AssetManager::GetTexture("glock"), glm::vec3(1,25, 0)));
 
 	doors.push_back(Door("door1", "Assets/Objects/door2.obj", "Assets/Objects/frame2.obj", AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3)));
-
-
 
 	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
 	//AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
