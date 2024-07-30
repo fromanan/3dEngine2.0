@@ -1,6 +1,6 @@
 # OpenGL Engine 2.0
 
-### Demo
+### Showcase
 https://www.youtube.com/watch?v=pT29-X6VxYc
 
 ### 3D Engine 2.0 2024/July/26

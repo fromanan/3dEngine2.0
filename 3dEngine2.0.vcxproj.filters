@@ -170,6 +170,8 @@
     <None Include="Assets\Shaders\SSAO\ssao.vert" />
     <None Include="Assets\Shaders\Shadows\shadows.vert" />
     <None Include="Assets\Shaders\Shadows\shadows.frag" />
+    <None Include="Assets\Shaders\Texture_Render\Texture_Render.vert" />
+    <None Include="Assets\Shaders\Texture_Render\Texture_Render.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="todo.txt" />

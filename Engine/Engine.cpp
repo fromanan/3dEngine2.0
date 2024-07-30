@@ -48,17 +48,15 @@ namespace Engine {
 			float test = glfwGetTime();
 			Input::Update();
 			Input::CenterMouse();
-			Renderer::ClearScreen();
 			SceneManager::Update(dt);
 			Camera::Update(dt);
+			Renderer::SetBuffer();
+			Renderer::ClearScreen();
 			SceneManager::Render();
+			Renderer::SetTextureQuad();
 			AudioManager::Update();
-
 			PhysicsManagerBullet::Update(dt);
 			//AnimationManager::Update(dt);
-			//Rendering
-			
-
 			std::ostringstream oss;
 			oss << "FPS: " << FPS;
 			Renderer::RenderText(oss.str().c_str(), 660, 585, 15);
