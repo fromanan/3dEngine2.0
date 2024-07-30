@@ -12,5 +12,5 @@ namespace SceneManager {
 	void Render();
 	Scene* GetCurrentScene();
 };
-
+ 
 
