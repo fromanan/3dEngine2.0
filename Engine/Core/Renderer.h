@@ -59,8 +59,6 @@ namespace Renderer {
     GLuint GetCurrentProgramID();
     GLuint GetProgramID(const char* name);
 
-    //shadows
-    void RenderShadowMap();
 
     //Text Rendering
     void RenderText(const char* text, int x, int y, int size);
@@ -68,6 +66,8 @@ namespace Renderer {
 
     void RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox);
 
+    void SetBuffer();
+    void SetTextureQuad();
     //shader
     void SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view, glm::mat3 ModelView3x3Matrix);
     void SetLightPos(glm::vec3 lightpos);
