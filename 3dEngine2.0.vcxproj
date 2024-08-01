@@ -171,6 +171,7 @@
     <ClCompile Include="Engine\Loaders\vboindexer.cpp" />
     <ClCompile Include="Engine\Physics\BulletPhysics.cpp" />
     <ClCompile Include="Engine\Physics\Physics.cpp" />
+    <ClCompile Include="Engine\Core\Lights\light.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +221,7 @@
     <ClInclude Include="Engine\Loaders\vboindexer.h" />
     <ClInclude Include="Engine\Physics\BulletPhysics.h" />
     <ClInclude Include="Engine\Physics\Physics.h" />
+    <ClInclude Include="Engine\Core\Lights\light.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

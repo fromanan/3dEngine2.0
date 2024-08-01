@@ -17,9 +17,9 @@
 #include "Engine/Game/Gun.h"
 #include "Engine/Game/Crate.h"
 #include "Engine/Game/Window.h"
+#include "Engine/Core/Lights/light.h"
 
 #include "Engine/Physics/BulletPhysics.h"
-
 
 
 
@@ -42,14 +42,13 @@ public:
 	Crate* GetCrate(std::string name);
 
 private:
-	//this is the sun
-	glm::vec3 lightPos;
 	SkyBox sky;
 	//objects
 	std::vector<Door> doors;
 	std::vector<Crate> crates;
 	std::vector<GunPickUp> gunPickUps;
 	std::vector<Window> windows;
+	std::vector<Light> lights;
 
 	
 };

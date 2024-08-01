@@ -234,8 +234,9 @@ namespace Renderer {
 	GLuint ModelView3x3MatrixID;
 	GLuint gPosition;
 
-	GLuint FramebufferName = 0;
-	GLuint depthTexture;
+
+	GLuint ubo;
+
 
 
 
@@ -260,9 +261,29 @@ namespace Renderer {
 		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
 
 	}
-	void Renderer::SetLightPos(glm::vec3 lightpos)
+	void Renderer::SetLights(std::vector<Light> lights)
 	{
-		setVec3(LightID, lightpos);
+		// Upload lights data to the GPU
+		std::vector<glm::vec3> lightPositions;
+		std::vector<glm::vec3> lightColors;
+		std::vector<float> lightPowers;
+
+		for (const auto& light : lights) {
+			lightPositions.push_back(light.position);
+			lightColors.push_back(light.colour);
+			lightPowers.push_back(light.strength);
+		}
+
+		// Set up uniform arrays in the shader
+		GLuint lightPositionsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPositions_worldspace");
+		GLuint lightColorsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightColors");
+		GLuint lightPowersLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPowers");
+
+		glUniform3fv(lightPositionsLoc, lights.size(), glm::value_ptr(lightPositions[0]));
+		glUniform3fv(lightColorsLoc, lights.size(), glm::value_ptr(lightColors[0]));
+		glUniform1fv(lightPowersLoc, lights.size(), &lightPowers[0]);
+		//setVec3(LightID, lights[0].position);
+
 	}
 
 	int Renderer::init(const char* vertex, const char* fragment, const char* name) {
@@ -339,6 +360,7 @@ namespace Renderer {
 		Text2D::printText2D(text, x, y, size);
 	}
 
+	//dosent work right now still in progress
 	void Renderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color) {
 		UseProgram(GetProgramID("sprite"));
 

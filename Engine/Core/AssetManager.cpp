@@ -57,6 +57,7 @@ namespace AssetManager
 		}
 	}
 
+	//this dosent work yet, still needs to be updated
 	void AssetManager::SaveAssets(const char* path) {
 		json save;
 		std::vector<json> SerializedGameObjects;

@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 
+//This is still in working progress and hasnt been implemented into the engine
+
 struct KeyFrame {
 	float duration;
 	glm::vec3 position;

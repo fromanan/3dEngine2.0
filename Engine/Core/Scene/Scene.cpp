@@ -23,7 +23,9 @@ void Scene::Load() {
 	AssetManager::AddTexture("glock", "Assets/Textures/glock_17.png", "Assets/Normals/glock_17_normal.png");
 	AssetManager::AddTexture("door2", "Assets/Textures/Door_C.jpg");
 
+	//not currently working
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
+
 	WeaponManager::Init();
 
 	AssetManager::AddGameObject("fence1", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(5, 1.3, 2), true, 0, Box);
@@ -33,7 +35,6 @@ void Scene::Load() {
 	AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
 	AssetManager::AddGameObject("floor", "Assets/Objects/slope.obj", AssetManager::GetTexture("sand"), glm::vec3(-1, 2, -7), true, 0, Convex);
 
-	//crates.push_back(Crate(glm::vec3(15, 10, 3), "crate1", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
 	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
@@ -42,8 +43,6 @@ void Scene::Load() {
 
 	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
 
-	//windows.push_back(Window("window1", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, 5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
-	//windows.push_back(Window("window2", "Assets/Objects/window_frame1.obj", AssetManager::GetTexture("uvmap"), "Assets/Objects/window1.obj", AssetManager::GetTexture("window"), glm::vec3(9, 0.5, -5), glm::vec3(0, 3.14159265358979323846 / 2.0f, 0)));
 
 	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock_17.obj", AssetManager::GetTexture("glock"), glm::vec3(1,25, 0)));
 
@@ -56,7 +55,6 @@ void Scene::Load() {
 
 	//sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
-	lightPos = glm::vec3(100, 100, 100);
 	std::vector<std::string> faces{ 
 		"Assets/Skybox/daylight/right.png",
 			"Assets/Skybox/daylight/left.png",
@@ -67,12 +65,25 @@ void Scene::Load() {
 	};
 	sky = SkyBox(faces);
 
-	
-	
+
+	//MAX LIGHTS BY DEFAULT IS 10 if you want more lights go to FragmentShader.frag and VertexShader.vert and change MAXLIGHTS
+	{
+		Light light(glm::vec3(100, 100, -100), glm::vec3(1, 1, 1), 0);
+		lights.push_back(light);
+	}
+	{
+		Light light(glm::vec3(-6, 2, -2), glm::vec3(1, 0, 1), 30);
+		lights.push_back(light);
+	}
+	{
+		Light light(glm::vec3(-1, 2, -1), glm::vec3(0, 1, 1), 30);
+		lights.push_back(light);
+	}
 
 	Player::Init();
 	Player::setPosition(glm::vec3(3, 10, 0));
 
+	//not currently working
 	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
 }
 
@@ -113,7 +124,7 @@ void Scene::RenderObjects() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	Renderer::SetLightPos(lightPos);
+	Renderer::SetLights(lights);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
 
@@ -189,7 +200,7 @@ void Scene::RenderObjects(const char* shaderName) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	Renderer::SetLightPos(lightPos);
+	Renderer::SetLights(lights);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
 

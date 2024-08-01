@@ -10,6 +10,7 @@
 #include "Engine/Core/UI/Text2D.h"
 #include "Loaders/stb_image.h"
 #include "Engine/Core/Common.h"
+#include "Engine/Core/Lights/light.h"
 
 class Texture {
 public:
@@ -66,12 +67,11 @@ namespace Renderer {
 
     void RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox);
 
-    void SetBuffer();
-    void SetTextureQuad();
     //shader
     void SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view, glm::mat3 ModelView3x3Matrix);
-    void SetLightPos(glm::vec3 lightpos);
+    void SetLights(std::vector<Light> lights);
 
     void setMat4(GLuint id, glm::mat4& mat4);
     void setVec3(GLuint id, glm::vec3& vec3);
 }
+
