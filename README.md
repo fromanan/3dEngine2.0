@@ -7,6 +7,11 @@ https://github.com/HaydenD100/3dEngine2.0
 
 ## Changelog
 
+### 3D Engine 2.0 2024/August/1
+My main focus for the next couple weeks is going to be overhauling the lighting and rendering systems. The Engine now supports multiple lights that can be dynamically changed in the scene. I'm looking at other graphical improvements like SSAO or Rendering to a texture allowing post processing as well as working on a material system to make the textures feel more unique.
+![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/lights.png)
+
+
 ### 3D Engine 2.0 2024/July/26
 There is a new branch called bullet physics, this is the new current branch that use the Bullet Physics library. Over the last week I have ported my engine to use this physics library. This allowed me to add better rigidbodies as well as dynamic objects, shown in the screenshot below. There are now multiple Collider shapes including spheres/boxes/capsules and convex mesh's base on the model.
 

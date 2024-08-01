@@ -68,7 +68,7 @@ void Scene::Load() {
 
 	//MAX LIGHTS BY DEFAULT IS 10 if you want more lights go to FragmentShader.frag and VertexShader.vert and change MAXLIGHTS
 	{
-		Light light(glm::vec3(100, 100, -100), glm::vec3(1, 1, 1), 0);
+		Light light(glm::vec3(-2.5, 4, -5), glm::vec3(1, 0.25, 0), 30);
 		lights.push_back(light);
 	}
 	{
