@@ -170,8 +170,7 @@ namespace loader {
 			return false;
 		}
 
-		while (1) {
-
+		while (true) {
 			char lineHeader[128];
 			// read the first word of the line
 			int res = fscanf(file, "%s", lineHeader);
