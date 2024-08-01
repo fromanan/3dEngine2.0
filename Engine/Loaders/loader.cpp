@@ -83,11 +83,9 @@ namespace loader {
 
 		unsigned char header[124];
 
-		FILE* fp;
-
 		/* try to open the file */
-		fp = fopen(imagepath, "rb");
-		if (fp == NULL)
+		FILE* fp = fopen(imagepath, "rb");
+		if (fp == nullptr)
 			return 0;
 
 		/* verify the type of file */
