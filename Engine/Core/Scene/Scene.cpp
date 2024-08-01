@@ -217,17 +217,14 @@ void Scene::RenderObjects(const char* shaderName) {
 	}
 }
 
-
 int Scene::GetGunPickUpSize() {
 	return gunPickUps.size();
 }
+
 Crate* Scene::GetCrate(std::string name) {
 	for (int i = 0; i < crates.size(); i++) {
 		if (crates[i].GetName() == name)
 			return &crates[i];
 	}
-	return NULL;
+	return nullptr;
 }
-
-
-

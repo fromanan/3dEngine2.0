@@ -490,7 +490,7 @@ glm::mat4 GameObject::GetModelMatrix() {
 
 	if (parentName != "") {
 		GameObject* parent = AssetManager::GetGameObject(parentName);
-		if (parent != NULL) {
+		if (parent != nullptr) {
 			matrix = parent->GetModelMatrix() * transform.to_mat4();
 		}
 	}
@@ -519,7 +519,7 @@ void GameObject::RenderObject(GLuint& programID) {
 		return;
 	glUseProgram(programID);
 
-	if (texture != NULL)
+	if (texture != nullptr)
 	{
 		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
 		GLuint TextureID = glGetUniformLocation(programID, "DiffuseTextureSampler");

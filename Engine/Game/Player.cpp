@@ -30,7 +30,7 @@ namespace Player
 	std::string inv[2] = { "ak47","glock" };
 
 	void Player::Init() {
-		srand(time(0));
+		srand(time(nullptr));
 		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 1, 0.5));
 		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5, 0.7, 0.5));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
@@ -79,7 +79,7 @@ namespace Player
 			if (hit.m_collisionObject != nullptr)
 			{
 				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
-				if (gameobject != NULL)
+				if (gameobject != nullptr)
 				{
 					btRigidBody* body = gameobject->GetRigidBody();
 					body->applyImpulse(2 * glmToBtVector3(Camera::ComputeRay()),  body->getWorldTransform().inverse() * hit.m_hitPointWorld );
@@ -214,7 +214,7 @@ namespace Player
 			if (hit.m_collisionObject != nullptr)
 			{
 				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
-				if (gameobject != NULL && glm::distance(gameobject->getPosition(), getPosition()) <= interactDistance)
+				if (gameobject != nullptr && glm::distance(gameobject->getPosition(), getPosition()) <= interactDistance)
 				{
 					interactingWithName = gameobject->GetName();
 				}

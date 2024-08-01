@@ -479,7 +479,7 @@ namespace PhysicsManager {
 			if (colliders[i].GetName() == name)
 				return &colliders[i];
 		}
-		return NULL;
+		return nullptr;
 	}
 	RigidBody* PhysicsManager::GetRigidbody(std::string name) {
 		for (int i = 0; i < rigidbodies.size(); i++) {
