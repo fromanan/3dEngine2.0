@@ -5,14 +5,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Engine/Core/GameObject.h"
-#include "Engine/Core/AssetManager.h"
-
-
 #include <vector>
 #include <string>
 
-//This is still in working progress and hasnt been implemented into the engine
+#include "Engine/Core/GameObject.h"
+#include "Engine/Core/AssetManager.h"
+
+// TODO: This is still a work-in-progress and hasn't been implemented into the engine
 
 struct KeyFrame {
 	float duration;
