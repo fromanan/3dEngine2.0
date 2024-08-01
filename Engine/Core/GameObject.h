@@ -90,7 +90,7 @@ public:
 
 	void SetParentName(std::string name);
 
-	//forJsonSaving
+	// For Json Saving
 	std::vector<unsigned short> getIndices();
 	std::vector<glm::vec3> getIndexedVerticies();
 	std::vector<glm::vec2> getIndexedUvs();
@@ -151,7 +151,8 @@ private:
 	GLuint VertexArrayID;
 	GLuint tangentbuffer;
 	GLuint bitangentbuffer;
-	//phyiscs stuff
+	
+	// Physics stuff
 	btCollisionShape* collider = nullptr;
 	btConvexHullShape* convexHullShape = nullptr;
 	btTransform Btransform;

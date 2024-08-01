@@ -19,7 +19,7 @@ namespace Player
 	std::string interactingWithName = "nothing";
 	float interactDistance = 3;
 
-	//states
+	// States
 	bool reloading = false;
 	bool aiming = false;
 
@@ -39,7 +39,7 @@ namespace Player
 		if (proxy) {
 			proxy->m_collisionFilterGroup = GROUP_PLAYER;
 			proxy->m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
-			// Add the constraint to the world
+			// TODO: Add the constraint to the world
 		}
 
 		btRigidBody* body = AssetManager::GetGameObject("player")->GetRigidBody();
@@ -59,7 +59,7 @@ namespace Player
 		if (proxy) {
 			proxy->m_collisionFilterGroup = GROUP_PLAYER;
 			proxy->m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
-			// Add the constraint to the world
+			// TODO: Add the constraint to the world
 			
 		}
 		//std::cout << "loading player model" << std::endl;
@@ -93,7 +93,7 @@ namespace Player
 			}
 		}
 		else {
-			//click click
+			// Click click
 			AudioManager::PlaySound("dry_fire", AssetManager::GetGameObject("player")->getPosition());
 		}
 		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
@@ -239,7 +239,7 @@ namespace Player
 				WeaponManager::GetGunByName(gunName)->down = 1;
 			}
 			
-			//get ray details
+			// Get ray details
 			if (Input::LeftMousePressed() && WeaponManager::GetGunByName(gunName)->type == Semi && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 				Shoot();
 			}

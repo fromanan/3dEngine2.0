@@ -56,11 +56,12 @@ namespace AssetManager
 		}
 	}
 
-	//this dosent work yet, still needs to be updated
+	// TODO: this doesn't work yet, still needs to be updated
 	void AssetManager::SaveAssets(const char* path) {
 		json save;
 		std::vector<json> SerializedGameObjects;
-		//name,parentname,pos,rotation,scale,indices,indexvert,indexuv,indexnormal,texturename
+		
+		// name,parentname,pos,rotation,scale,indices,indexvert,indexuv,indexnormal,texturename
 		for (int i = 0; i < GameObjects.size(); i++) {
 			if (!GameObjects[i].CanSave())
 				continue;
