@@ -37,9 +37,4 @@ private:
     GLuint VertexArrayID;
     GLuint tangentbuffer;
     GLuint bitangentbuffer;
-
-    
-       
-
 };
-

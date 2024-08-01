@@ -21,7 +21,6 @@ namespace Engine
 		SceneManager::CreateScene(basicScene);
 		SceneManager::LoadScene(0);
 
-
 		// For speed computation
 		double lastTimeDT = glfwGetTime();
 		double previousTime = glfwGetTime();
@@ -61,5 +60,3 @@ namespace Engine
 		return 0;
 	}
 }
-
-

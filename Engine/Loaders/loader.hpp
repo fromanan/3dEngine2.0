@@ -1,5 +1,4 @@
 #pragma once
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -22,7 +21,5 @@ namespace loader
 {
 	GLuint loadBMP_custom(const char* imagepath);
 	GLuint loadDDS(const char* imagepath);
-
-
 	bool loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals);
 }

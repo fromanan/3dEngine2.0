@@ -18,7 +18,6 @@ public:
 	Ray(glm::vec3 dir, glm::vec3 org);
 	void UpdateRay(glm::vec3 dir, glm::vec3 org);
 	bool intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix);
-
 };
 
 class Cube
@@ -41,7 +40,6 @@ public:
 	glm::vec3 getMin();
 	glm::vec3 getMax();
 
-
 	bool GetIsTrigger();
 	void SetIsTrigger(bool trigger);
 	void SetStatic(bool Static);
@@ -49,7 +47,6 @@ public:
 
 	void SetDelete(bool Delete);
 	bool ShouldDelete();
-
 	
 	bool TouchingLeft(Cube* collider, float velocity);
 	bool TouchingRight(Cube* collider, float velocity);
@@ -59,7 +56,6 @@ public:
 	bool TouchingTop(Cube* collider, float velocity);
 
 	float intersect(Ray r, float t0, float t1);
-
 
 	Cube(GameObject* gameobject, std::string names);
 	void Regenerate(GameObject* gameobject);
@@ -91,9 +87,6 @@ public:
 	void NewPosition(float deltaTime);
 	void NewPositionY(float deltaTime);
 
-;
-
-
 	void AddForce(glm::vec3 force);
 	void AddForceX(float force);
 	void AddForceY(float force);
@@ -114,7 +107,6 @@ private:
 	std::string name = "None";
 	glm::vec3 position = glm::vec3(0, 0, 0);
 	glm::vec3 velocity = glm::vec3(0,0,0);
-
 	std::string collider = "None";
 };
 
@@ -128,10 +120,8 @@ namespace PhysicsManager
 	void RemoveCube(std::string name);
 	void RemoveRigidbody(std::string name);
 
-
 	Cube* GetCollider(std::string name);
 	RigidBody* GetRigidbody(std::string name);
-
 
 	void Update(float deltaTime);
 };

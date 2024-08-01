@@ -23,12 +23,7 @@ namespace Input
 	bool LeftMousePressed();
 	bool RightMousePressed();
 
-
-
-
 	void DisableCursor();
 	void HideCursor();
 	void ShowCursor();
-	
 }
-

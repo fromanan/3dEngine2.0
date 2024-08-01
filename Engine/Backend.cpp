@@ -21,8 +21,7 @@ namespace Backend
 		// Open a window and create its OpenGL context
 		window = glfwCreateWindow(SCREENWIDTH, SCREENHEIGHT , WINDOWTITILE, nullptr, nullptr);
 
-
-		if (window == NULL) {
+		if (window == nullptr) {
 			glfwTerminate();
 			return -1;
 		}
@@ -52,6 +51,4 @@ namespace Backend
 	void Backend::CloseWindow() {
 		windowOpen = false;
 	}
-
-
 }

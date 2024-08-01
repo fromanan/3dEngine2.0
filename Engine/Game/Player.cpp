@@ -62,6 +62,7 @@ namespace Player
 			// TODO: Add the constraint to the world
 			
 		}
+		
 		//std::cout << "loading player model" << std::endl;
 		//gunName = "ak47";
 	}
@@ -85,7 +86,7 @@ namespace Player
 					glm::vec4 localPositionHomogeneous = glm::inverse(gameobject->GetModelMatrix()) * worldPositionHomogeneous;
 					glm::vec3 vec3local = glm::vec3(localPositionHomogeneous.x, localPositionHomogeneous.y, localPositionHomogeneous.z);
 
-					if(body->getBroadphaseHandle()->m_collisionFilterGroup == GROUP_STATIC)
+					if (body->getBroadphaseHandle()->m_collisionFilterGroup == GROUP_STATIC)
 						AssetManager::AddDecal(vec3local, glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"),gameobject);
 				}
 			}
@@ -94,8 +95,8 @@ namespace Player
 			// Click click
 			AudioManager::PlaySound("dry_fire", AssetManager::GetGameObject("player")->getPosition());
 		}
+		
 		WeaponManager::GetGunByName(gunName)->lastTimeShot = glfwGetTime();
-
 	}
 	
 	bool Player::OnGround() {
@@ -106,13 +107,16 @@ namespace Player
 			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
 			btVector3(out_end.x, out_end.y, out_end.z)
 		);
+		
 		PhysicsManagerBullet::GetDynamicWorld()->rayTest(
 			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
 			btVector3(out_end.x, out_end.y, out_end.z),
 			RayCallback
 		);
-		if(RayCallback.hasHit())
+		
+		if (RayCallback.hasHit())
 			return true;
+		
 		return false;
 	}
 
@@ -132,7 +136,7 @@ namespace Player
 			WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
 
 		bool IsGrounded = OnGround();
-		if (IsGrounded){
+		if (IsGrounded) {
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
 			player->GetRigidBody()->setLinearVelocity(btVector3(player->GetRigidBody()->getLinearVelocity().x() * 0.9, 0, player->GetRigidBody()->getLinearVelocity().z() * 0.9));
 		}
@@ -157,29 +161,36 @@ namespace Player
 			0,
 			cos(horizontalAngle + 3.14f)
 		);
+		
 		// Right vector
 		glm::vec3 right = glm::vec3(
 			sin(horizontalAngle - 3.14f / 2.0f),
 			0,
 			cos(horizontalAngle - 3.14f / 2.0f)
 		);
+		
 		// Move forward
 		btVector3 movement = btVector3(0, player->GetRigidBody()->getLinearVelocity().y(), 0);
 		if (Input::KeyDown('w')) {
 			movement += glmToBtVector3(-forward);
 		}
+		
 		// Move backward
 		if (Input::KeyDown('s')) {
 			movement += glmToBtVector3(forward);
 		}
+		
 		// Strafe right
 		if (Input::KeyDown('d')) {
 			movement += glmToBtVector3(right);
 		}
+		
 		// Strafe left
 		if (Input::KeyDown('a')) {
 			movement += glmToBtVector3(-right);
 		}
+		
+		// Jump
 		if (Input::KeyDown(' ') && IsGrounded) {
 			movement.setY(jumpforce);
 		}
@@ -187,9 +198,7 @@ namespace Player
 		movement.setX(movement.x() * speed);
 		movement.setZ(movement.z() * speed);
 
-
-
-		//deltatime was making it jittery will fix later
+		// TODO: deltatime was making it jittery will fix later
 		
 		movement.setX(movement.x() + player->GetRigidBody()->getLinearVelocity().x());
 		movement.setZ(movement.z() + player->GetRigidBody()->getLinearVelocity().z());
@@ -202,10 +211,8 @@ namespace Player
 		if (movement.z() < -MaxSpeed) movement.setZ(-MaxSpeed);
 		if (movement.y() < -10) movement.setY(-10);
 		if (movement.y() > 10) movement.setY(10);
-
 		
 		player->GetRigidBody()->setLinearVelocity(movement);
-		
 		
 		if (Input::KeyPressed('e')) {
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
@@ -216,6 +223,7 @@ namespace Player
 				}
 			}
 		}
+		
 		if (Input::KeyPressed('r') && !reloading && !aiming) {
 			reloading = true;
 			reloadingTime = glfwGetTime();
@@ -228,7 +236,7 @@ namespace Player
 			aiming = false;
 		}
 		
-		if (gunName != "nothing"){
+		if (gunName != "nothing") {
 			if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 			{
 				reloading = false;
@@ -243,13 +251,14 @@ namespace Player
 			else if (Input::LeftMouseDown() && WeaponManager::GetGunByName(gunName)->type == Auto && glfwGetTime() - WeaponManager::GetGunByName(gunName)->lastTimeShot > 60.0f / WeaponManager::GetGunByName(gunName)->firerate && !reloading) {
 				Shoot();
 			}
+			
 			if (Input::KeyPressed('q') && !reloading) {
 				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", getPosition() + Camera::GetDirection() * 1.5f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
 				gunName = "nothing";
 			}
-			
 		}
+		
 		if (Input::KeyPressed('1')) {
 			SelectWeapon(inv[0]);
 		}
@@ -257,12 +266,8 @@ namespace Player
 		if (Input::KeyPressed('2')) {
 			SelectWeapon(inv[1]);
 		}
+		
 		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
-
-		
-		
-
-		
 
 		if ((Input::KeyDown('w') || Input::KeyDown('a') || Input::KeyDown('s') || Input::KeyDown('d')) && footstepTime + footstep_interval < glfwGetTime() ) {
 			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1), AssetManager::GetGameObject("player")->getPosition());
@@ -270,36 +275,41 @@ namespace Player
 		}
 		//AssetManager::GetGameObject("player")->GetRigidBody()->setLinearVelocity(btVector3(0.0f, AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity().y(), 0.0f));
 	}
+	
 	glm::vec3 Player::getPosition() {
 		return AssetManager::GetGameObject("player")->getPosition();
 	}
+	
 	glm::vec3 Player::getForward() {
 		return forward;
 	}
+	
 	void Player::setPosition(glm::vec3 pos) {
 		AssetManager::GetGameObject("player")->setPosition(pos);
 		Camera::SetPosition(AssetManager::GetGameObject("player")->getPosition());
 	}
+	
 	std::string Player::GetInteractingWithName() {
 		return interactingWithName;
 	}
+	
 	std::string Player::getCurrentGun() {
 		return gunName;
 	}
+	
 	bool Player::SelectWeapon(std::string weaponName) {
 		if (reloading || weaponName == gunName)
 			return false;
-		if(gunName != "nothing")
+		if (gunName != "nothing")
 			AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
 		gunName = weaponName;
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(true);
 		AudioManager::PlaySound("item_pickup", getPosition());
 		return true;
 	}
+	
 	void Player::SwitchWeapons(int index) {
 		AssetManager::GetGameObject(inv[index])->SetRender(false);
 		gunName = inv[index];
 	}
-
-
 }

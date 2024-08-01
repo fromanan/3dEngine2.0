@@ -5,7 +5,6 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 	this->normal = normal;
 	parent = Parent;
 
-
 	glm::vec3 up(0, 1, 0);
 	glm::vec3 rotationAxis = glm::cross(normal, up);
 	float angle = acos(glm::dot(normal, up));
@@ -33,6 +32,7 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
+	
 	// Generate a buffer for the indices as well
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
@@ -46,16 +46,17 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 }
+
 bool Decal::CheckParentIsNull() {
 	if (parent == nullptr)
 		return true;
 	return false;
 }
 
-
 glm::mat4 Decal::GetModel() {
 	return parent->GetModelMatrix() * transform.to_mat4();
 }
+
 glm::vec3 Decal::GetNormal() {
 	return normal;
 }
@@ -74,7 +75,8 @@ void Decal::RenderDecal(GLuint& programID) {
 		glBindTexture(GL_TEXTURE_2D, texture->GetTextureNormal());
 		glUniform1i(NormalID, texture->GetTextureNormalNumber());
 	}
-	// 1rst attribute buffer : vertices
+	
+	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glVertexAttribPointer(
@@ -109,6 +111,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		0,                                // stride
 		(void*)0                          // array buffer offset
 	);
+	
 	// 4th attribute buffer : tangents
 	glEnableVertexAttribArray(3);
 	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
@@ -137,7 +140,6 @@ void Decal::RenderDecal(GLuint& programID) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
 	// Draw the triangles !
-
 	glDrawElements(
 		GL_TRIANGLES,      // mode
 		indices.size(),    // count
@@ -145,11 +147,9 @@ void Decal::RenderDecal(GLuint& programID) {
 		(void*)0           // element array buffer offset
 	);
 
-
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(3);
 	glDisableVertexAttribArray(4);
 }
-

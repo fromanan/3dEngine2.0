@@ -12,7 +12,4 @@ namespace SceneManager
 	void Update(float dt);
 	void Render();
 	Scene* GetCurrentScene();
-};
-
-
- 
+}

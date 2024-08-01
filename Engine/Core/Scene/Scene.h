@@ -36,7 +36,6 @@ public:
 
 	int GetGunPickUpSize();
 	Crate* GetCrate(std::string name);
-
 private:
 	SkyBox sky;
 	// Objects
@@ -45,7 +44,4 @@ private:
 	std::vector<GunPickUp> gunPickUps;
 	std::vector<Window> windows;
 	std::vector<Light> lights;
-
-	
 };
-
