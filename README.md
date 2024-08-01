@@ -1,10 +1,6 @@
 # OpenGL Engine 2.0
 https://github.com/HaydenD100/3dEngine2.0
 
-### Showcase
-
-[![Showcase Video](https://img.youtube.com/vi/pT29-X6VxYc/0.jpg)](https://youtu.be/pT29-X6VxYc)
-
 ## Changelog
 
 ### 3D Engine 2.0 2024/August/1
