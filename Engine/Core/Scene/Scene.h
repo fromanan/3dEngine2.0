@@ -37,7 +37,7 @@ public:
 	size_t GetGunPickUpSize();
 	Crate* GetCrate(std::string name);
 private:
-	SkyBox sky;
+	SkyBox sky = SkyBox();
 	// Objects
 	std::vector<Door> doors;
 	std::vector<Crate> crates;
