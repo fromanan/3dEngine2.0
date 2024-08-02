@@ -17,7 +17,7 @@ public:
 	Ray();
 	Ray(glm::vec3 dir, glm::vec3 org);
 	void UpdateRay(glm::vec3 dir, glm::vec3 org);
-	bool intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix);
+	bool intersectsTriangle(std::vector<glm::vec3> vertices, glm::mat4 ModelMatrix) const;
 };
 
 class Cube

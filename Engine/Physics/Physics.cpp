@@ -17,12 +17,12 @@ void Ray::UpdateRay(glm::vec3 dir, glm::vec3 org) {
 	origin = org;
 }
 
-bool Ray::intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMatrix) {
+bool Ray::intersectsTriangle(std::vector<glm::vec3> vertices, glm::mat4 ModelMatrix) const {
 	int i = -1;
-	while (i < verticies.size() - 3) {
-		glm::vec4 point1 = glm::vec4(verticies[++i].x, verticies[++i].y, verticies[++i].z, 1) * ModelMatrix; //a
-		glm::vec4 point2 = glm::vec4(verticies[++i].x, verticies[++i].y, verticies[++i].z, 1) * ModelMatrix; //b
-		glm::vec4 point3 = glm::vec4(verticies[++i].x, verticies[++i].y, verticies[++i].z, 1) * ModelMatrix; //c
+	while (i < vertices.size() - 3) {
+		glm::vec4 point1 = glm::vec4(vertices[++i].x, vertices[++i].y, vertices[++i].z, 1) * ModelMatrix; //a
+		glm::vec4 point2 = glm::vec4(vertices[++i].x, vertices[++i].y, vertices[++i].z, 1) * ModelMatrix; //b
+		glm::vec4 point3 = glm::vec4(vertices[++i].x, vertices[++i].y, vertices[++i].z, 1) * ModelMatrix; //c
 
 		glm::vec3 AB = glm::vec3(point2.x - point1.x, point2.y - point1.y, point2.z - point1.z);
 		glm::vec3 AC = glm::vec3(point3.x - point1.x, point3.y - point1.y, point3.z - point1.z);

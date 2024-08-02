@@ -696,7 +696,7 @@ std::vector<unsigned short> GameObject::getIndices() {
 	return indices;
 }
 
-std::vector<glm::vec3>  GameObject::getIndexedVerticies() {
+std::vector<glm::vec3>  GameObject::getIndexedVertices() {
 	return indexed_vertices;
 }
 
