@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 
+#include "Tags.h"
+
 class Ray
 {
 public:
@@ -128,7 +130,7 @@ namespace PhysicsManager
 
 struct RayInfo
 {
-	std::string name = "Nothing";
+	std::string name = Tags::NOTHING;
 	float distance = 9999;
 	glm::vec3 position = glm::vec3(0, 0, 0);
 	glm::vec3 normal = glm::vec3(0, 0, 0);

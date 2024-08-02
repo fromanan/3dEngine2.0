@@ -97,7 +97,7 @@ void Scene::Update(float deltaTime) {
 	
 	for (int gun = 0; gun < gunPickUps.size(); gun++) {
 		gunPickUps[gun].Update();
-		if (gunPickUps[gun].Interact() && Player::getCurrentGun() == "nothing")
+		if (gunPickUps[gun].Interact() && Player::getCurrentGun() == Tags::NOTHING)
 			gunPickUps.erase(gunPickUps.begin() + gun);
 	}
 	
@@ -167,7 +167,7 @@ void Scene::RenderObjects() {
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
 	
-	if (Player::getCurrentGun() != "nothing") {
+	if (Player::getCurrentGun() != Tags::NOTHING) {
 		oss.str("");
 		oss.clear();
 		const int currentAmmo = WeaponManager::GetGunByName(Player::getCurrentGun())->currentammo;

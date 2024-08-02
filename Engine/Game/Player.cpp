@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "AssetPaths.h"
+#include "Tags.h"
 #include "Engine/Core/AssetManager.h"
 #include "Engine/Core/Scene/SceneManager.h"
 #include "Engine/Physics/BulletPhysics.h"
@@ -17,8 +18,8 @@ namespace Player
 	float airSpeed = 1000;
 	float MaxSpeed = 5;
 	float jumpforce = 9;
-	std::string gunName = "nothing";
-	std::string interactingWithName = "nothing";
+	std::string gunName = Tags::NOTHING;
+	std::string interactingWithName = Tags::NOTHING;
 	float interactDistance = 3;
 
 	// States
@@ -69,7 +70,7 @@ namespace Player
 		//gunName = "ak47";
 	}
 	void Player::Shoot() {
-		if (gunName == "nothing")
+		if (gunName == Tags::NOTHING)
 			return;
 
 		if (WeaponManager::GetGunByName(gunName)->currentammo > 0) {
@@ -134,7 +135,7 @@ namespace Player
 		Camera::SetVerticalAngle(verticalAngle);
 		Camera::SetPosition(head->getPosition());
 
-		if (gunName != "nothing")
+		if (gunName != Tags::NOTHING)
 			WeaponManager::GetGunByName(gunName)->Update(deltaTime, reloading, aiming);
 
 		bool IsGrounded = OnGround();
@@ -147,7 +148,7 @@ namespace Player
 		quat.setEuler(0, player->getRotation().y, 0);
 		player->GetRigidBody()->getWorldTransform().setRotation(quat);
 
-		interactingWithName = "Nothing";
+		interactingWithName = Tags::NOTHING;
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
 			verticalAngle += mouseSpeed * (768.0f / 2 - (float)Input::GetMouseY());
@@ -238,7 +239,7 @@ namespace Player
 			aiming = false;
 		}
 		
-		if (gunName != "nothing") {
+		if (gunName != Tags::NOTHING) {
 			if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)
 			{
 				reloading = false;
@@ -257,7 +258,7 @@ namespace Player
 			if (Input::KeyPressed('q') && !reloading) {
 				//SceneManager::GetCurrentScene()->AddGunPickUp(gunName, gunName + "_pickup", getPosition() + Camera::GetDirection() * 1.5f);
 				AssetManager::GetGameObject(gunName)->SetRender(false);
-				gunName = "nothing";
+				gunName = Tags::NOTHING;
 			}
 		}
 		
@@ -302,7 +303,7 @@ namespace Player
 	bool Player::SelectWeapon(std::string weaponName) {
 		if (reloading || weaponName == gunName)
 			return false;
-		if (gunName != "nothing")
+		if (gunName != Tags::NOTHING)
 			AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(false);
 		gunName = weaponName;
 		AssetManager::GetGameObject(WeaponManager::GetGunByName(gunName)->gunModel)->SetRender(true);
