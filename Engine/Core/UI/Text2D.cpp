@@ -29,14 +29,14 @@ namespace Text2D
 	}
 
 	void Text2D::printText2D(const char* text, int x, int y, int size) {
-		unsigned int length = strlen(text);
+		size_t length = strlen(text);
 		glEnable(GL_BLEND);
 		
 		// Fill buffers
 		std::vector<glm::vec2> vertices;
 		std::vector<glm::vec2> UVs;
 		
-		for (unsigned int i = 0; i < length; i++) {
+		for (size_t i = 0; i < length; i++) {
 			glm::vec2 vertex_up_left = glm::vec2(x + i * size, y + size);
 			glm::vec2 vertex_up_right = glm::vec2(x + i * size + size, y + size);
 			glm::vec2 vertex_down_right = glm::vec2(x + i * size + size, y);
@@ -96,7 +96,7 @@ namespace Text2D
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Draw call
-		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices.size());
 
 		glDisable(GL_BLEND);
 
