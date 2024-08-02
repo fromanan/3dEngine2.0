@@ -104,9 +104,9 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 	}
 
 	// 1.05 is for padding because the camera can sometimes clip into the object
-	width = (maxx - minx) * 1.0;
-	height = (maxy - miny) * 1.0;
-	depth = (maxz - minz) * 1.0;
+	width = (maxx - minx) * 1.0f;
+	height = (maxy - miny) * 1.0f;
+	depth = (maxz - minz) * 1.0f;
 
 	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
@@ -322,9 +322,9 @@ void Cube::Regenerate(GameObject* gameobject) {
 	}
 
 	//1.05 is for padding because the camera can somtimes clip into the object
-	width = (maxx - minx) * 1.0;
-	height = (maxy - miny) * 1.0;
-	depth = (maxz - minz) * 1.0;
+	width = (maxx - minx) * 1.0f;
+	height = (maxy - miny) * 1.0f;
+	depth = (maxz - minz) * 1.0f;
 
 	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);

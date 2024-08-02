@@ -31,8 +31,8 @@ namespace Player
 
 	void Player::Init() {
 		srand((unsigned int)time(nullptr));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 1, 0.5));
-		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5, 0.7, 0.5));
+		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5f, 1, 0.5f));
+		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5f, 0.7f, 0.5f));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
 		player_head->SetRender(false);
 		btBroadphaseProxy*  proxy = player_head->GetRigidBody()->getBroadphaseHandle();
@@ -138,7 +138,7 @@ namespace Player
 		bool IsGrounded = OnGround();
 		if (IsGrounded) {
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
-			player->GetRigidBody()->setLinearVelocity(btVector3(player->GetRigidBody()->getLinearVelocity().x() * 0.0, 0, player->GetRigidBody()->getLinearVelocity().z() * 0.0));
+			player->GetRigidBody()->setLinearVelocity(btVector3(player->GetRigidBody()->getLinearVelocity().x() * 0.0f, 0.0f, player->GetRigidBody()->getLinearVelocity().z() * 0.0f));
 		}
 			
 		btQuaternion quat;
