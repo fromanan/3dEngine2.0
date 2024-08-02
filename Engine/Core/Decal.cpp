@@ -85,7 +85,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		GL_FLOAT,           // type
 		GL_FALSE,           // normalized?
 		0,                  // stride
-		(void*)0            // array buffer offset
+		nullptr            // array buffer offset
 	);
 
 	// 2nd attribute buffer : UVs
@@ -97,7 +97,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 
 	// 3rd attribute buffer : normals
@@ -109,7 +109,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 	
 	// 4th attribute buffer : tangents
@@ -121,7 +121,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 
 	// 5th attribute buffer : bitangents
@@ -133,7 +133,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 
 	// Index buffer
@@ -144,7 +144,7 @@ void Decal::RenderDecal(GLuint& programID) {
 		GL_TRIANGLES,      // mode
 		(GLsizei)indices.size(),    // count
 		GL_UNSIGNED_SHORT,   // type
-		(void*)0           // element array buffer offset
+		nullptr           // element array buffer offset
 	);
 
 	glDisableVertexAttribArray(0);

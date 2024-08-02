@@ -146,7 +146,7 @@ namespace Renderer
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glVertexAttribPointer(VBO, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glVertexAttribPointer(VBO, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(position, 0.0f));

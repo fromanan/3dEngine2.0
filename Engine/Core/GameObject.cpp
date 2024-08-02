@@ -527,7 +527,7 @@ void GameObject::RenderObject(const GLuint& programID) const {
 		GL_FLOAT,           // type
 		GL_FALSE,           // normalized?
 		0,                  // stride
-		(void*)0            // array buffer offset
+		nullptr            // array buffer offset
 	);
 
 	// 2nd attribute buffer : UVs
@@ -539,7 +539,7 @@ void GameObject::RenderObject(const GLuint& programID) const {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 
 	// 3rd attribute buffer : normals
@@ -551,7 +551,7 @@ void GameObject::RenderObject(const GLuint& programID) const {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 	
 	// 4th attribute buffer : tangents
@@ -563,7 +563,7 @@ void GameObject::RenderObject(const GLuint& programID) const {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 
 	// 5th attribute buffer : bitangents
@@ -575,7 +575,7 @@ void GameObject::RenderObject(const GLuint& programID) const {
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
-		(void*)0                          // array buffer offset
+		nullptr                          // array buffer offset
 	);
 
 	// Index buffer
@@ -586,7 +586,7 @@ void GameObject::RenderObject(const GLuint& programID) const {
 		GL_TRIANGLES,      // mode
 		static_cast<GLsizei>(indices.size()),    // count
 		GL_UNSIGNED_SHORT,   // type
-		(void*)0           // element array buffer offset
+		nullptr           // element array buffer offset
 	);
 
 	glDisableVertexAttribArray(0);
