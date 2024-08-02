@@ -470,7 +470,7 @@ glm::mat4 GameObject::GetModelMatrix() {
 	glm::mat4 matrix = transform.to_mat4();
 	//Btransform.getOpenGLMatrix(glm::value_ptr(matrix));
 
-	if (parentName != "") {
+	if (!parentName.empty()) {
 		GameObject* parent = AssetManager::GetGameObject(parentName);
 		if (parent != nullptr) {
 			matrix = parent->GetModelMatrix() * transform.to_mat4();
