@@ -73,8 +73,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		}
 		convexHullShape->optimizeConvexHull();
 	}
-	else if (shape == Sphere)
-	{
+	else if (shape == Sphere) {
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
@@ -121,8 +120,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 
 	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr)
-	{
+	if (convexHullShape == nullptr) {
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 		body = new btRigidBody(rbInfo);
 	}
@@ -177,8 +175,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		}
 		convexHullShape->optimizeConvexHull();
 	}
-	else if (shape == Sphere)
-	{
+	else if (shape == Sphere) {
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
@@ -230,8 +227,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 
 	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr)
-	{
+	if (convexHullShape == nullptr) {
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 		body = new btRigidBody(rbInfo);
 	}
@@ -412,8 +408,7 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 
 	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr)
-	{
+	if (convexHullShape == nullptr) {
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 		body = new btRigidBody(rbInfo);
 	}
@@ -519,8 +514,7 @@ void GameObject::RenderObject(GLuint& programID) {
 		return;
 	glUseProgram(programID);
 
-	if (texture != nullptr)
-	{
+	if (texture != nullptr) {
 		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
 		GLuint TextureID = glGetUniformLocation(programID, "DiffuseTextureSampler");
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());

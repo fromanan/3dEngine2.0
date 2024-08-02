@@ -12,7 +12,8 @@
 #include "Engine/Core/Common.h"
 #include "Engine/Core/Lights/Light.h"
 
-class Texture {
+class Texture
+{
 public:
     static int CurrentTextureNumber;
 
@@ -35,7 +36,8 @@ private:
 
 };
 
-class SkyBox {
+class SkyBox
+{
 public:
     SkyBox();
     SkyBox(std::vector<std::string> faces);
@@ -49,7 +51,8 @@ private:
 
 };
 
-namespace Renderer {
+namespace Renderer
+{
     int init(const char* vertex, const char* fragment, const char* name);
     int LoadShader(const char* vertex, const char* fragment, const char* name);
 

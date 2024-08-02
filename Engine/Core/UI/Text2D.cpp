@@ -1,8 +1,7 @@
 #include "Text2D.h"
 
-
-
-namespace Text2D {
+namespace Text2D
+{
 	unsigned int Text2DTextureID;
 	unsigned int Text2DVertexBufferID;
 	unsigned int Text2DUVBufferID;

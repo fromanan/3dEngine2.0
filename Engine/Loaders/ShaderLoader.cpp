@@ -1,8 +1,7 @@
 #include "ShaderLoader.hpp"
 
-
-
-namespace LoadShaders {
+namespace LoadShaders
+{
 	GLuint LoadShaders::LoadShaders(const char* vertex_file_path, const char* fragment_file_path) {
 
 		// Create the shaders

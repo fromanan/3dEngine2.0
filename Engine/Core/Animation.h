@@ -13,7 +13,8 @@
 
 // TODO: This is still a work-in-progress and hasn't been implemented into the engine
 
-struct KeyFrame {
+struct KeyFrame
+{
 	float duration;
 	glm::vec3 position;
 	glm::vec3 rotation;
@@ -21,7 +22,8 @@ struct KeyFrame {
 	void Create(glm::vec3 Position, glm::vec3 Rotation, float Duration);
 };
 
-class Animation {
+class Animation
+{
 public:
 	Animation(std::string Name);
 	Animation(std::vector<KeyFrame> Keyframes, std::string Name);
@@ -54,7 +56,8 @@ private:
 
 };
 
-namespace AnimationManager {
+namespace AnimationManager
+{
 	void AddAnimation(Animation animation);
 	void Play(std::string Name, std::string ObjectName);
 	void Stop(std::string Name);

@@ -140,13 +140,11 @@ void Scene::RenderObjects() {
 		gameobjectRender->RenderObject(programid);
 	}
 
-	for (int i = 0; i < windows.size(); i++)
-	{
+	for (int i = 0; i < windows.size(); i++) {
 		windows[i].Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
 	}
 
-	for (int i = 0; i < AssetManager::GetDecalsSize(); i++)
-	{
+	for (int i = 0; i < AssetManager::GetDecalsSize(); i++) {
 		Decal* decal = AssetManager::GetDecal(i);
 		if (decal->CheckParentIsNull())
 			continue;
@@ -169,10 +167,10 @@ void Scene::RenderObjects() {
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
-	if (Player::getCurrentGun() != "nothing")
-	{
 		oss.str(""); oss.clear();
 		oss << WeaponManager::GetGunByName(Player::getCurrentGun())->currentammo << "/" << WeaponManager::GetGunByName(Player::getCurrentGun())->ammo;
+	
+	if (Player::getCurrentGun() != "nothing") {
 		Renderer::RenderText(oss.str().c_str(), 660, 0, 15);
 	}
 	oss.str(""); oss.clear();

@@ -3,10 +3,8 @@
 #include "Engine/Core/Common.h"
 #include "Engine/Physics/BulletPhysics.h"
 
-
-
-namespace Camera {
-
+namespace Camera
+{
 	glm::vec3 position = glm::vec3(0, 0, 5);
 	glm::vec3 direction = glm::vec3(0, 0, 0);
 

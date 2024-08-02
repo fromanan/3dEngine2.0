@@ -13,8 +13,7 @@ Door::Door(std::string Name, const char* doorPath, const char* framePath, Textur
 	door_position = position;
 }
 void Door::Interact() {
-	if (Player::GetInteractingWithName() == name+"_door")
-	{
+	if (Player::GetInteractingWithName() == name + "_door") {
 		opening = true;
 		if(opened)
 			AudioManager::PlaySound("door_close", door_position);

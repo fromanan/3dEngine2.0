@@ -57,8 +57,7 @@ namespace AudioManager {
 	FMOD::System* system = nullptr;
 	FMOD::ChannelGroup* channelGroup = nullptr;
 
-	bool succeededOrWarn(const std::string& message, FMOD_RESULT result)
-	{
+	bool succeededOrWarn(const std::string& message, FMOD_RESULT result) {
 		if (result != FMOD_OK) {
 			std::cerr << message << ": " << result << " " << FMOD_ErrorString(result) << std::endl;
 			return false;

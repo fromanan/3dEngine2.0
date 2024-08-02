@@ -90,8 +90,7 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 	float minz = startvert.z;
 	float maxz = startvert.z;
 
-	for (int i = 0; i < vertices.size()-1; i++)
-	{
+	for (int i = 0; i < vertices.size()-1; i++) {
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
 		tempVec = tempVec * (glm::rotate(glm::mat4(1), gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
 		if (tempVec.x < minx)
@@ -296,8 +295,7 @@ void Cube::Regenerate(GameObject* gameobject) {
 	float minz = lastvert.z;
 	float maxz = lastvert.z;
 
-	for (int i = 0; i < vertices.size() - 1; i++)
-	{
+	for (int i = 0; i < vertices.size() - 1; i++) {
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
 		tempVec = tempVec * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
 		if (tempVec.x < minx)
@@ -399,9 +397,8 @@ glm::vec3 RigidBody::GetForce() {
 	return glm::vec3(0,0,0);
 }
 
-
-
-namespace PhysicsManager {
+namespace PhysicsManager
+{
 	std::vector<Cube> colliders;
 	std::vector<RigidBody> rigidbodies;
 

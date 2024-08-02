@@ -4,7 +4,8 @@
 
 #include "Engine/Core/Scene/Scene.h"
 
-namespace SceneManager {
+namespace SceneManager
+{
 	void Init();
 	int CreateScene(Scene scene);
 	void LoadScene(int sceneNumber);

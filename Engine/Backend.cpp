@@ -1,7 +1,7 @@
 #include "Backend.h"
 
-namespace Backend {
-
+namespace Backend
+{
 	GLFWwindow* window;
 	bool windowOpen = true;
 

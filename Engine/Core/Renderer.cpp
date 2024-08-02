@@ -20,13 +20,11 @@ Texture::Texture(const char* name, const char* path) {
 	// Load and generate the texture
 	int width, height;
 	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
-	if (data)
-	{
+	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
@@ -48,13 +46,11 @@ Texture::Texture(const char* name, const char* path) {
 	int width1, height1;
 
 	unsigned char* data1 = stbi_load("Assets/Normals/no_normal.png", &width1, &height1, 0, STBI_rgb_alpha);
-	if (data1)
-	{
+	if (data1) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data1);
@@ -78,13 +74,11 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	// Load and generate the texture
 	int width, height;
 	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
-	if (data)
-	{
+	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
@@ -106,13 +100,11 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	int width1, height1;
 
 	unsigned char* data1 = stbi_load(normalPath, &width1, &height1, 0, STBI_rgb_alpha);
-	if (data1)
-	{
+	if (data1) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data1);
@@ -149,18 +141,15 @@ SkyBox::SkyBox(std::vector<std::string> faces) {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
 	int width, height, nrChannels;
-	for (unsigned int i = 0; i < faces.size(); i++)
-	{
+	for (unsigned int i = 0; i < faces.size(); i++) {
 		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-		if (data)
-		{
+		if (data) {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
 			);
 			stbi_image_free(data);
 		}
-		else
-		{
+		else {
 			std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
 			stbi_image_free(data);
 		}
@@ -231,7 +220,8 @@ float SkyBox::skyboxVertices[108] = {
 	 1.0f, -1.0f,  1.0f
 };
 
-namespace Renderer {
+namespace Renderer
+{
 	std::map<const char*, GLuint> shaderProgramIds;
 
 	GLuint LightID;
@@ -268,8 +258,8 @@ namespace Renderer {
 		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
 
 	}
-	void Renderer::SetLights(std::vector<Light> lights)
-	{
+	
+	void Renderer::SetLights(std::vector<Light> lights) {
 		// Upload lights data to the GPU
 		std::vector<glm::vec3> lightPositions;
 		std::vector<glm::vec3> lightColors;

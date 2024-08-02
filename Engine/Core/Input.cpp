@@ -1,6 +1,8 @@
 #include "Input.h"
-namespace Input {
-    //Code taken from Hell2024 engine
+
+namespace Input
+{
+    // Code taken from Hell2024 engine
     bool keyPressed[372];
     bool keyDown[372];
     bool keyDownLastFrame[372];

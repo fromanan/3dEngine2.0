@@ -18,8 +18,8 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
-	if (isReloading)
-	{
+	
+	if (isReloading) {
 		float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
 		if (currentXRotation > 1.6 / 2)
 			down = -1;			
@@ -30,8 +30,7 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 	else if (aiming) {
 		AssetManager::GetGameObject(gunModel)->setPosition(aimingPosition);
 	}
-	else
-	{
+	else {
 		gun->setPosition(weaponOffSet + (direction * -kickbackOffset * deltaTime));
 		gun->SetRotationX(0);
 	}
@@ -47,7 +46,8 @@ void Gun::Shoot() {
 	kickbackOffset += kickback;
 }
 
-namespace WeaponManager {
+namespace WeaponManager
+{
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {

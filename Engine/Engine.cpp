@@ -6,8 +6,8 @@
 //this Engine is fueled by coffee and sleep deprivation
 //https://github.com/HaydenD100
 
-namespace Engine {
-	
+namespace Engine
+{
 	int Engine::Run() {
 		//init Engine comps
 		Input::Init();
@@ -36,8 +36,7 @@ namespace Engine {
 			lastTimeDT = currentTime;
 			frameCount++;
 
-			if (currentTime - previousTime >= 1.0)
-			{ 
+			if (currentTime - previousTime >= 1.0) { 
 				FPS = frameCount;
 				frameCount = 0;
 				previousTime = currentTime;

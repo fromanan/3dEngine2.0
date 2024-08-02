@@ -63,8 +63,7 @@ glm::vec3 Decal::GetNormal() {
 void Decal::RenderDecal(GLuint& programID) {
 	glUseProgram(programID);
 
-	if (texture != nullptr)
-	{
+	if (texture != nullptr) {
 		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
 		GLuint TextureID = glGetUniformLocation(programID, "DiffuseTextureSampler");
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());

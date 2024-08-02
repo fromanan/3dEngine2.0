@@ -69,15 +69,13 @@ namespace Player
 		if (gunName == "nothing")
 			return;
 
-		if (WeaponManager::GetGunByName(gunName)->currentammo > 0)
-		{
+		if (WeaponManager::GetGunByName(gunName)->currentammo > 0) {
 			WeaponManager::GetGunByName(gunName)->currentammo--;
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-			if (hit.m_collisionObject != nullptr)
-			{
+			if (hit.m_collisionObject != nullptr) {
 				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
 				if (gameobject != nullptr)
 				{
@@ -211,11 +209,9 @@ namespace Player
 		
 		if (Input::KeyPressed('e')) {
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-			if (hit.m_collisionObject != nullptr)
-			{
+			if (hit.m_collisionObject != nullptr) {
 				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
-				if (gameobject != nullptr && glm::distance(gameobject->getPosition(), getPosition()) <= interactDistance)
-				{
+				if (gameobject != nullptr && glm::distance(gameobject->getPosition(), getPosition()) <= interactDistance) {
 					interactingWithName = gameobject->GetName();
 				}
 			}
@@ -228,8 +224,9 @@ namespace Player
 		if (Input::RightMouseDown() && !reloading) {
 			aiming = true;
 		}
-		else 
+		else {
 			aiming = false;
+		}
 		
 		if (gunName != "nothing"){
 			if (glfwGetTime() - reloadingTime > WeaponManager::GetGunByName(gunName)->reloadtime && reloading)

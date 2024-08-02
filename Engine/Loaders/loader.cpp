@@ -1,13 +1,7 @@
 #include "loader.hpp"
 
-
-
-
-
-
-
-namespace loader {
-
+namespace loader
+{
 	GLuint loader::loadBMP_custom(const char* imagepath) {
 		// Data read from the header of the BMP file
 		unsigned char header[54]; // Each BMP file begins by a 54-bytes header

@@ -6,15 +6,15 @@
 #include "Engine/Game/Player.h"
 #include "Engine/Core/AssetManager.h"
 
-
-
-enum GunType {
+enum GunType
+{
 	Semi,
 	Auto,
 	ShotGun
 };
 
-struct Gun {
+struct Gun
+{
 	std::string name;
 	int ammo;
 	double firerate;
@@ -41,12 +41,14 @@ struct Gun {
 	//startingPos
 };
 
-namespace WeaponManager {
+namespace WeaponManager
+{
 	void Init();
 	Gun* GetGunByName(std::string name);
 }
 
-class GunPickUp {
+class GunPickUp
+{
 public:
 	GunPickUp(std::string GunName, std::string ObjectName, const char* objectModel, Texture* texture, glm::vec3 position);
 	GunPickUp(std::string GunName, std::string GunObject, glm::vec3 position);

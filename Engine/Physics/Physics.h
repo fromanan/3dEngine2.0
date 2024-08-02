@@ -9,9 +9,8 @@
 #include <vector>
 #include <string>
 
-
-
-class Ray {
+class Ray
+{
 public:
 	glm::vec3 direction;
 	glm::vec3 origin;
@@ -76,7 +75,9 @@ private:
 	bool Static = true;
 	bool shouldDelete = false;
 };
-class RigidBody {
+
+class RigidBody
+{
 public:
 	RigidBody();
 	RigidBody(glm::vec3 position,std::string name);
@@ -117,9 +118,8 @@ private:
 	std::string collider = "None";
 };
 
-
-
-namespace PhysicsManager {
+namespace PhysicsManager
+{
 	RigidBody* AddRigidbody(glm::vec3 position, std::string name);
 	Cube* AddCube(glm::vec3 position, glm::vec3 min, glm::vec3 max, std::string name);
 	Cube* AddCube(glm::vec3 position, float width, float height, float depth, std::string name);
@@ -136,7 +136,8 @@ namespace PhysicsManager {
 	void Update(float deltaTime);
 };
 
-struct RayInfo {
+struct RayInfo
+{
 	std::string name = "Nothing";
 	float distance = 9999;
 	glm::vec3 position = glm::vec3(0, 0, 0);

@@ -69,7 +69,8 @@ std::string Animation::GetName() {
 	return name;
 }
 
-namespace AnimationManager {
+namespace AnimationManager
+{
 	std::vector <Animation> animations;
 	void AnimationManager::AddAnimation(Animation animation) {
 		animations.push_back(animation);

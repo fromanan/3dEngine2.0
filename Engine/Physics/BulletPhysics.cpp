@@ -1,8 +1,8 @@
 #include "BulletPhysics.h"
 #include "Engine/Core/AssetManager.h"
 
-
-namespace PhysicsManagerBullet {
+namespace PhysicsManagerBullet
+{
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	//std::vector<Collider> colliders;
 

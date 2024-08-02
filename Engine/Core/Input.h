@@ -7,8 +7,8 @@
 #include <iostream>
 #include <cctype>
 
-
-namespace Input {
+namespace Input
+{
 	void Init();
 	void Update();
 

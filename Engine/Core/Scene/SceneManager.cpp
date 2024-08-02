@@ -1,8 +1,7 @@
 #include "SceneManager.h"
 
-
-namespace SceneManager {
-
+namespace SceneManager
+{
 	std::vector<Scene> scenes;
 	int currentScene;
 
