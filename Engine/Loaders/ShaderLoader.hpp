@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <string>
-#include <fstream>>
+#include <fstream>
 #include <sstream>
 #include <vector>
 
