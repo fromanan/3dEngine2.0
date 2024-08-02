@@ -457,7 +457,6 @@ void GameObject::LoadModel(const char* path) {
 }
 
 void GameObject::Copy(std::string copyName) {
-	std::cout << "damn";
 	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,convexHullShape));
 }
 
