@@ -5,7 +5,7 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 	GameObject* gun = AssetManager::GetGameObject(gunModel);
 	gun->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
 	gun->GetRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
-	kickbackOffset = kickbackOffset * 0.96;
+	kickbackOffset *= 0.96f;
 	if (kickbackOffset < 0.01) kickbackOffset = 0;
 
 	float verticalAngle = -gun->getRotation().x;
@@ -77,7 +77,7 @@ namespace WeaponManager
 		glock.currentammo = 18;
 		glock.damage = 10;
 		glock.type = Semi;
-		glock.recoil = 0.01;
+		glock.recoil = 0.01f;
 		glock.recoilY = 100;
 		glock.kickback = 3;
 		glock.weaponOffSet = glm::vec3(-0.3, -0.2, 0.9);
@@ -94,7 +94,7 @@ namespace WeaponManager
 		ak47.currentammo = 30;
 		ak47.damage = 25;
 		ak47.type = Auto;
-		ak47.recoil = 0.03;
+		ak47.recoil = 0.03f;
 		ak47.recoilY = 175;
 		ak47.kickback = 2;
 		ak47.gunModel = "ak47";
