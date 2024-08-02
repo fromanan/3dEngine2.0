@@ -17,11 +17,11 @@ public:
 
 	FMOD_VECTOR* GetPositionFmod();
 	void SetPosition(glm::vec3 Position);
-	FMOD::Sound* GetSound();
+	FMOD::Sound* GetSound() const;
 	std::string GetName();
 	
 	void SetVolume(float Volume);
-	float GetVolume();
+	float GetVolume() const;
 
 	static constexpr int DEFAULT = -1;
 private:

@@ -18,7 +18,7 @@ Sound::Sound(const char* Path, std::string Name, glm::vec3 Position, float Dista
 	volume = Volume;
 }
 
-FMOD::Sound* Sound::GetSound() {
+FMOD::Sound* Sound::GetSound() const {
 	return sound;
 }
 
@@ -26,7 +26,7 @@ void Sound::SetVolume(float Volume) {
 	volume = Volume;
 }
 
-float Sound::GetVolume() {
+float Sound::GetVolume() const {
 	return volume;
 }
 
