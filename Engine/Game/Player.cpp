@@ -1,4 +1,6 @@
 #include "Player.h"
+
+#include "AssetPaths.h"
 #include "Engine/Core/AssetManager.h"
 #include "Engine/Core/Scene/SceneManager.h"
 #include "Engine/Physics/BulletPhysics.h"
@@ -30,9 +32,9 @@ namespace Player
 	std::string inv[2] = { "ak47","glock" };
 
 	void Player::Init() {
-		srand((unsigned int)time(nullptr));
-		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5f, 1, 0.5f));
-		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5f, 0.7f, 0.5f));
+		srand(static_cast<unsigned int>(time(nullptr)));
+		AssetManager::AddGameObject(GameObject("player", AssetPaths::Model_Capsule, AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5f, 1, 0.5f));
+		AssetManager::AddGameObject(GameObject("player_head", AssetPaths::Model_Capsule, AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5f, 0.7f, 0.5f));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
 		player_head->SetRender(false);
 		btBroadphaseProxy*  proxy = player_head->GetRigidBody()->getBroadphaseHandle();

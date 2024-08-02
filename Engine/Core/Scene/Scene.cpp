@@ -1,64 +1,64 @@
 #include "Scene.h"
 
-Scene::Scene() {
-	
-}
+#include "AssetPaths.h"
+
+Scene::Scene()  = default;
 
 void Scene::Load() {
-	AssetManager::AddTexture("uvmap", "Assets/Textures/uvmap.png");
-	AssetManager::AddTexture("crate", "Assets/Textures/crate.png");
+	AssetManager::AddTexture("uvmap", AssetPaths::UV_Crate);
+	AssetManager::AddTexture("crate", AssetPaths::Texture_Crate);
 
-	AssetManager::AddTexture("target", "Assets/Textures/target.jpeg");
-	AssetManager::AddTexture("container", "Assets/Textures/Container.png", "Assets/Normals/container_normal.png");
-	AssetManager::AddTexture("bullet_hole", "Assets/Textures/bullet_hole.png");
-	AssetManager::AddTexture("bullet_hole_glass", "Assets/Textures/bullet_hole_glass.png");
-	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
+	AssetManager::AddTexture("target", AssetPaths::Texture_Target);
+	AssetManager::AddTexture("container", AssetPaths::Texture_Container, AssetPaths::Normal_Container);
+	AssetManager::AddTexture("bullet_hole", AssetPaths::Texture_BulletHole);
+	AssetManager::AddTexture("bullet_hole_glass", AssetPaths::Texture_BulletHoleGlass);
+	AssetManager::AddTexture("sand", AssetPaths::Texture_GroundSand, AssetPaths::Normal_GroundSand);
 
-	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
-	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
-	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png", "Assets/Normals/ak47_lowpoly_normal.png");
-	AssetManager::AddTexture("window", "Assets/Textures/window.png");
+	AssetManager::AddTexture("concrete", AssetPaths::Texture_Fence, AssetPaths::Normal_Fence);
+	AssetManager::AddTexture("ak47_lowpoly", AssetPaths::Texture_Ak47_LowPoly, AssetPaths::Normal_Ak47_LowPoly);
+	AssetManager::AddTexture("crosshair", AssetPaths::Texture_Crosshair);
+	AssetManager::AddTexture("window", AssetPaths::Texture_Window);
 	
-	AssetManager::AddTexture("glock", "Assets/Textures/glock_17.png", "Assets/Normals/glock_17_normal.png");
-	AssetManager::AddTexture("door2", "Assets/Textures/Door_C.jpg");
+	AssetManager::AddTexture("glock", AssetPaths::Texture_Glock17, AssetPaths::Normal_Glock17);
+	AssetManager::AddTexture("door2", AssetPaths::Texture_Door);
 
 	// TODO: not currently working
-	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
+	//AssetManager::LoadAssets(AssetPaths::Json_MainScene);
 
 	WeaponManager::Init();
-	AssetManager::AddGameObject("fence1", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(5, 1.3, 2), true, 0, Box);
-	AssetManager::AddGameObject("fence2", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(-9, 1.3, 2), true, 0, Box);
-	AssetManager::AddGameObject("fence3", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(2, 1.3, -9), true, 0, Box);
-	AssetManager::AddGameObject("fence4", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(-1, 1.3, 5), true, 0, Box);
-	//AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
-	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(0, 0, 0), true, 0, Box);
+	AssetManager::AddGameObject("fence1", AssetPaths::Model_Fence_3, AssetManager::GetTexture("concrete"), glm::vec3(5, 1.3, 2), true, 0, Box);
+	AssetManager::AddGameObject("fence2", AssetPaths::Model_Fence_1, AssetManager::GetTexture("concrete"), glm::vec3(-9, 1.3, 2), true, 0, Box);
+	AssetManager::AddGameObject("fence3", AssetPaths::Model_Fence_2, AssetManager::GetTexture("concrete"), glm::vec3(2, 1.3, -9), true, 0, Box);
+	AssetManager::AddGameObject("fence4", AssetPaths::Model_Fence_2, AssetManager::GetTexture("concrete"), glm::vec3(-1, 1.3, 5), true, 0, Box);
+	//AssetManager::AddGameObject("floor", AssetPaths::Model_TestPlatform, AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
+	AssetManager::AddGameObject("floor", AssetPaths::Model_Floor, AssetManager::GetTexture("sand"), glm::vec3(0, 0, 0), true, 0, Box);
 
-	AssetManager::AddGameObject("floor", "Assets/Objects/slope.obj", AssetManager::GetTexture("sand"), glm::vec3(-1, 2, -7), true, 0, Convex);
+	AssetManager::AddGameObject("floor", AssetPaths::Model_Slope, AssetManager::GetTexture("sand"), glm::vec3(-1, 2, -7), true, 0, Convex);
 
-	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate")));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", AssetPaths::Model_Ak47, AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
 
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock_17.obj", AssetManager::GetTexture("glock"), glm::vec3(1,25, 0)));
+	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", AssetPaths::Model_Glock17, AssetManager::GetTexture("glock"), glm::vec3(1,25, 0)));
 
-	doors.push_back(Door("door1", "Assets/Objects/door2.obj", "Assets/Objects/frame2.obj", AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3)));
+	doors.push_back(Door("door1", AssetPaths::Model_Door, AssetPaths::Model_Frame, AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3)));
 
-	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
+	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", AssetPaths::Model_Ak47_LowPoly, AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
 	//AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
-	//gunPickUps.push_back(GunPickUp("glock", "glock_pickup", "Assets/Objects/glock.obj", AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
+	//gunPickUps.push_back(GunPickUp("glock", "glock_pickup", AssetPaths::Model_Glock17, AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
 	//AssetManager::GetGameObject("glock_pickup")->SetRender(false);
 
 	// Sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	std::vector<std::string> faces { 
-		"Assets/Skybox/Space/right.png",
-			"Assets/Skybox/Space/left.png",
-			"Assets/Skybox/Space/top.png",
-			"Assets/Skybox/Space/bottom.png",
-			"Assets/Skybox/Space/front.png",
-			"Assets/Skybox/Space/back.png"
+		AssetPaths::Texture_SkyboxRight,
+			AssetPaths::Texture_SkyboxLeft,
+			AssetPaths::Texture_SkyboxTop,
+			AssetPaths::Texture_SkyboxBottom,
+			AssetPaths::Texture_SkyboxFront,
+		AssetPaths::Texture_SkyboxBack
 	};
 	sky = SkyBox(faces);
 
@@ -80,7 +80,7 @@ void Scene::Load() {
 	Player::setPosition(glm::vec3(3, 10, 0));
 
 	// TODO: not currently working
-	//AssetManager::SaveAssets("Assets/Saves/mainScene.json");
+	//AssetManager::SaveAssets(AssetPaths::Json_MainScene);
 }
 
 void Scene::Update(float deltaTime) {

@@ -1,5 +1,7 @@
 #include "Text2D.h"
 
+#include "AssetPaths.h"
+
 namespace Text2D
 {
 	unsigned int Text2DTextureID;
@@ -21,7 +23,7 @@ namespace Text2D
 		glGenBuffers(1, &Text2DUVBufferID);
 
 		// Initialize Shader
-		Text2DShaderID = LoadShaders::LoadShaders("Assets/Shaders/textShader.vert", "Assets/Shaders/textShader.frag");
+		Text2DShaderID = LoadShaders::LoadShaders(AssetPaths::Shader_Text_Vert, AssetPaths::Shader_Text_Frag);
 		Renderer::UseProgram(Text2DShaderID);
 		
 		// Initialize uniforms' IDs

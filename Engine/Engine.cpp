@@ -1,4 +1,6 @@
 #include "Engine.h"
+
+#include "AssetPaths.h"
 #include "Engine/Physics/BulletPhysics.h"
 
 //rewrite of my first 3D Engine
@@ -12,7 +14,7 @@ namespace Engine
 		//init Engine comps
 		Input::Init();
 		Input::HideCursor();
-		Text2D::initText2D("Assets/Fonts/Holstein.DDS");
+		Text2D::initText2D(AssetPaths::Fonts_Holstein);
 		AudioManager::Init();
 		PhysicsManagerBullet::Init();
 

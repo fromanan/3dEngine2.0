@@ -1,4 +1,6 @@
 #include "Renderer.h"
+
+#include "AssetPaths.h"
 #include "Scene/SceneManager.h"
 
 Texture::Texture(const char* name, const char* path) {
@@ -45,7 +47,7 @@ Texture::Texture(const char* name, const char* path) {
 	
 	// Load and generate the texture
 	int width1, height1;
-	unsigned char* data1 = stbi_load("Assets/Normals/no_normal.png", &width1, &height1, 0, STBI_rgb_alpha);
+	unsigned char* data1 = stbi_load(AssetPaths::Normal_None, &width1, &height1, 0, STBI_rgb_alpha);
 	if (data1) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -307,9 +309,9 @@ namespace Renderer
 		ModelView3x3MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MV3x3");
 
 		// Skybox
-		LoadShader("Assets/Shaders/SkyBoxShader.vert", "Assets/Shaders/SkyBoxShader.frag", "skybox");
+		LoadShader(AssetPaths::Shader_SkyBox_Vert, AssetPaths::Shader_SkyBox_Frag, "skybox");
 		std::cout << "Loaded skybox shader at: " << GetProgramID("skybox") << std::endl;
-		LoadShader("Assets/Shaders/shaderSprite.vert", "Assets/Shaders/shaderSprite.frag", "sprite");
+		LoadShader(AssetPaths::Shader_Sprite_Vert, AssetPaths::Shader_Sprite_Frag, "sprite");
 		std::cout << "Loaded sprite shader at: " << GetProgramID("sprite") << std::endl;
 
 		UseProgram(GetProgramID("sprite"));
