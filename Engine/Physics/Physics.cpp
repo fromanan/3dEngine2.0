@@ -327,9 +327,7 @@ void Cube::Regenerate(GameObject* gameobject) {
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 }
 
-RigidBody::RigidBody() {
-
-}
+RigidBody::RigidBody() = default;
 
 RigidBody::RigidBody(glm::vec3 position, std::string name) {
 	this->position = position;
