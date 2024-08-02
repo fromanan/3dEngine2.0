@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Input.h"
-#include "Physics/Physics.h"
+#include "Physics/PhysicsManager.h"
 
 namespace Camera
 {

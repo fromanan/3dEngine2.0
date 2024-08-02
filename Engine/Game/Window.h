@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Engine/Core/AssetManager.h"
-#include "Engine/Physics/Physics.h"
+#include "Engine/Physics/PhysicsManager.h"
 
 class Window
 {

@@ -105,7 +105,7 @@ void Scene::Update(float deltaTime) {
 		crates[crate].Update();
 	}
 	
-	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidbody("PlayerRB")->GetForce());
+	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidBody("PlayerRB")->GetForce());
 	AudioManager::Update();
 }
 
