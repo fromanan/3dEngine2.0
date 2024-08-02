@@ -14,7 +14,7 @@ namespace Text2D
 
 	void Text2D::initText2D(const char* texturePath) {
 		// Initialize texture
-		Text2DTextureID = loader::loadDDS(texturePath);
+		Text2DTextureID = Loader::loadDDS(texturePath);
 		
 		// Initialize VBO
 		glGenBuffers(1, &Text2DVertexBufferID);

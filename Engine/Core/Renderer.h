@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Loaders/ShaderLoader.hpp"
-#include "Loaders/loader.hpp"
+#include "Loaders/Loader.hpp"
 #include "Engine/Core/UI/Text2D.h"
 #include "Loaders/stb_image.h"
 #include "Engine/Core/Common.h"

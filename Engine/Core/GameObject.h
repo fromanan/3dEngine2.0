@@ -12,7 +12,7 @@
 #include "Renderer.h"
 
 #include "../Loaders/vboindexer.h"
-#include "../Loaders/loader.hpp"
+#include "../Loaders/Loader.hpp"
 #include "Engine/Physics/BulletPhysics.h"
 
 #include <assimp/Importer.hpp>

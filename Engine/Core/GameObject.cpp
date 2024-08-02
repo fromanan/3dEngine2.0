@@ -427,7 +427,7 @@ void GameObject::LoadModel(const char* path) {
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
-	bool res = loader::loadOBJ(path, vertices, uvs, normals);
+	bool res = Loader::loadOBJ(path, vertices, uvs, normals);
 	computeTangentBasis(vertices, uvs, normals, tangents, bitangents);
 	indexer::indexVBO(vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals,indexed_tangents,indexed_bitangents);
 	

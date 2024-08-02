@@ -1,8 +1,8 @@
-#include "loader.hpp"
+#include "Loader.hpp"
 
-namespace loader
+namespace Loader
 {
-	GLuint loader::loadBMP_custom(const char* imagepath) {
+	GLuint Loader::loadBMP_custom(const char* imagepath) {
 		// Data read from the header of the BMP file
 		unsigned char header[54]; // Each BMP file begins by a 54-bytes header
 		unsigned int dataPos;     // Position in the file where the actual data begins
@@ -68,7 +68,7 @@ namespace loader
 		return textureID;
 	}
 
-	GLuint loader::loadDDS(const char* imagepath) {
+	GLuint Loader::loadDDS(const char* imagepath) {
 		unsigned char header[124];
 
 		// Try to open the file 
@@ -148,7 +148,7 @@ namespace loader
 		return textureID;
 	}
 
-	bool loader::loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals) {
+	bool Loader::loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals) {
 		printf("Loading OBJ file %s...\n", path);
 
 		std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
