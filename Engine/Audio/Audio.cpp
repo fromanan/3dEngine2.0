@@ -5,9 +5,8 @@ Sound::Sound(const char* Path, std::string Name, glm::vec3 Position, float Dista
 	position.x = Position.x;
 	position.y = Position.y;
 	position.z = Position.z;
-	FMOD_RESULT result;
 	name = Name;
-	result = AudioManager::GetSystem()->createSound(Path, FMOD_3D, 0, &sound);
+	FMOD_RESULT result = AudioManager::GetSystem()->createSound(Path, FMOD_3D, 0, &sound);
 	if (result != FMOD_OK) {
 		std::cerr << result << " " << FMOD_ErrorString(result) << std::endl;
 	}
