@@ -40,14 +40,10 @@ bool Ray::intersectsTriangle(std::vector<glm::vec3> vertices, glm::mat4 ModelMat
 			glm::vec3 testPA = glm::vec3(planePoint.x - point1.x, planePoint.y - point1.y, planePoint.z - point1.z);
 			//glm::vec3 testC = vec3(planePoint.x - point3.x, planePoint.y - point3.y, planePoint.z- point3.z);
 			glm::vec3 Testnormal = glm::cross(AB, testPA);
-			if (glm::dot(Testnormal, normal))
-				return true;
-			else
-				return false;
+			
+			return glm::dot(Testnormal, normal);
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 	return false;
 }
