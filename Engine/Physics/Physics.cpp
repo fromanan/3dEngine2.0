@@ -52,6 +52,7 @@ bool Ray::intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMa
 			return false;
 		}
 	}
+	return false;
 }
 
 
