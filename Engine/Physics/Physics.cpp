@@ -137,14 +137,14 @@ glm::vec3 Cube::getPosition() {
 	return position;
 }
 
-void Cube::SetStatic(bool Static) {
-	this->Static = Static;
+void Cube::SetStatic(bool isStatic) {
+	this->isStatic = isStatic;
 }
 
 bool Cube::GetStatic() {
 	if (this == nullptr)
 		return false;
-	return Static;
+	return isStatic;
 }
 
 float Cube::getDepth() {
