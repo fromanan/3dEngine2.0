@@ -26,7 +26,6 @@ void Scene::Load() {
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 
 	WeaponManager::Init();
-
 	AssetManager::AddGameObject("fence1", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(5, 1.3, 2), true, 0, Box);
 	AssetManager::AddGameObject("fence2", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(-9, 1.3, 2), true, 0, Box);
 	AssetManager::AddGameObject("fence3", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(2, 1.3, -9), true, 0, Box);
@@ -117,9 +116,8 @@ void Scene::RenderObjects() {
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	
 	GLuint programid = Renderer::GetCurrentProgramID();
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	glEnable(GL_BLEND);
 	Renderer::SetLights(lights);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {

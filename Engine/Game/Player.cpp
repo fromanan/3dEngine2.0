@@ -138,7 +138,7 @@ namespace Player
 		bool IsGrounded = OnGround();
 		if (IsGrounded) {
 			player->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
-			player->GetRigidBody()->setLinearVelocity(btVector3(player->GetRigidBody()->getLinearVelocity().x() * 0.9, 0, player->GetRigidBody()->getLinearVelocity().z() * 0.9));
+			player->GetRigidBody()->setLinearVelocity(btVector3(player->GetRigidBody()->getLinearVelocity().x() * 0.0, 0, player->GetRigidBody()->getLinearVelocity().z() * 0.0));
 		}
 			
 		btQuaternion quat;

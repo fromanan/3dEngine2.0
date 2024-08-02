@@ -68,5 +68,5 @@ void main() {
     }
 
     // Output final color
-    color = vec4(FinalColor, 1.0);
+    color = vec4(FinalColor, texture(DiffuseTextureSampler, UV).a);
 }

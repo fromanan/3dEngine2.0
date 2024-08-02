@@ -333,7 +333,6 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	std::vector<glm::vec2> indexed_uvs, std::vector<glm::vec3> indexed_normals, std::vector<glm::vec3> indexed_tangents,
 	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete, float mass, btConvexHullShape* collidershape)
 {
-	std::cout << "test1";
 	this->name = name;
 	this->parentName = parentname;
 	this->texture = texture;
@@ -355,7 +354,6 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	this->render = render;
 	this->shouldDelete = shouldDelete;
 	convexHullShape = collidershape;
-	std::cout << "here2" << std::endl;
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
