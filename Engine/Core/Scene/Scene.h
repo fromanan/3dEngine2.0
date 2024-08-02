@@ -34,7 +34,7 @@ public:
 	void AddGunPickUp(GunPickUp gunpickup);
 	void AddGunPickUp(std::string gunName,std::string gunObject,glm::vec3 Position);
 
-	int GetGunPickUpSize();
+	size_t GetGunPickUpSize();
 	Crate* GetCrate(std::string name);
 private:
 	SkyBox sky;

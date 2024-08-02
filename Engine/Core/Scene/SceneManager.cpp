@@ -8,8 +8,8 @@ namespace SceneManager
 	void SceneManager::Init() {
 		currentScene = 0;
 	}
-	
-	int SceneManager::CreateScene(Scene scene) {
+
+	size_t SceneManager::CreateScene(Scene scene) {
 		scenes.push_back(scene);
 		return scenes.size() - 1;
 	}

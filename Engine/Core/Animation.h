@@ -29,7 +29,7 @@ public:
 	Animation(std::vector<KeyFrame> Keyframes, std::string Name);
 
 	void AddKeyFrame(KeyFrame Keyframe);
-	int GetKeyFrameSize();
+	size_t GetKeyFrameSize();
 	bool Playing();
 	void Stop();
 	void Start();

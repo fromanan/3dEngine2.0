@@ -19,7 +19,7 @@ void Animation::AddKeyFrame(KeyFrame Keyframe) {
 	keyframes.push_back(Keyframe);
 }
 
-int Animation::GetKeyFrameSize() {
+size_t Animation::GetKeyFrameSize() {
 	return keyframes.size();
 }
 

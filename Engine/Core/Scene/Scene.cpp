@@ -218,7 +218,7 @@ void Scene::RenderObjects(const char* shaderName) {
 	}
 }
 
-int Scene::GetGunPickUpSize() {
+size_t Scene::GetGunPickUpSize() {
 	return gunPickUps.size();
 }
 

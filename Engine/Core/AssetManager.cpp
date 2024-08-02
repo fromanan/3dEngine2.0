@@ -122,19 +122,20 @@ namespace AssetManager
 	}
 
 	// Returns index of object
-	int AssetManager::AddGameObject(GameObject gameobject) {
+	size_t AssetManager::AddGameObject(GameObject gameobject) {
 		GameObjects.push_back(gameobject);
 		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserPointer((void*)(GameObjects.size() - 1));
 		return GameObjects.size() - 1;
 	}
-	
-	int AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
+
+	size_t AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
+	                                   bool save, float mass, ColliderShape shape) {
 		GameObjects.push_back(GameObject(name, path, texture, position,save, mass, shape));
 		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex(GameObjects.size() - 1);
 		return GameObjects.size() - 1;
 	}
-	
-	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* parent) {
+
+	size_t AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* parent) {
 		Decals.push_back(Decal(position, normal, scale, texture, parent));
 		return Decals.size() - 1;
 	}
@@ -147,17 +148,17 @@ namespace AssetManager
 		return &Decals;
 	}
 
-	int AssetManager::AddTexture(Texture texture) {
+	size_t AssetManager::AddTexture(Texture texture) {
 		Textures.push_back(texture);
 		return Textures.size() - 1;
 	}
-	
-	int AssetManager::AddTexture(const char* name, const char* path) {
+
+	size_t AssetManager::AddTexture(const char* name, const char* path) {
 		Textures.push_back(Texture(name, path));
 		return Textures.size() - 1;
 	}
-	
-	int AddTexture(const char* name, const char* path, const char* normalPath) {
+
+	size_t AddTexture(const char* name, const char* path, const char* normalPath) {
 		Textures.push_back(Texture(name, path,normalPath));
 		return Textures.size() - 1;
 	}
@@ -197,12 +198,12 @@ namespace AssetManager
 	std::vector<GameObject> AssetManager::GetAllGameObjects() {
 		return GameObjects;
 	}
-	
-	int AssetManager::GetGameObjectsSize() {
+
+	size_t AssetManager::GetGameObjectsSize() {
 		return GameObjects.size();
 	}
-	
-	int AssetManager::GetDecalsSize() {
+
+	size_t AssetManager::GetDecalsSize() {
 		return Decals.size();
 	}
 	
