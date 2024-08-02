@@ -112,15 +112,15 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 }
 
 std::string Cube::GetName() {
-	return name;
+	return this->name;
 }
 
 std::string Cube::GetTag() {
-	return tag;
+	return this->tag;
 }
 
 void Cube::SetTag(std::string Tag) {
-	tag = Tag;
+	this->tag = tag;
 }
 
 void Cube::setPosition(glm::vec3 position) {
