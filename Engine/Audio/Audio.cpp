@@ -153,16 +153,16 @@ namespace AudioManager {
 				
 				result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[i]);
 				if (!succeededOrWarn("FMOD2: ", result))
-					return -1;
+					return Sound::DEFAULT;
 				result = channels[i]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
 				if (!succeededOrWarn("FMOD3: ", result))
-					return -1;
+					return Sound::DEFAULT;
 				result = channels[i]->setVolume(GetSound(sound)->GetVolume());
 				if (!succeededOrWarn("FMOD1: ", result))
-					return -1;
+					return Sound::DEFAULT;
 				result = channels[i]->setPaused(false);
 				if (!succeededOrWarn("FMOD4: ", result))
-					return - 1;
+					return Sound::DEFAULT;
 
 				return i;
 			}
@@ -175,7 +175,7 @@ namespace AudioManager {
 			if (!isPlaying) {
 				result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[i]);
 				if (!succeededOrWarn("Error1", result))
-					return -1;
+					return Sound::DEFAULT;
 				//GetSound(sound)->SetPosition(Position);
 
 				FMOD_VECTOR position;
@@ -185,20 +185,19 @@ namespace AudioManager {
 
 				result = channels[i]->set3DAttributes(&position, &vel);
 				if (!succeededOrWarn("Error2", result))
-					return -1;
+					return Sound::DEFAULT;
 				result = channels[i]->setPaused(false);
 				if (!succeededOrWarn("Error3", result))
-					return -1;
+					return Sound::DEFAULT;
 				channels[i]->setVolume(GetSound(sound)->GetVolume());
 				if (!succeededOrWarn("Error4", result))
-					return -1;
-
-
+					return Sound::DEFAULT;
+				
 				return i;
 			}
 		}
 		
-		return -1;
+		return Sound::DEFAULT;
 	}
 	int PlaySound(std::string sound, glm::vec3 Position, int channel) {
 		FMOD_VECTOR position;
@@ -211,7 +210,8 @@ namespace AudioManager {
 		result = channels[channel]->set3DAttributes(&position, &vel);
 		result = channels[channel]->setPaused(false);
 		if (!succeededOrWarn("Error", result))
-			return -1;
+			return Sound::DEFAULT;
+		
 		return channel;
 	}
 
@@ -222,7 +222,7 @@ namespace AudioManager {
 		result = channels[channel]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
 		result = channels[channel]->setPaused(false);
 		if (!succeededOrWarn("Error", result))
-			return -1;
+			return Sound::DEFAULT;
 		return channel;
 	}
 

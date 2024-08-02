@@ -24,6 +24,7 @@ public:
 	void SetVolume(float Volume);
 	float GetVolume();
 
+	static constexpr int DEFAULT = -1;
 private:
 	std::string name;
 	FMOD_VECTOR position;
