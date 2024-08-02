@@ -16,41 +16,40 @@ namespace AssetManager
 		json data = json::parse(f);
 		std::cout << "loaded object count " << data["GameObjects"].size() << std::endl;
 
-		for (int gameObject = 0; gameObject < data["GameObjects"].size(); gameObject++)
-		{
-			std::string name = data["GameObjects"][gameObject][0];
-			std::string Parentname = data["GameObjects"][gameObject][1];
+		for (auto& gameObject : data["GameObjects"]) {
+			std::string name = gameObject[0];
+			std::string Parentname = gameObject[1];
 
-			glm::vec3 position = glm::vec3(data["GameObjects"][gameObject][2], data["GameObjects"][gameObject][3], data["GameObjects"][gameObject][4]);
-			glm::vec3 rotation = glm::vec3(data["GameObjects"][gameObject][5], data["GameObjects"][gameObject][6], data["GameObjects"][gameObject][7]);
-			glm::vec3 scale = glm::vec3(data["GameObjects"][gameObject][8], data["GameObjects"][gameObject][9], data["GameObjects"][gameObject][10]);
+			glm::vec3 position = glm::vec3(gameObject[2], gameObject[3], gameObject[4]);
+			glm::vec3 rotation = glm::vec3(gameObject[5], gameObject[6], gameObject[7]);
+			glm::vec3 scale = glm::vec3(gameObject[8], gameObject[9], gameObject[10]);
 
-			std::vector<unsigned short> indices = data["GameObjects"][gameObject][11];
+			std::vector<unsigned short> indices = gameObject[11];
 			std::vector<glm::vec3> indexed_vertices;
 			std::vector<glm::vec2> indexed_uvs;
 			std::vector<glm::vec3> indexed_normals;
-			std::vector<float> vertices = data["GameObjects"][gameObject][12];
-			std::vector<float> Uvs = data["GameObjects"][gameObject][13];
-			std::vector<float> normals = data["GameObjects"][gameObject][13];
+			std::vector<float> vertices = gameObject[12];
+			std::vector<float> Uvs = gameObject[13];
+			std::vector<float> normals = gameObject[13];
 
-			std::string textureName = data["GameObjects"][gameObject][15];
+			std::string textureName = gameObject[15];
 			//Texture* texture = GetTexture("container");
-			Texture* texture = GetTexture(textureName.c_str());
+			Texture* texture = GetTexture(textureName);
 
 			for (int vert = 0; vert < vertices.size(); vert++) {
-				indexed_vertices.push_back(glm::vec3(data["GameObjects"][gameObject][12][vert], data["GameObjects"][gameObject][12][vert + 1], data["GameObjects"][gameObject][12][vert + 2]));
+				indexed_vertices.emplace_back(gameObject[12][vert], gameObject[12][vert + 1], gameObject[12][vert + 2]);
 				vert = vert + 2;
 			}
 			for (int uvs = 0; uvs < Uvs.size(); uvs++) {
-				indexed_uvs.push_back(glm::vec2(data["GameObjects"][gameObject][13][uvs], data["GameObjects"][gameObject][13][uvs + 1]));
+				indexed_uvs.emplace_back(gameObject[13][uvs], gameObject[13][uvs + 1]);
 				uvs = uvs + 1;
 			}
 			for (int normal = 0; normal < normals.size(); normal++) {
-				indexed_normals.push_back(glm::vec3(data["GameObjects"][gameObject][14][normal], data["GameObjects"][gameObject][14][normal + 1], data["GameObjects"][gameObject][14][normal + 2]));
+				indexed_normals.emplace_back(gameObject[14][normal], gameObject[14][normal + 1], gameObject[14][normal + 2]);
 				normal = normal + 2;
 			}
-			bool save = data["GameObjects"][gameObject][16];
-			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotation, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box));
+			bool save = gameObject[16];
+			GameObjects.emplace_back(name.data(), Parentname.data(), texture, position, rotation, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box);
 		}
 	}
 
@@ -60,51 +59,52 @@ namespace AssetManager
 		std::vector<json> SerializedGameObjects;
 		
 		// name,parentname,pos,rotation,scale,indices,indexvert,indexuv,indexnormal,texturename
-		for (int i = 0; i < GameObjects.size(); i++) {
-			if (!GameObjects[i].CanSave())
+		for (auto& GameObject : GameObjects) {
+			if (!GameObject.CanSave())
 				continue;
 			std::vector<float> vertices;
 			std::vector<float> Uvs;
 			std::vector<float> normals;
-			std::vector<glm::vec3> indexed_vertices = GameObjects[i].getIndexedVertices();
-			std::vector<glm::vec2> indexed_uvs = GameObjects[i].getIndexedUvs();
-			std::vector<glm::vec3> indexed_normals = GameObjects[i].getIndexedNormals();
+			std::vector<glm::vec3> indexed_vertices = GameObject.getIndexedVertices();
+			std::vector<glm::vec2> indexed_uvs = GameObject.getIndexedUvs();
+			std::vector<glm::vec3> indexed_normals = GameObject.getIndexedNormals();
 
-			for (int vert = 0; vert < indexed_vertices.size(); vert++) {
-				vertices.push_back(indexed_vertices[vert].x);
-				vertices.push_back(indexed_vertices[vert].y);
-				vertices.push_back(indexed_vertices[vert].z);
+			for (auto& indexed_vertex : indexed_vertices) {
+				vertices.push_back(indexed_vertex.x);
+				vertices.push_back(indexed_vertex.y);
+				vertices.push_back(indexed_vertex.z);
 			}
 			
-			for (int uvs = 0; uvs < indexed_uvs.size(); uvs++) {
-				Uvs.push_back(indexed_uvs[uvs].x);
-				Uvs.push_back(indexed_uvs[uvs].y);
+			for (auto& indexed_uv : indexed_uvs) {
+				Uvs.push_back(indexed_uv.x);
+				Uvs.push_back(indexed_uv.y);
 			}
 			
-			for (int normal = 0; normal < indexed_normals.size(); normal++) {
-				normals.push_back(indexed_normals[normal].x);
-				normals.push_back(indexed_normals[normal].y);
-				normals.push_back(indexed_normals[normal].z);
+			for (auto& indexed_normal : indexed_normals) {
+				normals.push_back(indexed_normal.x);
+				normals.push_back(indexed_normal.y);
+				normals.push_back(indexed_normal.z);
 			}
 			
-			json gameObject = { GameObjects[i].GetName(),
-				GameObjects[i].GetParentName(),
-				GameObjects[i].getPosition().x,
-				GameObjects[i].getPosition().y,
-				GameObjects[i].getPosition().z,
-				GameObjects[i].getRotation().x,
-				GameObjects[i].getRotation().y,
-				GameObjects[i].getRotation().z,
-				GameObjects[i].getScale().x,
-				GameObjects[i].getScale().y,
-				GameObjects[i].getScale().z,
-				GameObjects[i].getIndices(),
+			json gameObject = {
+				GameObject.GetName(),
+				GameObject.GetParentName(),
+				GameObject.getPosition().x,
+				GameObject.getPosition().y,
+				GameObject.getPosition().z,
+				GameObject.getRotation().x,
+				GameObject.getRotation().y,
+				GameObject.getRotation().z,
+				GameObject.getScale().x,
+				GameObject.getScale().y,
+				GameObject.getScale().z,
+				GameObject.getIndices(),
 				vertices, Uvs, normals,
-				GameObjects[i].GetTextureName(),
+				GameObject.GetTextureName(),
 				true
 			};
 			
-			SerializedGameObjects.push_back(gameObject);
+			SerializedGameObjects.emplace_back(gameObject);
 		}
 		
 		save["GameObjects"] = SerializedGameObjects;
@@ -122,25 +122,25 @@ namespace AssetManager
 	}
 
 	// Returns index of object
-	size_t AssetManager::AddGameObject(GameObject gameObject) {
-		GameObjects.push_back(gameObject);
-		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserPointer((void*)(GameObjects.size() - 1));
+	size_t AssetManager::AddGameObject(const GameObject& gameObject) {
+		GameObjects.emplace_back(gameObject);
+		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserPointer(reinterpret_cast<void*>(GameObjects.size() - 1));
 		return GameObjects.size() - 1;
 	}
 
-	size_t AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
+	size_t AssetManager::AddGameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position,
 	                                   bool save, float mass, ColliderShape shape) {
-		GameObjects.push_back(GameObject(name, path, texture, position,save, mass, shape));
-		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex((int)GameObjects.size() - 1);
+		GameObjects.emplace_back(name, path, texture, position, save, mass, shape);
+		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex(static_cast<int>(GameObjects.size()) - 1);
 		return GameObjects.size() - 1;
 	}
 
 	size_t AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* parent) {
-		Decals.push_back(Decal(position, normal, scale, texture, parent));
+		Decals.emplace_back(position, normal, scale, texture, parent);
 		return Decals.size() - 1;
 	}
 	
-	Decal* GetDecal(int index) {
+	Decal* GetDecal(const int index) {
 		return &Decals[index];
 	}
 
@@ -149,47 +149,47 @@ namespace AssetManager
 	}
 
 	size_t AssetManager::AddTexture(Texture texture) {
-		Textures.push_back(texture);
+		Textures.emplace_back(texture);
 		return Textures.size() - 1;
 	}
 
 	size_t AssetManager::AddTexture(const char* name, const char* path) {
-		Textures.push_back(Texture(name, path));
+		Textures.emplace_back(name, path);
 		return Textures.size() - 1;
 	}
 
 	size_t AddTexture(const char* name, const char* path, const char* normalPath) {
-		Textures.push_back(Texture(name, path,normalPath));
+		Textures.emplace_back(name, path, normalPath);
 		return Textures.size() - 1;
 	}
 
-	void AssetManager::RemoveGameObject(std::string name) {
+	void AssetManager::RemoveGameObject(const std::string& name) {
 		for (int i = 0; i < GameObjects.size(); i++) {
 			if (GameObjects[i].GetName() == name)
 				GameObjects.erase(GameObjects.begin() + i);
 		}
 	}
 	
-	void AssetManager::RemoveGameObject(int index) {
+	void AssetManager::RemoveGameObject(const int index) {
 		GameObjects.erase(GameObjects.begin() + index);
 	}
 	
 	void AssetManager::CleanUp() {
 		for (int i = 0; i < GameObjects.size(); i++) {
-			if (GameObjects[i].ShouldDlete())
+			if (GameObjects[i].ShouldDelete())
 				GameObjects.erase(GameObjects.begin() + i);
 		}
 	}
 	
-	GameObject* AssetManager::GetGameObject(std::string name) {
-		for (int i = 0; i < GameObjects.size(); i++) {
-			if (GameObjects[i].GetName() == name)
-				return &GameObjects[i];
+	GameObject* AssetManager::GetGameObject(const std::string& name) {
+		for (auto& gameObject : GameObjects) {
+			if (gameObject.GetName() == name)
+				return &gameObject;
 		}
 		return nullptr;
 	}
 	
-	GameObject* AssetManager::GetGameObject(int index) {
+	GameObject* AssetManager::GetGameObject(const int index) {
 		if (index >= GameObjects.size() || index < 0)
 			return nullptr;
 		return &GameObjects[index];
@@ -207,10 +207,10 @@ namespace AssetManager
 		return Decals.size();
 	}
 	
-	Texture* AssetManager::GetTexture(std::string name) {
-		for (int i = 0; i < Textures.size(); i++) {
-			if (Textures[i].GetName() == name)
-				return &Textures[i];
+	Texture* AssetManager::GetTexture(const std::string& name) {
+		for (auto& texture : Textures) {
+			if (texture.GetName() == name)
+				return &texture;
 		}
 		return nullptr;
 	}

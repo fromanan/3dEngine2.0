@@ -30,12 +30,12 @@ namespace Renderer
     // Text Rendering
     void RenderText(const char* text, int x, int y, int size);
     void DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size = glm::vec2(10.0f, 10.0f), float rotate = 0.0f, glm::vec3 color = glm::vec3(1.0f));
-    void RendererSkybox(glm::mat4 view, glm::mat4 projection, Skybox skybox);
+    void RendererSkybox(const glm::mat4& view, glm::mat4 projection, Skybox skybox);
 
     // Shader
     void SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view, glm::mat3 ModelView3x3Matrix);
-    void SetLights(std::vector<Light> lights);
+    void SetLights(const std::vector<Light>& lights);
 
     void setMat4(GLuint id, glm::mat4& mat4);
-    void setVec3(GLuint id, glm::vec3& vec3);
+    void setVec3(GLuint id, const glm::vec3& vec3);
 }

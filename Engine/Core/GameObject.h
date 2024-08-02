@@ -23,19 +23,16 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(std::string name, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, glm::vec3 position, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float margin);
-
-	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth);
-
-	GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
+	GameObject(const std::string& name, bool save, float mass, ColliderShape shape);
+	GameObject(const std::string& name, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(const std::string& name, const char* path, bool save, float mass, ColliderShape shape);
+	GameObject(const std::string& name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float margin);
+	GameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth);
+	GameObject(const std::string& name, const std::string& parentName, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
 		std::vector<glm::vec3> indexed_vertices, std::vector<glm::vec2> indexed_uvs, std::vector<glm::vec3> indexed_normals, bool save, float mass, ColliderShape shape);
-	
-	GameObject(std::string name, std::string parentname, Texture* texure, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
+	GameObject(const std::string& name, const std::string& parentName, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
 		std::vector<glm::vec3> vertices,
 		std::vector<glm::vec2> uvs,
 		std::vector<glm::vec3> normals,
@@ -50,14 +47,14 @@ public:
 		bool canSave,
 		bool render,
 		bool shouldDelete, float mass, 
-		btConvexHullShape* collidershape);
+		btConvexHullShape* colliderShape);
 
 	void LoadModel(const char* path);
-	void Copy(std::string copyName);
-	glm::mat4 GetModelMatrix();
-	glm::mat4 GetLocalModelMatrix();
+	void Copy(const std::string& copyName) const;
+	glm::mat4 GetModelMatrix() const;
+	glm::mat4 GetLocalModelMatrix() const;
 	
-	void RenderObject(GLuint& programID);
+	void RenderObject(const GLuint& programID) const;
 
 	void setPosition(glm::vec3 position);
 	void setRotation(glm::vec3 rotation);
@@ -65,9 +62,9 @@ public:
 
 	void Update();
 
-	glm::vec3 getPosition();
-	glm::vec3 getRotation();
-	glm::vec3 getScale();
+	glm::vec3 getPosition() const;
+	glm::vec3 getRotation() const;
+	glm::vec3 getScale() const;
 
 	void addPosition(glm::vec3 position);
 
@@ -84,25 +81,25 @@ public:
 	std::string GetName();
 	std::string GetParentName();
 
-	void SetParentName(std::string name);
+	void SetParentName(const std::string& name);
 
 	// For Json Saving
 	std::vector<unsigned short> getIndices();
 	std::vector<glm::vec3> getIndexedVertices();
 	std::vector<glm::vec2> getIndexedUvs();
 	std::vector<glm::vec3> getIndexedNormals();
-	const char* GetTextureName();
+	const char* GetTextureName() const;
 
-	bool CanSave();
+	bool CanSave() const;
 	void SetRender(bool render);
-	bool ShouldRender();
+	bool ShouldRender() const;
 
 	void SetDelete(bool state);
-	bool ShouldDlete();
+	bool ShouldDelete() const;
 
-	void SetUserPoint(void* pointer);
+	void SetUserPoint(void* pointer) const;
 
-	void computeTangentBasis(
+	static void computeTangentBasis(
 		// inputs
 		std::vector<glm::vec3>& vertices,
 		std::vector<glm::vec2>& uvs,
@@ -112,9 +109,9 @@ public:
 		std::vector<glm::vec3>& bitangents
 	);
 
-	btRigidBody* GetRigidBody();
-	btCollisionShape* GetCollisionShape();
-	btConvexHullShape* GetConvexHull();
+	btRigidBody* GetRigidBody() const;
+	btCollisionShape* GetCollisionShape() const;
+	btConvexHullShape* GetConvexHull() const;
 
 private:
 	Transform transform = Transform();

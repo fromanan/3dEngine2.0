@@ -35,20 +35,20 @@ void Scene::Load() {
 
 	AssetManager::AddGameObject("floor", AssetPaths::Model_Slope, AssetManager::GetTexture("sand"), glm::vec3(-1, 2, -7), true, 0, Convex);
 
-	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate")));
+	crates.emplace_back(glm::vec3(1, 25, 1), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate"));
+	crates.emplace_back(glm::vec3(1, 30, 0.5), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate"));
+	crates.emplace_back(glm::vec3(0.5, 20, 1), "crate2", AssetPaths::Model_Crate, AssetManager::GetTexture("crate"));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", AssetPaths::Model_Ak47, AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
+	gunPickUps.emplace_back("ak47", "ak47_pickup", AssetPaths::Model_Ak47, AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1));
 
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", AssetPaths::Model_Glock17, AssetManager::GetTexture("glock"), glm::vec3(1,25, 0)));
+	gunPickUps.emplace_back("glock", "glock_pickup1", AssetPaths::Model_Glock17, AssetManager::GetTexture("glock"), glm::vec3(1,25, 0));
 
-	doors.push_back(Door("door1", AssetPaths::Model_Door, AssetPaths::Model_Frame, AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3)));
+	doors.emplace_back("door1", AssetPaths::Model_Door, AssetPaths::Model_Frame, AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3));
 
-	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", AssetPaths::Model_Ak47_LowPoly, AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
-	//AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
-	//gunPickUps.push_back(GunPickUp("glock", "glock_pickup", AssetPaths::Model_Glock17, AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6)));
-	//AssetManager::GetGameObject("glock_pickup")->SetRender(false);
+	/*gunPickUps.emplace_back("ak47", "ak47_pickup", AssetPaths::Model_Ak47_LowPoly, AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5));
+	AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
+	gunPickUps.emplace_back("glock", "glock_pickup", AssetPaths::Model_Glock17, AssetManager::GetTexture("uvmap"), glm::vec3(8, -13, -6));
+	AssetManager::GetGameObject("glock_pickup")->SetRender(false);*/
 
 	// Sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
@@ -63,18 +63,9 @@ void Scene::Load() {
 	sky = Skybox(faces);
 
 	// MAX LIGHTS BY DEFAULT IS 10 if you want more lights go to FragmentShader.frag and VertexShader.vert and change MAXLIGHTS
-	{
-		Light light(glm::vec3(-2.5, 4, -5), glm::vec3(1, 0.25, 0), 1,0.22,0.20);
-		lights.push_back(light);
-	}
-	{
-		Light light(glm::vec3(-6, 2, -2), glm::vec3(1, 0, 1), 1, 0.22, 0.20);
-		lights.push_back(light);
-	}
-	{
-		Light light(glm::vec3(-1, 2, -1), glm::vec3(0, 1, 1), 1, 0.22, 0.20);
-		lights.push_back(light);
-	}
+	lights.emplace_back(glm::vec3(-2.5, 4, -5), glm::vec3(1, 0.25, 0), 1,0.22f, 0.20f);
+	lights.emplace_back(glm::vec3(-6, 2, -2), glm::vec3(1, 0, 1), 1, 0.22f, 0.20f);
+	lights.emplace_back(glm::vec3(-1, 2, -1), glm::vec3(0, 1, 1), 1, 0.22f, 0.20f);
 
 	Player::Init();
 	Player::setPosition(glm::vec3(3, 10, 0));
@@ -83,7 +74,7 @@ void Scene::Load() {
 	//AssetManager::SaveAssets(AssetPaths::Json_MainScene);
 }
 
-void Scene::Update(float deltaTime) {
+void Scene::Update(const float deltaTime) {
 	Player::Update(deltaTime);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
@@ -110,9 +101,9 @@ void Scene::Update(float deltaTime) {
 }
 
 void Scene::RenderObjects() {
-	glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
-	glm::mat4 ViewMatrix = Camera::getViewMatrix();
-	glm::mat4 PV = ProjectionMatrix * ViewMatrix;
+	const glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
+	const glm::mat4 ViewMatrix = Camera::getViewMatrix();
+	const glm::mat4 PV = ProjectionMatrix * ViewMatrix;
 
 	Renderer::RendererSkybox(ViewMatrix, ProjectionMatrix, sky);
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
@@ -180,20 +171,20 @@ void Scene::RenderObjects() {
 	Renderer::RenderText(oss.str().c_str(), 0, 500, 15);
 }
 
-void Scene::AddGunPickUp(GunPickUp gunpickup) {
+void Scene::AddGunPickUp(const GunPickUp& gunpickup) {
 	gunPickUps.push_back(gunpickup);
 }
 
-void Scene::AddGunPickUp(std::string gunName, std::string gunObject, glm::vec3 Position) {
+void Scene::AddGunPickUp(const std::string& gunName, const std::string& gunObject, const glm::vec3 Position) {
 	GunPickUp pickup = GunPickUp(gunName, gunObject, Position);
 	std::cout << " testing";
 	gunPickUps.push_back(pickup);
 }
 
-void Scene::RenderObjects(const char* shaderName) {
-	glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
-	glm::mat4 ViewMatrix = Camera::getViewMatrix();
-	glm::mat4 PV = ProjectionMatrix * ViewMatrix;
+void Scene::RenderObjects(const char* shaderName) const {
+	const glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
+	const glm::mat4 ViewMatrix = Camera::getViewMatrix();
+	const glm::mat4 PV = ProjectionMatrix * ViewMatrix;
 
 	Renderer::RendererSkybox(ViewMatrix, ProjectionMatrix, sky);
 	GLuint programid = Renderer::GetProgramID(shaderName);
@@ -218,11 +209,11 @@ void Scene::RenderObjects(const char* shaderName) {
 	}
 }
 
-size_t Scene::GetGunPickUpSize() {
+size_t Scene::GetGunPickUpSize() const {
 	return gunPickUps.size();
 }
 
-Crate* Scene::GetCrate(std::string name) {
+Crate* Scene::GetCrate(const std::string& name) {
 	for (int i = 0; i < crates.size(); i++) {
 		if (crates[i].GetName() == name)
 			return &crates[i];

@@ -7,7 +7,7 @@
 namespace SceneManager
 {
 	void Init();
-	size_t CreateScene(Scene scene);
+	size_t CreateScene(const Scene& scene);
 	void LoadScene(int sceneNumber);
 	void Update(float dt);
 	void Render();

@@ -20,11 +20,11 @@ namespace PhysicsManager
 	Cube* AddCube(glm::vec3 position, float width, float height, float depth, const std::string& name);
 	Cube* AddCube(GameObject* gameObject, const std::string& name);
 
-	void RemoveCube(std::string name);
-	void RemoveRigidBody(std::string name);
+	void RemoveCube(const std::string& name);
+	void RemoveRigidBody(const std::string& name);
 
-	Cube* GetCollider(std::string name);
-	RigidBody* GetRigidBody(std::string name);
+	Cube* GetCollider(const std::string& name);
+	RigidBody* GetRigidBody(const std::string& name);
 
 	void Update(float deltaTime);
 };

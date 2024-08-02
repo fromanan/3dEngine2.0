@@ -19,18 +19,18 @@ struct KeyFrame
 	glm::vec3 position;
 	glm::vec3 rotation;
 
-	void Create(glm::vec3 Position, glm::vec3 Rotation, float Duration);
+	void Create(glm::vec3 position, glm::vec3 rotation, float duration);
 };
 
 class Animation
 {
 public:
-	Animation(std::string Name);
-	Animation(std::vector<KeyFrame> Keyframes, std::string Name);
+	Animation(const std::string& name);
+	Animation(const std::vector<KeyFrame>& keyframes, const std::string& name);
 
-	void AddKeyFrame(KeyFrame Keyframe);
-	size_t GetKeyFrameSize();
-	bool Playing();
+	void AddKeyFrame(const KeyFrame& keyframe);
+	size_t GetKeyFrameSize() const;
+	bool Playing() const;
 	void Stop();
 	void Start();
 	void Pause();
@@ -57,10 +57,10 @@ private:
 
 namespace AnimationManager
 {
-	void AddAnimation(Animation animation);
-	void Play(std::string Name, std::string ObjectName);
-	void Stop(std::string Name);
-	void Pause(std::string Name);
+	void AddAnimation(const Animation& animation);
+	void Play(const std::string& Name, const std::string& ObjectName);
+	void Stop(const std::string& Name);
+	void Pause(const std::string& Name);
 	void Update(float deltaTime);
-	Animation* GetAnimation(std::string Name);
+	Animation* GetAnimation(const std::string& Name);
 }

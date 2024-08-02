@@ -42,7 +42,7 @@ namespace PhysicsManagerBullet
 		dynamicsWorld->setGravity(btVector3(0, -10, 0));
 	}
 	
-	void Update(float deltaTime) {
+	void Update(const float deltaTime) {
 		//int maxSubsteps = static_cast<int>(fabs(deltaTime / (1.f / 60.0f) + 0.5f)) + 1;
 		dynamicsWorld->stepSimulation(deltaTime,3);
 		dynamicsWorld->debugDrawWorld();

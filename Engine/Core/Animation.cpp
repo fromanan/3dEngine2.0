@@ -1,49 +1,49 @@
 #include "Animation.h"
 
-void KeyFrame::Create(glm::vec3 Position, glm::vec3 Rotation, float Duration) {
-	position = Position;
-	rotation = Rotation;
-	duration = Duration;
+void KeyFrame::Create(const glm::vec3 position, const glm::vec3 rotation, const float duration) {
+	this->position = position;
+	this->rotation = rotation;
+	this->duration = duration;
 }
 
-Animation::Animation(std::string Name) {
-	name = Name;
+Animation::Animation(const std::string& name) {
+	this->name = name;
 }
 
-Animation::Animation(std::vector<KeyFrame> Keyframes, std::string Name) {
-	keyframes = Keyframes;
-	name = Name;
+Animation::Animation(const std::vector<KeyFrame>& keyframes, const std::string& name) {
+	this->keyframes = keyframes;
+	this->name = name;
 }
 
-void Animation::AddKeyFrame(KeyFrame Keyframe) {
-	keyframes.push_back(Keyframe);
+void Animation::AddKeyFrame(const KeyFrame& keyframe) {
+	this->keyframes.push_back(keyframe);
 }
 
-size_t Animation::GetKeyFrameSize() {
-	return keyframes.size();
+size_t Animation::GetKeyFrameSize() const {
+	return this->keyframes.size();
 }
 
-bool Animation::Playing() {
-	return playing;
+bool Animation::Playing() const {
+	return this->playing;
 }
 
 void Animation::Stop() {
-	playing = false;
-	currentKeyFrame = -1;
-	gameObject = nullptr;
+	this->playing = false;
+	this->currentKeyFrame = -1;
+	this->gameObject = nullptr;
 }
 
 void Animation::Start() {
-	playing = true;
+	this->playing = true;
 }
 
 void Animation::Pause() {
-	playing = false;
+	this->playing = false;
 }
 
-void Animation::SetKeyFrame(int keyframeIndex) {
+void Animation::SetKeyFrame(const int keyframeIndex) {
 	if (keyframeIndex < keyframes.size())
-		currentKeyFrame = keyframeIndex;
+		this->currentKeyFrame = keyframeIndex;
 }
 
 void Animation::SetGameObject(GameObject* gameObject) {
@@ -51,67 +51,67 @@ void Animation::SetGameObject(GameObject* gameObject) {
 }
 
 void Animation::Transform() {
-	float t = glfwGetTime() / timeStart + keyframes[currentKeyFrame].duration;
+	const float t = glfwGetTime() / timeStart + keyframes[currentKeyFrame].duration;
 	if (t >= 1) {
 		NextKeyFrame();
 		return;
 	}
-	glm::vec3 newPosition = (1 - t) * startingPosition  + t * keyframes[currentKeyFrame].position;
-	glm::vec3 newRotation = (1 - t) * startingRotation + t * keyframes[currentKeyFrame].rotation;
+	const glm::vec3 newPosition = (1 - t) * startingPosition  + t * keyframes[currentKeyFrame].position;
+	const glm::vec3 newRotation = (1 - t) * startingRotation + t * keyframes[currentKeyFrame].rotation;
 
 	gameObject->setPosition(newPosition);
 	gameObject->setRotation(newRotation);
 }
 
 void Animation::NextKeyFrame() {
-	if (currentKeyFrame < keyframes.size())
-	{
+	if (currentKeyFrame < keyframes.size()) {
 		startingPosition = gameObject->getPosition();
 		startingRotation = gameObject->getRotation();
 		currentKeyFrame++;
 		timeStart = glfwGetTime();
 	}
-	else
+	else {
 		Stop();
+	}
 }
 
 std::string Animation::GetName() {
-	return name;
+	return this->name;
 }
 
 namespace AnimationManager
 {
 	std::vector <Animation> animations;
 	
-	void AnimationManager::AddAnimation(Animation animation) {
-		animations.push_back(animation);
+	void AnimationManager::AddAnimation(const Animation& animation) {
+		animations.emplace_back(animation);
 	}
 	
-	void AnimationManager::Play(std::string Name,std::string ObjectName) {
+	void AnimationManager::Play(const std::string& Name, const std::string& ObjectName) {
 		GetAnimation(Name)->SetGameObject(AssetManager::GetGameObject(ObjectName));
 		GetAnimation(Name)->Start();
 	}
 	
-	void AnimationManager::Stop(std::string Name) {
+	void AnimationManager::Stop(const std::string& Name) {
 		GetAnimation(Name)->Stop();
 	}
 	
-	void AnimationManager::Pause(std::string Name) {
+	void AnimationManager::Pause(const std::string& Name) {
 		GetAnimation(Name)->Pause();
 	}
 
 	void AnimationManager::Update(float deltaTime) {
-		for (int i = 0; i < animations.size(); i++) {
-			if (animations[i].Playing()) {
-				animations[i].Transform();
+		for (auto& animation : animations) {
+			if (animation.Playing()) {
+				animation.Transform();
 			}
 		}
 	}
 	
-	Animation* AnimationManager::GetAnimation(std::string Name) {
-		for (int i = 0; i < animations.size(); i++) {
-			if (animations[i].GetName() == Name)
-				return &animations[i];
+	Animation* AnimationManager::GetAnimation(const std::string& Name) {
+		for (auto& animation : animations) {
+			if (animation.GetName() == Name)
+				return &animation;
 		}
 		return nullptr;
 	}

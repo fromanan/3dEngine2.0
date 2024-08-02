@@ -13,7 +13,7 @@ namespace PhysicsManager
 
 	bool UpdatedCamera = false;
 
-	void PhysicsManager::Update(float deltaTime) {
+	void PhysicsManager::Update(const float deltaTime) {
 		UpdatedCamera = false;
 		for (int i = 0; i < rigidbodies.size(); i++) {
 			// Add friction so you're not sliding
@@ -62,49 +62,49 @@ namespace PhysicsManager
 	}
 	
 	RigidBody* PhysicsManager::AddRigidBody(const glm::vec3 position, const std::string& name) {
-		rigidbodies.push_back(RigidBody(position, name));
+		rigidbodies.emplace_back(position, name);
 		return &rigidbodies[rigidbodies.size() - 1];
 	}
 	
 	Cube* PhysicsManager::AddCube(const glm::vec3 position, glm::vec3 min, glm::vec3 max, const std::string& name) {
-		colliders.push_back(Cube(position, min, max, name));
+		colliders.emplace_back(position, min, max, name);
 		return &colliders[colliders.size() - 1];
 	}
 	
 	Cube* PhysicsManager::AddCube(const glm::vec3 position, float width, float height, float depth, const std::string& name) {
-		colliders.push_back(Cube(position, width, height,depth, name));
+		colliders.emplace_back(position, width, height,depth, name);
 		return &colliders[colliders.size() - 1];
 	}
 	
 	Cube* AddCube(GameObject* gameObject, const std::string& name) {
-		colliders.push_back(Cube(gameObject, name));
+		colliders.emplace_back(gameObject, name);
 		return nullptr;
 	}
 
-	Cube* PhysicsManager::GetCollider(std::string name) {
-		for (int i = 0; i < colliders.size(); i++) {
-			if (colliders[i].GetName() == name)
-				return &colliders[i];
+	Cube* PhysicsManager::GetCollider(const std::string& name) {
+		for (auto& collider : colliders) {
+			if (collider.GetName() == name)
+				return &collider;
 		}
 		return nullptr;
 	}
 	
-	RigidBody* PhysicsManager::GetRigidBody(std::string name) {
-		for (int i = 0; i < rigidbodies.size(); i++) {
-			if (rigidbodies[i].GetName() == name)
-				return &rigidbodies[i];
+	RigidBody* PhysicsManager::GetRigidBody(const std::string& name) {
+		for (auto& rigidbody : rigidbodies) {
+			if (rigidbody.GetName() == name)
+				return &rigidbody;
 		}
 		return nullptr;
 	}
 	
-	void PhysicsManager::RemoveCube(std::string name) {
+	void PhysicsManager::RemoveCube(const std::string& name) {
 		for (int i = 0; i < colliders.size(); i++) {
 			if (colliders[i].GetName() == name)
 				colliders.erase(colliders.begin() + i);
 		}
 	}
 	
-	void RemoveRigidBody(std::string name) {
+	void RemoveRigidBody(const std::string& name) {
 		for (int i = 0; i < rigidbodies.size(); i++) {
 			if (rigidbodies[i].GetName() == name)
 				rigidbodies.erase(rigidbodies.begin() + i);

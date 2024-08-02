@@ -33,7 +33,7 @@ namespace Renderer
 		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
 	}
 	
-	void Renderer::SetLights(std::vector<Light> lights) {
+	void Renderer::SetLights(const std::vector<Light>& lights) {
 		// Upload lights data to the GPU
 		std::vector<glm::vec3> lightPositions;
 		std::vector<glm::vec3> lightColors;
@@ -41,15 +41,12 @@ namespace Renderer
 		std::vector<float> LightLinears;
 		std::vector<float> LightQuadratics;
 
-
 		for (const auto& light : lights) {
 			lightPositions.push_back(light.position);
 			lightColors.push_back(light.colour);
 			LightConstants.push_back(light.constant);
 			LightLinears.push_back(light.linear);
 			LightQuadratics.push_back(light.quadratic);
-			
-			
 		}
 
 		// Set up uniform arrays in the shader
@@ -60,11 +57,11 @@ namespace Renderer
 		GLuint LightQuadraticsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightQuadratics");
 
 
-		glUniform3fv(lightPositionsLoc, (GLsizei)lights.size(), glm::value_ptr(lightPositions[0]));
-		glUniform3fv(lightColorsLoc, (GLsizei)lights.size(), glm::value_ptr(lightColors[0]));
-		glUniform1fv(LightConstantsLoc, (GLsizei)lights.size(), &LightConstants[0]);
-		glUniform1fv(LightLinearsLoc, (GLsizei)lights.size(), &LightLinears[0]);
-		glUniform1fv(LightQuadraticsLoc, (GLsizei)lights.size(), &LightQuadratics[0]);
+		glUniform3fv(lightPositionsLoc, static_cast<GLsizei>(lights.size()), glm::value_ptr(lightPositions[0]));
+		glUniform3fv(lightColorsLoc, static_cast<GLsizei>(lights.size()), glm::value_ptr(lightColors[0]));
+		glUniform1fv(LightConstantsLoc, static_cast<GLsizei>(lights.size()), LightConstants.data());
+		glUniform1fv(LightLinearsLoc, static_cast<GLsizei>(lights.size()), LightLinears.data());
+		glUniform1fv(LightQuadraticsLoc, static_cast<GLsizei>(lights.size()), LightQuadratics.data());
 
 		//setVec3(LightID, lights[0].position);
 	}
@@ -94,7 +91,7 @@ namespace Renderer
 		UseProgram(GetProgramID("sprite"));
 		
 		// Configure VAO/VBO
-		float vertices[] = {
+		const float vertices[] = {
 			// pos      // tex
 			0.0f, 1.0f, 0.0f, 1.0f,
 			1.0f, 0.0f, 1.0f, 0.0f,
@@ -116,11 +113,11 @@ namespace Renderer
 		return 0;
 	}
 
-	void Renderer::setMat4(GLuint id, glm::mat4& mat4) {
+	void Renderer::setMat4(const GLuint id, glm::mat4& mat4) {
 		glUniformMatrix4fv(id, 1, GL_FALSE, &mat4[0][0]);
 	}
 	
-	void Renderer::setVec3(GLuint id, glm::vec3& vec3) {
+	void Renderer::setVec3(const GLuint id, const glm::vec3& vec3) {
 		glUniform3f(id, vec3.x, vec3.y, vec3.z);
 	}
 	
@@ -129,7 +126,7 @@ namespace Renderer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Renderer::UseProgram(GLuint ProgramID) {
+	void Renderer::UseProgram(const GLuint ProgramID) {
 		glUseProgram(ProgramID);
 	}
 	
@@ -138,13 +135,13 @@ namespace Renderer
 		return shaderProgramIds[name];
 	} 
 
-	void Renderer::RenderText(const char* text,int x, int y, int size) {
+	void Renderer::RenderText(const char* text, const int x, const int y, const int size) {
 		Renderer::UseProgram(Text2D::GetProgramID());
 		Text2D::printText2D(text, x, y, size);
 	}
 
 	// TODO: Doesn't work right now still in progress
-	void Renderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color) {
+	void Renderer::DrawSprite(Texture* texture, const glm::vec2 position, const glm::vec2 size, const float rotate, const glm::vec3 color) {
 		UseProgram(GetProgramID("sprite"));
 
 		glEnableVertexAttribArray(0);
@@ -165,7 +162,7 @@ namespace Renderer
 		
 		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
 
-		GLuint TextureID = glGetUniformLocation(GetProgramID("sprite"), "image");
+		const GLuint TextureID = glGetUniformLocation(GetProgramID("sprite"), "image");
 
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 		glUniform1i(TextureID, texture->GetTextureNumber());
@@ -175,11 +172,11 @@ namespace Renderer
 		glBindVertexArray(0);
 	}
 	
-	void Renderer::RendererSkybox(glm::mat4 view, glm::mat4 projection, Skybox skybox) {
+	void Renderer::RendererSkybox(const glm::mat4& view, glm::mat4 projection, Skybox skybox) {
 		glDepthMask(GL_FALSE);
 		UseProgram(GetProgramID("skybox"));
-		GLuint projectionid = glGetUniformLocation(GetProgramID("skybox"), "projection");
-		GLuint viewid = glGetUniformLocation(GetProgramID("skybox"), "view");
+		const GLuint projectionid = glGetUniformLocation(GetProgramID("skybox"), "projection");
+		const GLuint viewid = glGetUniformLocation(GetProgramID("skybox"), "view");
 		glm::mat4 viewWithoutTranslation = glm::mat4(glm::mat3(view));
 
 		setMat4(viewid, viewWithoutTranslation);

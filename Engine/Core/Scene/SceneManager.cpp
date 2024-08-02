@@ -9,7 +9,7 @@ namespace SceneManager
 		currentScene = 0;
 	}
 
-	size_t SceneManager::CreateScene(Scene scene) {
+	size_t SceneManager::CreateScene(const Scene& scene) {
 		scenes.push_back(scene);
 		return scenes.size() - 1;
 	}

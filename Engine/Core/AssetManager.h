@@ -25,11 +25,11 @@ namespace AssetManager
 	void LoadAssets(const char* path);
 
 	// returns index of object
-	size_t AddGameObject(GameObject gameObject);
-	unsigned long long AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
-	                                 bool save, float mass, ColliderShape shape);
+	size_t AddGameObject(const GameObject& gameObject);
+	size_t AddGameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position,
+									   bool save, float mass, ColliderShape shape);
 
-	unsigned long long AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture,
+	size_t AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture,
 	                            GameObject* parent);
 	Decal* GetDecal(int index);
 	std::vector<Decal>* GetAllDecals();
@@ -38,16 +38,16 @@ namespace AssetManager
 	size_t AddTexture(const char* name, const char* path);
 	size_t AddTexture(const char* name, const char* path, const char* normalPath);
 
-	void RemoveGameObject(std::string name);
+	void RemoveGameObject(const std::string& name);
 	void RemoveGameObject(int index);
 
 	void CleanUp();
 
-	GameObject* GetGameObject(std::string name);
+	GameObject* GetGameObject(const std::string& name);
 	GameObject* GetGameObject(int index);
 	std::vector<GameObject> GetAllGameObjects();
 	size_t GetGameObjectsSize();
 	size_t GetDecalsSize();
 
-	Texture* GetTexture(std::string name);
+	Texture* GetTexture(const std::string& name);
 }

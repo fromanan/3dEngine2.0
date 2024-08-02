@@ -29,13 +29,13 @@ public:
 	void Load();
 	void Update(float dt);
 	void RenderObjects();
-	void RenderObjects(const char* shaderName);
+	void RenderObjects(const char* shaderName) const;
 
-	void AddGunPickUp(GunPickUp gunpickup);
-	void AddGunPickUp(std::string gunName,std::string gunObject,glm::vec3 Position);
+	void AddGunPickUp(const GunPickUp& gunpickup);
+	void AddGunPickUp(const std::string& gunName, const std::string& gunObject,glm::vec3 Position);
 
-	size_t GetGunPickUpSize();
-	Crate* GetCrate(std::string name);
+	size_t GetGunPickUpSize() const;
+	Crate* GetCrate(const std::string& name);
 private:
 	Skybox sky = Skybox();
 	// Objects

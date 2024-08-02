@@ -29,7 +29,7 @@ namespace AudioManager {
 
 	void AudioManager::Init() {
 		for (int i = 0; i < channelSize; i++) {
-			channels.push_back(0);
+			channels.push_back(nullptr);
 		}
 		result = FMOD::System_Create(&system);
 		if (!succeededOrWarn("FMOD: Failed to create system object", result))
@@ -44,7 +44,7 @@ namespace AudioManager {
 		if (!succeededOrWarn("FMOD: Failed to create system object", result))
 			return;
 		
-		//thanks to livinamuk for a couple of these sounds
+		// Thanks to @livinamuk for a couple of these sounds
 		AudioManager::AddSound(AssetPaths::Audio_DoorClose, "door_close", glm::vec3(0, 0, 0), 10, 1.0f);
 		AudioManager::AddSound(AssetPaths::Audio_DoorOpen, "door_open", glm::vec3(0, 0, 0), 10, 0.8f);
 		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_1, "foot_step1", glm::vec3(0, 0, 0), 10, 0.3f);
@@ -65,22 +65,22 @@ namespace AudioManager {
 		return system;
 	}
 
-	void AudioManager::AddSound(const char* Path, std::string Name, glm::vec3 Position, float distance, float Volume) {
-		sounds.push_back(Sound(Path,Name,Position,distance,Volume));
+	void AudioManager::AddSound(const char* path, const std::string& name, const glm::vec3 position, float distance, float volume) {
+		sounds.emplace_back(path, name, position, distance, volume);
 	}
 	
-	Sound* AudioManager::GetSound(std::string name) {
-		for (int i = 0; i < sounds.size(); i++) {
-			if (sounds[i].GetName() == name)
-				return &sounds[i];
+	Sound* AudioManager::GetSound(const std::string& name) {
+		for (auto& sound : sounds) {
+			if (sound.GetName() == name)
+				return &sound;
 		}
 		return nullptr;
 	}
 	
-	void UpdateListener(glm::vec3 Position, glm::vec3 Forward,glm::vec3 Velocity) {
-		listenerpos.x = Position.x;
-		listenerpos.y = Position.y;
-		listenerpos.z = Position.z;
+	void UpdateListener(const glm::vec3 position, const glm::vec3 Forward, const glm::vec3 Velocity) {
+		listenerpos.x = position.x;
+		listenerpos.y = position.y;
+		listenerpos.z = position.z;
 
 		forward.x = Forward.x;
 		forward.y = Forward.y;
@@ -133,7 +133,7 @@ namespace AudioManager {
 		return Sound::DEFAULT;
 	}
 	
-	int PlaySound(std::string sound, glm::vec3 Position) {
+	int PlaySound(const std::string& sound, const glm::vec3 Position) {
 		bool isPlaying = false;
 		for (int i = 0; i < channelSize; i++) {
 			channels[i]->isPlaying(&isPlaying);
@@ -165,7 +165,7 @@ namespace AudioManager {
 		return Sound::DEFAULT;
 	}
 	
-	int PlaySound(std::string sound, glm::vec3 Position, int channel) {
+	int PlaySound(const std::string& sound, const glm::vec3 Position, const int channel) {
 		FMOD_VECTOR position;
 		position.x = Position.x;
 		position.y = Position.y;
@@ -182,7 +182,7 @@ namespace AudioManager {
 		return channel;
 	}
 
-	int AudioManager::PlaySound(std::string sound, int channel) {
+	int AudioManager::PlaySound(const std::string& sound, const int channel) {
 		channels[channel]->setVolume(GetSound(sound)->GetVolume());
 		result = system->playSound(GetSound(sound)->GetSound(), 0, true, &channels[channel]);
 		result = channels[channel]->set3DAttributes(GetSound(sound)->GetPositionFmod(), &vel);
@@ -192,11 +192,11 @@ namespace AudioManager {
 		return channel;
 	}
 
-	void AudioManager::PauseSound(std::string sound) {
+	void AudioManager::PauseSound(const std::string& sound) {
 
 	}
 	
-	void AudioManager::StopSound(std::string sound) {
+	void AudioManager::StopSound(const std::string& sound) {
 
 	}
 }
