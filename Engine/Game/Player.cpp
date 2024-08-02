@@ -77,17 +77,17 @@ namespace Player
 			horizontalAngle += (float)rand() / RAND_MAX / WeaponManager::GetGunByName(gunName)->recoilY;
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
 			if (hit.m_collisionObject != nullptr) {
-				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
-				if (gameobject != nullptr)
+				GameObject* gameObject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
+				if (gameObject != nullptr)
 				{
-					btRigidBody* body = gameobject->GetRigidBody();
+					btRigidBody* body = gameObject->GetRigidBody();
 					body->applyImpulse(2 * glmToBtVector3(Camera::ComputeRay()),  body->getWorldTransform().inverse() * hit.m_hitPointWorld );
 					glm::vec4 worldPositionHomogeneous(glm::vec3(hit.m_hitPointWorld.getX(), hit.m_hitPointWorld.getY(), hit.m_hitPointWorld.getZ()), 1.0f);
-					glm::vec4 localPositionHomogeneous = glm::inverse(gameobject->GetModelMatrix()) * worldPositionHomogeneous;
+					glm::vec4 localPositionHomogeneous = glm::inverse(gameObject->GetModelMatrix()) * worldPositionHomogeneous;
 					glm::vec3 vec3local = glm::vec3(localPositionHomogeneous.x, localPositionHomogeneous.y, localPositionHomogeneous.z);
 
 					if (body->getBroadphaseHandle()->m_collisionFilterGroup == GROUP_STATIC)
-						AssetManager::AddDecal(vec3local, glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"),gameobject);
+						AssetManager::AddDecal(vec3local, glm::vec3(hit.m_hitNormalWorld.getX(), hit.m_hitNormalWorld.getY(), hit.m_hitNormalWorld.getZ()), glm::vec3(0.025, 0.025, 0.025), AssetManager::GetTexture("bullet_hole"),gameObject);
 				}
 			}
 		}
@@ -217,9 +217,9 @@ namespace Player
 		if (Input::KeyPressed('e')) {
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
 			if (hit.m_collisionObject != nullptr) {
-				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
-				if (gameobject != nullptr && glm::distance(gameobject->getPosition(), getPosition()) <= interactDistance) {
-					interactingWithName = gameobject->GetName();
+				GameObject* gameObject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
+				if (gameObject != nullptr && glm::distance(gameObject->getPosition(), getPosition()) <= interactDistance) {
+					interactingWithName = gameObject->GetName();
 				}
 			}
 		}

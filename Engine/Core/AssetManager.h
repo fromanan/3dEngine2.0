@@ -25,7 +25,7 @@ namespace AssetManager
 	void LoadAssets(const char* path);
 
 	// returns index of object
-	size_t AddGameObject(GameObject gameobject);
+	size_t AddGameObject(GameObject gameObject);
 	unsigned long long AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
 	                                 bool save, float mass, ColliderShape shape);
 

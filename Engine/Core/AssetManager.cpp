@@ -16,40 +16,40 @@ namespace AssetManager
 		json data = json::parse(f);
 		std::cout << "loaded object count " << data["GameObjects"].size() << std::endl;
 
-		for (int gameobject = 0; gameobject < data["GameObjects"].size(); gameobject++)
+		for (int gameObject = 0; gameObject < data["GameObjects"].size(); gameObject++)
 		{
-			std::string name = data["GameObjects"][gameobject][0];
-			std::string Parentname = data["GameObjects"][gameobject][1];
+			std::string name = data["GameObjects"][gameObject][0];
+			std::string Parentname = data["GameObjects"][gameObject][1];
 
-			glm::vec3 position = glm::vec3(data["GameObjects"][gameobject][2], data["GameObjects"][gameobject][3], data["GameObjects"][gameobject][4]);
-			glm::vec3 rotation = glm::vec3(data["GameObjects"][gameobject][5], data["GameObjects"][gameobject][6], data["GameObjects"][gameobject][7]);
-			glm::vec3 scale = glm::vec3(data["GameObjects"][gameobject][8], data["GameObjects"][gameobject][9], data["GameObjects"][gameobject][10]);
+			glm::vec3 position = glm::vec3(data["GameObjects"][gameObject][2], data["GameObjects"][gameObject][3], data["GameObjects"][gameObject][4]);
+			glm::vec3 rotation = glm::vec3(data["GameObjects"][gameObject][5], data["GameObjects"][gameObject][6], data["GameObjects"][gameObject][7]);
+			glm::vec3 scale = glm::vec3(data["GameObjects"][gameObject][8], data["GameObjects"][gameObject][9], data["GameObjects"][gameObject][10]);
 
-			std::vector<unsigned short> indices = data["GameObjects"][gameobject][11];
+			std::vector<unsigned short> indices = data["GameObjects"][gameObject][11];
 			std::vector<glm::vec3> indexed_vertices;
 			std::vector<glm::vec2> indexed_uvs;
 			std::vector<glm::vec3> indexed_normals;
-			std::vector<float> verticies = data["GameObjects"][gameobject][12];
-			std::vector<float> Uvs = data["GameObjects"][gameobject][13];
-			std::vector<float> normals = data["GameObjects"][gameobject][13];
+			std::vector<float> vertices = data["GameObjects"][gameObject][12];
+			std::vector<float> Uvs = data["GameObjects"][gameObject][13];
+			std::vector<float> normals = data["GameObjects"][gameObject][13];
 
-			std::string textureName = data["GameObjects"][gameobject][15];
+			std::string textureName = data["GameObjects"][gameObject][15];
 			//Texture* texture = GetTexture("container");
 			Texture* texture = GetTexture(textureName.c_str());
 
-			for (int vert = 0; vert < verticies.size(); vert++) {
-				indexed_vertices.push_back(glm::vec3(data["GameObjects"][gameobject][12][vert], data["GameObjects"][gameobject][12][vert + 1], data["GameObjects"][gameobject][12][vert + 2]));
+			for (int vert = 0; vert < vertices.size(); vert++) {
+				indexed_vertices.push_back(glm::vec3(data["GameObjects"][gameObject][12][vert], data["GameObjects"][gameObject][12][vert + 1], data["GameObjects"][gameObject][12][vert + 2]));
 				vert = vert + 2;
 			}
 			for (int uvs = 0; uvs < Uvs.size(); uvs++) {
-				indexed_uvs.push_back(glm::vec2(data["GameObjects"][gameobject][13][uvs], data["GameObjects"][gameobject][13][uvs + 1]));
+				indexed_uvs.push_back(glm::vec2(data["GameObjects"][gameObject][13][uvs], data["GameObjects"][gameObject][13][uvs + 1]));
 				uvs = uvs + 1;
 			}
 			for (int normal = 0; normal < normals.size(); normal++) {
-				indexed_normals.push_back(glm::vec3(data["GameObjects"][gameobject][14][normal], data["GameObjects"][gameobject][14][normal + 1], data["GameObjects"][gameobject][14][normal + 2]));
+				indexed_normals.push_back(glm::vec3(data["GameObjects"][gameObject][14][normal], data["GameObjects"][gameObject][14][normal + 1], data["GameObjects"][gameObject][14][normal + 2]));
 				normal = normal + 2;
 			}
-			bool save = data["GameObjects"][gameobject][16];
+			bool save = data["GameObjects"][gameObject][16];
 			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotation, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box));
 		}
 	}
@@ -87,7 +87,7 @@ namespace AssetManager
 				normals.push_back(indexed_normals[normal].z);
 			}
 			
-			json gameobject = { GameObjects[i].GetName(),
+			json gameObject = { GameObjects[i].GetName(),
 				GameObjects[i].GetParentName(),
 				GameObjects[i].getPosition().x,
 				GameObjects[i].getPosition().y,
@@ -104,7 +104,7 @@ namespace AssetManager
 				true
 			};
 			
-			SerializedGameObjects.push_back(gameobject);
+			SerializedGameObjects.push_back(gameObject);
 		}
 		
 		save["GameObjects"] = SerializedGameObjects;
@@ -122,8 +122,8 @@ namespace AssetManager
 	}
 
 	// Returns index of object
-	size_t AssetManager::AddGameObject(GameObject gameobject) {
-		GameObjects.push_back(gameobject);
+	size_t AssetManager::AddGameObject(GameObject gameObject) {
+		GameObjects.push_back(gameObject);
 		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserPointer((void*)(GameObjects.size() - 1));
 		return GameObjects.size() - 1;
 	}

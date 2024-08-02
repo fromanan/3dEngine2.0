@@ -72,10 +72,10 @@ Cube::Cube(glm::vec3 position, float width, float height, float depth, std::stri
 	this->name = name;
 }
 
-Cube::Cube(GameObject* gameobject, std::string name) {
-	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
+Cube::Cube(GameObject* gameObject, std::string name) {
+	std::vector<glm::vec3> vertices = gameObject->getIndexedVertices();
 
-	glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+	glm::vec4 startVert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameObject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameObject->getScale());
 
 	float minx = startvert.x;
 	float maxx = startvert.x;
@@ -86,7 +86,7 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 
 	for (int i = 0; i < vertices.size()-1; i++) {
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
-		tempVec = tempVec * (glm::rotate(glm::mat4(1), gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+		tempVec = tempVec * (glm::rotate(glm::mat4(1), gameObject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameObject->getScale());
 		if (tempVec.x < minx)
 			minx = tempVec.x;
 		if (tempVec.x > maxx)
@@ -108,7 +108,7 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 	height = (maxy - miny) * 1.0;
 	depth = (maxz - minz) * 1.0;
 
-	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
+	this->position = glm::vec3(gameObject->getPosition().x + (minx + maxx) / 2, gameObject->getPosition().y + (miny + maxy) / 2, gameObject->getPosition().z + (minz + maxz) / 2);
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 
@@ -289,11 +289,11 @@ float Cube::intersect(Ray r, float t0, float t1) {
 	return -1;
 }
 
-void Cube::Regenerate(GameObject* gameobject) {
-	std::vector<glm::vec3> vertices = gameobject->getIndexedVerticies();
+void Cube::Regenerate(GameObject* gameObject) {
+	std::vector<glm::vec3> vertices = gameObject->getIndexedVertices();
 
-	glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
-	glm::vec4 lastvert = glm::vec4(vertices[1].x, vertices[1].y, vertices[1].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+	glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameObject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameObject->getScale());
+	glm::vec4 lastvert = glm::vec4(vertices[1].x, vertices[1].y, vertices[1].z, 1) * (glm::rotate(glm::mat4(1), -gameObject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameObject->getScale());
 
 	float minx = startvert.x;
 	float maxx = startvert.x;
@@ -304,7 +304,7 @@ void Cube::Regenerate(GameObject* gameobject) {
 
 	for (int i = 0; i < vertices.size() - 1; i++) {
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
-		tempVec = tempVec * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
+		tempVec = tempVec * (glm::rotate(glm::mat4(1), -gameObject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameObject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameObject->getScale());
 		if (tempVec.x < minx)
 			minx = tempVec.x;
 		if (tempVec.x > maxx)
@@ -326,7 +326,7 @@ void Cube::Regenerate(GameObject* gameobject) {
 	height = (maxy - miny) * 1.0;
 	depth = (maxz - minz) * 1.0;
 
-	this->position = glm::vec3(gameobject->getPosition().x + (minx + maxx) / 2, gameobject->getPosition().y + (miny + maxy) / 2, gameobject->getPosition().z + (minz + maxz) / 2);
+	this->position = glm::vec3(gameObject->getPosition().x + (minx + maxx) / 2, gameObject->getPosition().y + (miny + maxy) / 2, gameObject->getPosition().z + (minz + maxz) / 2);
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 }
@@ -492,8 +492,8 @@ namespace PhysicsManager
 		return &colliders[colliders.size() - 1];
 	}
 	
-	Cube* AddCube(GameObject* gameobject, std::string name) {
-		colliders.push_back(Cube(gameobject, name));
+	Cube* AddCube(GameObject* gameObject, const std::string& name) {
+		colliders.push_back(Cube(gameObject, name));
 		return nullptr;
 	}
 

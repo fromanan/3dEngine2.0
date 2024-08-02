@@ -46,8 +46,8 @@ void Animation::SetKeyFrame(int keyframeIndex) {
 		currentKeyFrame = keyframeIndex;
 }
 
-void Animation::SetGameObject(GameObject* gameobject) {
-	this->gameObject = gameobject;
+void Animation::SetGameObject(GameObject* gameObject) {
+	this->gameObject = gameObject;
 }
 
 void Animation::Transform() {

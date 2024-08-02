@@ -112,10 +112,10 @@ private:
 
 namespace PhysicsManager
 {
-	RigidBody* AddRigidbody(glm::vec3 position, std::string name);
-	Cube* AddCube(glm::vec3 position, glm::vec3 min, glm::vec3 max, std::string name);
-	Cube* AddCube(glm::vec3 position, float width, float height, float depth, std::string name);
-	Cube* AddCube(GameObject* gameobject, std::string name);
+	RigidBody* AddRigidbody(glm::vec3 position, const std::string& name);
+	Cube* AddCube(glm::vec3 position, glm::vec3 min, glm::vec3 max, const std::string& name);
+	Cube* AddCube(glm::vec3 position, float width, float height, float depth, const std::string& name);
+	Cube* AddCube(GameObject* gameObject, const std::string& name);
 
 	void RemoveCube(std::string name);
 	void RemoveRigidbody(std::string name);
