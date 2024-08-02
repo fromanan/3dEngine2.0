@@ -116,6 +116,7 @@ namespace AudioManager {
 			if (sounds[i].GetName() == name)
 				return &sounds[i];
 		}
+		return nullptr;
 	}
 	
 	void UpdateListener(glm::vec3 Position, glm::vec3 Forward,glm::vec3 Velocity) {
@@ -200,6 +201,8 @@ namespace AudioManager {
 				return i;
 			}
 		}
+		
+		return -1;
 	}
 	
 	int PlaySound(std::string sound, glm::vec3 Position, int channel) {
