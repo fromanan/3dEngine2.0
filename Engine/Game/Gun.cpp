@@ -21,9 +21,9 @@ void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
 		float currentXRotation = AssetManager::GetGameObject(gunModel)->getRotation().x;
 		if (currentXRotation > 1.6 / 2)
 			down = -1;			
-		float incerment = (1.6 / reloadtime) * down * deltaTime;
-		gun->SetRotationX(currentXRotation + incerment);
-		gun->addPosition(glm::vec3(0,-incerment/3,0));
+		float increment = (1.6 / reloadtime) * down * deltaTime;
+		gun->SetRotationX(currentXRotation + increment);
+		gun->addPosition(glm::vec3(0,-increment/3,0));
 	}
 	else if (aiming) {
 		AssetManager::GetGameObject(gunModel)->setPosition(aimingPosition);
