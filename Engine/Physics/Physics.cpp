@@ -49,6 +49,7 @@ bool Ray::intersectsTriangle(std::vector<glm::vec3> verticies, glm::mat4 ModelMa
 			return false;
 		}
 	}
+	return false;
 }
 
 Cube::Cube(glm::vec3 position, glm::vec3 min, glm::vec3 max, std::string name) {

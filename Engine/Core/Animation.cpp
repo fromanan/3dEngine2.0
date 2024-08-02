@@ -112,5 +112,6 @@ namespace AnimationManager {
 			if (animations[i].GetName() == Name)
 				return &animations[i];
 		}
+		return nullptr;
 	}
 }
