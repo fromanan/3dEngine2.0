@@ -73,12 +73,12 @@ Cube::Cube(GameObject* gameobject, std::string name) {
 
 	glm::vec4 startvert = glm::vec4(vertices[0].x, vertices[0].y, vertices[0].z, 1) * (glm::rotate(glm::mat4(1), -gameobject->getRotation().y, glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().x, glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1), gameobject->getRotation().z, glm::vec3(0, 0, 1))) * glm::scale(glm::mat4(1), gameobject->getScale());
 
-	float minx = startvert.x;
-	float maxx = startvert.x;
-	float miny = startvert.y;
-	float maxy = startvert.y;
-	float minz = startvert.z;
-	float maxz = startvert.z;
+	float minx = startVert.x;
+	float maxx = startVert.x;
+	float miny = startVert.y;
+	float maxy = startVert.y;
+	float minz = startVert.z;
+	float maxz = startVert.z;
 
 	for (int i = 0; i < vertices.size()-1; i++) {
 		glm::vec4 tempVec(vertices[i].x, vertices[i].y, vertices[i].z, 1);
