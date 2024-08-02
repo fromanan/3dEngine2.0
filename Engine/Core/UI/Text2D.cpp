@@ -53,8 +53,8 @@ namespace Text2D
 			vertices.push_back(vertex_down_left);
 
 			char character = text[i];
-			float uv_x = (character % 16) / 16.0f;
-			float uv_y = (character / 16) / 16.0f;
+			float uv_x = float(character % 16) / 16.0f;
+			float uv_y = (character / 16.0f) / 16.0f;
 
 			glm::vec2 uv_up_left = glm::vec2(uv_x, uv_y);
 			glm::vec2 uv_up_right = glm::vec2(uv_x + 1.0f / 16.0f, uv_y);
@@ -70,9 +70,9 @@ namespace Text2D
 		}
 		
 		glBindBuffer(GL_ARRAY_BUFFER, Text2DVertexBufferID);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec2), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size()) * sizeof(glm::vec2), &vertices[0], GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, Text2DUVBufferID);
-		glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(UVs.size()) * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
 
 		// Bind shader
 		glUseProgram(Text2DShaderID);
@@ -98,7 +98,7 @@ namespace Text2D
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Draw call
-		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices.size());
+		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size()));
 
 		glDisable(GL_BLEND);
 

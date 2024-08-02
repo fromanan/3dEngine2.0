@@ -77,7 +77,7 @@ namespace Player
 			WeaponManager::GetGunByName(gunName)->currentammo--;
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
-			horizontalAngle += (float)rand() / RAND_MAX / WeaponManager::GetGunByName(gunName)->recoilY;
+			horizontalAngle += static_cast<float>(rand()) / RAND_MAX / WeaponManager::GetGunByName(gunName)->recoilY;
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
 			if (hit.m_collisionObject != nullptr) {
 				GameObject* gameObject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
@@ -151,7 +151,7 @@ namespace Player
 		interactingWithName = Tags::NOTHING;
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
-			verticalAngle += mouseSpeed * (768.0f / 2 - (float)Input::GetMouseY());
+			verticalAngle += mouseSpeed * (768.0f / 2 - static_cast<float>(Input::GetMouseY()));
 		
 		else if (verticalAngle > maxAngle)
 			verticalAngle = maxAngle;
@@ -270,7 +270,7 @@ namespace Player
 			SelectWeapon(inv[1]);
 		}
 		
-		horizontalAngle += mouseSpeed * float(1024 / 2 - Input::GetMouseX());
+		horizontalAngle += mouseSpeed * (1024.0f / 2 - static_cast<float>(Input::GetMouseX()));
 
 		if ((Input::KeyDown('w') || Input::KeyDown('a') || Input::KeyDown('s') || Input::KeyDown('d')) && footstepTime + footstep_interval < glfwGetTime() ) {
 			AudioManager::PlaySound("foot_step" + std::to_string((rand() % 4) + 1), AssetManager::GetGameObject("player")->getPosition());
