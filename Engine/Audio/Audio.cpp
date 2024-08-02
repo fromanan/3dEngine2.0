@@ -87,15 +87,15 @@ namespace AudioManager {
 			return;
 		
 		//thanks to livinamuk for a couple of these sounds
-		AudioManager::AddSound(AssetPaths::Audio_DoorClose, "door_close", glm::vec3(0, 0, 0), 10, 1);
-		AudioManager::AddSound(AssetPaths::Audio_DoorOpen, "door_open", glm::vec3(0, 0, 0), 10, 0.8);
-		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_1, "foot_step1", glm::vec3(0, 0, 0), 10, 0.3);
-		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_2, "foot_step2", glm::vec3(0, 0, 0), 10, 0.3);
-		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_3, "foot_step3", glm::vec3(0, 0, 0), 10, 0.3);
-		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_4, "foot_step4", glm::vec3(0, 0, 0), 10, 0.3);
-		AudioManager::AddSound(AssetPaths::Audio_ItemPickup, "item_pickup", glm::vec3(0, 0, 0), 10, 0.8);
-		AudioManager::AddSound(AssetPaths::Audio_GlassImpact_1, "glass_impact1", glm::vec3(0, 0, 0), 10, 0.8);
-		AudioManager::AddSound(AssetPaths::Audio_GlassImpact_2, "glass_impact2", glm::vec3(0, 0, 0), 10, 0.8);
+		AudioManager::AddSound(AssetPaths::Audio_DoorClose, "door_close", glm::vec3(0, 0, 0), 10, 1.0f);
+		AudioManager::AddSound(AssetPaths::Audio_DoorOpen, "door_open", glm::vec3(0, 0, 0), 10, 0.8f);
+		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_1, "foot_step1", glm::vec3(0, 0, 0), 10, 0.3f);
+		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_2, "foot_step2", glm::vec3(0, 0, 0), 10, 0.3f);
+		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_3, "foot_step3", glm::vec3(0, 0, 0), 10, 0.3f);
+		AudioManager::AddSound(AssetPaths::Audio_PlayerStep_4, "foot_step4", glm::vec3(0, 0, 0), 10, 0.3f);
+		AudioManager::AddSound(AssetPaths::Audio_ItemPickup, "item_pickup", glm::vec3(0, 0, 0), 10, 0.8f);
+		AudioManager::AddSound(AssetPaths::Audio_GlassImpact_1, "glass_impact1", glm::vec3(0, 0, 0), 10, 0.8f);
+		AudioManager::AddSound(AssetPaths::Audio_GlassImpact_2, "glass_impact2", glm::vec3(0, 0, 0), 10, 0.8f);
 	}
 
 	void AudioManager::CleanUp() {
