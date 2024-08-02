@@ -170,7 +170,9 @@ namespace AudioManager {
 
 				return i;
 			}
-		}		
+		}
+
+		return Sound::DEFAULT;
 	}
 	
 	int PlaySound(std::string sound, glm::vec3 Position) {
