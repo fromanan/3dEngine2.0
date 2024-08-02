@@ -123,17 +123,17 @@ void Scene::RenderObjects() {
 	Renderer::SetLights(lights);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
-		GameObject* gameobjectRender = AssetManager::GetGameObject(i);
+		GameObject* gameObjectRender = AssetManager::GetGameObject(i);
 
-		if (!gameobjectRender->ShouldRender())
+		if (!gameObjectRender->ShouldRender())
 			continue;
 
-		glm::mat4 ModelMatrix = gameobjectRender->GetModelMatrix();
+		glm::mat4 ModelMatrix = gameObjectRender->GetModelMatrix();
 		glm::mat4 MVP = PV * ModelMatrix;
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
-		gameobjectRender->RenderObject(programid);
+		gameObjectRender->RenderObject(programid);
 	}
 
 	for (int i = 0; i < windows.size(); i++) {
@@ -204,17 +204,17 @@ void Scene::RenderObjects(const char* shaderName) {
 	Renderer::SetLights(lights);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
-		GameObject* gameobjectRender = AssetManager::GetGameObject(i);
+		GameObject* gameObjectRender = AssetManager::GetGameObject(i);
 
-		if (!gameobjectRender->ShouldRender())
+		if (!gameObjectRender->ShouldRender())
 			continue;
 
-		glm::mat4 ModelMatrix = gameobjectRender->GetModelMatrix();
+		glm::mat4 ModelMatrix = gameObjectRender->GetModelMatrix();
 		glm::mat4 MVP = PV * ModelMatrix;
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
-		gameobjectRender->RenderObject(programid);
+		gameObjectRender->RenderObject(programid);
 	}
 }
 

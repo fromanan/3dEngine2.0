@@ -37,7 +37,7 @@ public:
 	void SetKeyFrame(int keyframeIndex);
 	void Transform();
 	std::string GetName();
-	void SetGameObject(GameObject* gameobject);
+	void SetGameObject(GameObject* gameObject);
 
 private:
 	void NextKeyFrame();
