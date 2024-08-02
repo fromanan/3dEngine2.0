@@ -400,8 +400,8 @@ void RigidBody::RemoveForceZ() {
 	velocity.z = 0;
 }
 
-void RigidBody::SetCollider(std::string collider) {
-	this->collider = collider;
+void RigidBody::SetCollider(const std::string& colliderName) {
+	this->collider = colliderName;
 }
 
 std::string RigidBody::GetCollider() {
