@@ -1,42 +1,36 @@
-#pragma once
 #include "GameObject.h"
 #include "Engine/Core/AssetManager.h"
 #include "Engine/Physics/BulletPhysics.h"
 
+GameObject::GameObject() = default;
 
-
-GameObject::GameObject() {
-
-}
 GameObject::GameObject(std::string name, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	parentName = "";
 }
+
 GameObject::GameObject(std::string name, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	setPosition(position);
 	parentName = "";
 	canSave = save;
-
-
 }
+
 GameObject::GameObject(std::string name, const char* path, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	LoadModel(path);
 	parentName = "";
 	canSave = save;
-
-
 }
+
 GameObject::GameObject(std::string name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	LoadModel(path);
 	setPosition(position);
 	parentName = "";
 	canSave = save;
-
-
 }
+
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
 	this->texture = texture;
@@ -74,8 +68,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		}
 		convexHullShape->optimizeConvexHull();
 	}
-	else if (shape == Sphere)
-	{
+	else if (shape == Sphere) {
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
@@ -120,10 +113,9 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	Btransform.setIdentity();
 	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
 
-	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr)
-	{
+	if (convexHullShape == nullptr) {
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 		body = new btRigidBody(rbInfo);
 	}
@@ -135,13 +127,16 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.7f);
 	body->setUserIndex(-1);
-	//add the body to the dynamics world
-	if(mass != 0)
+	
+	// Add the body to the dynamics world
+	if (mass != 0)
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	else
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	
 	setPosition(position);
 }
+
 GameObject::GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float margin) {
 	this->name = name;
 	this->texture = texture;
@@ -178,8 +173,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		}
 		convexHullShape->optimizeConvexHull();
 	}
-	else if (shape == Sphere)
-	{
+	else if (shape == Sphere) {
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
@@ -192,9 +186,9 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
 			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
 		}
+		
 		dimensions = maxPoint - minPoint;
 		collider = new btSphereShape(btScalar(dimensions.x / 2));
-
 	}
 	else if (shape == Capsule) {
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
@@ -212,7 +206,8 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 		dimensions = maxPoint - minPoint;
 		collider = new btCapsuleShape(btScalar(dimensions.x / 2), (btScalar(dimensions.y / 2)));
 	}
-	if(collider != nullptr)
+	
+	if (collider != nullptr)
 		collider->setMargin(margin);
 	if (convexHullShape != nullptr)
 		convexHullShape->setMargin(margin);
@@ -229,10 +224,9 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	Btransform.setIdentity();
 	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
 
-	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr)
-	{
+	if (convexHullShape == nullptr) {
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 		body = new btRigidBody(rbInfo);
 	}
@@ -244,11 +238,13 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.9f);
 	body->setUserIndex(-1);
-	//add the body to the dynamics world
+	
+	// Add the body to the dynamics world
 	if (mass != 0)
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	else
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	
 	setPosition(position);
 }
 
@@ -261,8 +257,7 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 
 	Btransform.setOrigin(glmToBtVector3(position));
 
-
-	if(shape == Sphere)
+	if (shape == Sphere)
 		collider = new btSphereShape(btScalar(height / 2));
 	else
 		collider = new btBoxShape(btVector3(btScalar(width / 2), btScalar(height / 2), btScalar(depth / 2)));
@@ -277,23 +272,22 @@ GameObject::GameObject(std::string name, const char* path, Texture* texture, glm
 	Btransform.setIdentity();
 	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
 
-	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 	body = new btRigidBody(rbInfo);
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.7f);
 	body->setUserIndex(-1);
-	//add the body to the dynamics world
+	
+	// Add the body to the dynamics world
 	if (mass != 0)
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	else
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	
 	setPosition(position);
-	//add the body to the dynamics world
-
 }
-
 
 GameObject::GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indice,
 	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms, bool save, float mass, ColliderShape shape)
@@ -319,18 +313,15 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_STATIC_DRAW);
 
-
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
-
-
+	
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
 
 	// Generate a buffer for the indices as well
-
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
@@ -366,17 +357,14 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	convexHullShape = collidershape;
 	std::cout << "here2" << std::endl;
 
-
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_STATIC_DRAW);
 
-
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
-
-
+	
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
@@ -399,8 +387,6 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	Btransform.setOrigin(glmToBtVector3(position));
 	std::cout << "here3" << std::endl;
 
-
-
 	bool isDynamic = (mass != 0.f);
 
 	btVector3 localInertia(0, 0, 0);
@@ -412,10 +398,9 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	Btransform.setIdentity();
 	Btransform.setOrigin(btVector3(position.x, position.y, position.z));
 
-	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr)
-	{
+	if (convexHullShape == nullptr) {
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(btScalar(mass), myMotionState, collider, localInertia);
 		body = new btRigidBody(rbInfo);
 	}
@@ -427,34 +412,32 @@ GameObject::GameObject(std::string name, std::string parentname, Texture* textur
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setFriction(0.7f);
 	body->setUserIndex(-1);
-	//add the body to the dynamics world
+	
+	// Add the body to the dynamics world
 	if (mass != 0)
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	else
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
+	
 	setPosition(position);
 	std::cout << "here4" << std::endl;
-
 }
 
 void GameObject::LoadModel(const char* path) {
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
-	bool res = loader::loadOBJ(path, vertices, uvs, normals);
+	bool res = Loader::loadOBJ(path, vertices, uvs, normals);
 	computeTangentBasis(vertices, uvs, normals, tangents, bitangents);
 	indexer::indexVBO(vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals,indexed_tangents,indexed_bitangents);
-
-
+	
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_STATIC_DRAW);
 
-
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
-
 
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
@@ -473,32 +456,31 @@ void GameObject::LoadModel(const char* path) {
 	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 }
 
-
 void GameObject::Copy(std::string copyName) {
-	std::cout << "damn";
 	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,convexHullShape));
-
 }
+
 void GameObject::SetUserPoint(void* pointer) {
 	body->setUserPointer(pointer);
 }
 
-
-//Parent child transformations
+// Parent child transformations
 glm::mat4 GameObject::GetModelMatrix() {
 
 	glm::mat4 matrix = transform.to_mat4();
 	//Btransform.getOpenGLMatrix(glm::value_ptr(matrix));
 
-	if (parentName != "") {
+	if (!parentName.empty()) {
 		GameObject* parent = AssetManager::GetGameObject(parentName);
-		if (parent != NULL) {
+		if (parent != nullptr) {
 			matrix = parent->GetModelMatrix() * transform.to_mat4();
 		}
 	}
+	
 	return  matrix;
 }
-//gets the models world space without translations from the parent to the world and not the parent
+
+// Gets the models world space without translations from the parent to the world and not the parent
 glm::mat4 GameObject::GetLocalModelMatrix() {
 	return transform.to_mat4();
 }
@@ -506,22 +488,23 @@ glm::mat4 GameObject::GetLocalModelMatrix() {
 btRigidBody* GameObject::GetRigidBody() {
 	return body;
 }
+
 btCollisionShape* GameObject::GetCollisionShape() {
 	return collider;
 }
+
 void GameObject::Update() {
 	transform.position = glm::vec3(body->getWorldTransform().getOrigin().x(), body->getWorldTransform().getOrigin().y(), body->getWorldTransform().getOrigin().z());
 	transform.rotation = glm::eulerAngles(glm::quat(body->getWorldTransform().getRotation().w(), body->getWorldTransform().getRotation().x(), body->getWorldTransform().getRotation().y(), body->getWorldTransform().getRotation().z()));
 }
 
 void GameObject::RenderObject(GLuint& programID) {
-	
 	if (!render)
 		return;
+	
 	glUseProgram(programID);
 
-	if (texture != NULL)
-	{
+	if (texture != nullptr) {
 		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
 		GLuint TextureID = glGetUniformLocation(programID, "DiffuseTextureSampler");
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
@@ -532,7 +515,8 @@ void GameObject::RenderObject(GLuint& programID) {
 		glBindTexture(GL_TEXTURE_2D, texture->GetTextureNormal());
 		glUniform1i(NormalID, texture->GetTextureNormalNumber());
 	}
-	// 1rst attribute buffer : vertices
+	
+	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glVertexAttribPointer(
@@ -567,6 +551,7 @@ void GameObject::RenderObject(GLuint& programID) {
 		0,                                // stride
 		(void*)0                          // array buffer offset
 	);
+	
 	// 4th attribute buffer : tangents
 	glEnableVertexAttribArray(3);
 	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
@@ -595,14 +580,12 @@ void GameObject::RenderObject(GLuint& programID) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
 	// Draw the triangles !
-
 	glDrawElements(
 		GL_TRIANGLES,      // mode
-		indices.size(),    // count
+		(GLsizei)indices.size(),    // count
 		GL_UNSIGNED_SHORT,   // type
 		(void*)0           // element array buffer offset
 	);
-
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -611,13 +594,13 @@ void GameObject::RenderObject(GLuint& programID) {
 	glDisableVertexAttribArray(4);
 }
 
-
 void GameObject::setPosition(glm::vec3 position) {
 	transform.position = position;
 	btTransform& t = body->getWorldTransform();
 	t.setOrigin(btVector3(position.x,position.y,position.z));
 	body->getMotionState()->setWorldTransform(t);
 }
+
 void GameObject::setRotation(glm::vec3 rotation) {
 	transform.rotation = rotation;
 	btTransform& t = body->getWorldTransform();
@@ -626,6 +609,7 @@ void GameObject::setRotation(glm::vec3 rotation) {
 	t.setRotation(quat);
 	body->getMotionState()->setWorldTransform(t);
 }
+
 void GameObject::setScale(glm::vec3 scale) {
 	transform.scale = scale;
 }
@@ -633,29 +617,33 @@ void GameObject::setScale(glm::vec3 scale) {
 glm::vec3 GameObject::getPosition() {
 	return btToGlmVector3(body->getWorldTransform().getOrigin());
 }
+
 glm::vec3 GameObject::getRotation() {
 	return btQuatToGLMVec(body->getWorldTransform().getRotation());
 }
+
 glm::vec3 GameObject::getScale() {
 	return transform.scale;
 }
+
 void GameObject::addPosition(glm::vec3 position) {
 	transform.position += position;
 	body->getWorldTransform().setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
 	//body->getMotionState()->setWorldTransform(t);
 }
 
-
 void GameObject::setPositionX(float x) {
 	transform.position.x = x;
 	body->getWorldTransform().setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
 	//body->getMotionState()->setWorldTransform(t);
 }
+
 void GameObject::setPositionY(float y) {
 	transform.position.y = y;
 	body->getWorldTransform().setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
 	//body->getMotionState()->setWorldTransform(t);
 }
+
 void GameObject::setPositionZ(float z) {
 	transform.position.z = z;
 	btTransform& t = body->getWorldTransform();
@@ -671,6 +659,7 @@ void GameObject::SetRotationX(float x) {
 	t.setRotation(quat);
 	body->getMotionState()->setWorldTransform(t);
 }
+
 void GameObject::SetRotationY(float y) {
 	transform.rotation.y = y;
 	btTransform& t = body->getWorldTransform();
@@ -679,6 +668,7 @@ void GameObject::SetRotationY(float y) {
 	t.setRotation(quat);
 	body->getMotionState()->setWorldTransform(t);
 }
+
 void GameObject::SetRotationZ(float z) {
 	transform.rotation.z = z;
 	btTransform& t = body->getWorldTransform();
@@ -695,38 +685,47 @@ void GameObject::SetScale(float scale) {
 std::string GameObject::GetName() {
 	return name;
 }
+
 std::string GameObject::GetParentName() {
 	return parentName;
 }
+
 void GameObject::SetParentName(std::string name) {
 	parentName = name;
 }
 
-
 std::vector<unsigned short> GameObject::getIndices() {
 	return indices;
 }
+
 std::vector<glm::vec3>  GameObject::getIndexedVerticies() {
 	return indexed_vertices;
 }
+
 std::vector<glm::vec2>  GameObject::getIndexedUvs() {
 	return indexed_uvs;
 }
+
 std::vector<glm::vec3>  GameObject::getIndexedNormals() {
 	return indexed_normals;
 }
+
 btConvexHullShape* GameObject::GetConvexHull() {
 	return convexHullShape;
 }
+
 const char* GameObject::GetTextureName() {
 	return texture->GetName();
 }
+
 bool GameObject::CanSave() {
 	return canSave;
 }
+
 void GameObject::SetRender(bool render) {
 	this->render = render;
 }
+
 bool GameObject::ShouldRender() {
 	return render;
 }
@@ -734,6 +733,7 @@ bool GameObject::ShouldRender() {
 void GameObject::SetDelete(bool state) {
 	shouldDelete = state;
 }
+
 bool GameObject::ShouldDlete() {
 	return shouldDelete;
 }
@@ -770,7 +770,7 @@ void GameObject::computeTangentBasis(
 		glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x) * r;
 
 		// Set the same tangent for all three vertices of the triangle.
-// They will be merged later, in vboindexer.cpp
+		// They will be merged later, in vboindexer.cpp
 		tangents.push_back(tangent);
 		tangents.push_back(tangent);
 		tangents.push_back(tangent);

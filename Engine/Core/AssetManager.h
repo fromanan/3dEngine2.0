@@ -6,17 +6,17 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
+#include <fstream>
+#include <iostream>
+
 #include "GameObject.h"
 #include "Common.h"
 #include "Renderer.h"
 #include "Decal.h"
 
-//Json stuff
-#include <fstream>
-#include <iostream>
+// Json stuff
 #include "Loaders/nlohmann/json.hpp"
 using json = nlohmann::json;
-
 
 namespace AssetManager
 {
@@ -24,18 +24,19 @@ namespace AssetManager
 	void SaveAssets(const char* path);
 	void LoadAssets(const char* path);
 
-	//returns index of object
-	int AddGameObject(GameObject gameobject);
-	int AddGameObject(std::string name, const char* path,Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	// returns index of object
+	size_t AddGameObject(GameObject gameobject);
+	unsigned long long AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
+	                                 bool save, float mass, ColliderShape shape);
 
-	int AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* parent);
+	unsigned long long AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture,
+	                            GameObject* parent);
 	Decal* GetDecal(int index);
 	std::vector<Decal>* GetAllDecals();
 
-	int AddTexture(Texture texture);
-	int AddTexture(const char* name, const char* path);
-	int AddTexture(const char* name, const char* path, const char* normalPath);
-
+	size_t AddTexture(Texture texture);
+	size_t AddTexture(const char* name, const char* path);
+	size_t AddTexture(const char* name, const char* path, const char* normalPath);
 
 	void RemoveGameObject(std::string name);
 	void RemoveGameObject(int index);
@@ -45,10 +46,8 @@ namespace AssetManager
 	GameObject* GetGameObject(std::string name);
 	GameObject* GetGameObject(int index);
 	std::vector<GameObject> GetAllGameObjects();
-	int GetGameObjectsSize();
-	int GetDecalsSize();
+	size_t GetGameObjectsSize();
+	size_t GetDecalsSize();
 
 	Texture* GetTexture(std::string name);
-
-};
-
+}

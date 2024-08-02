@@ -11,7 +11,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
 class Sound {
 public:
 	Sound(const char* Path, std::string Name, glm::vec3 Position, float distance, float Volume);
@@ -24,15 +23,13 @@ public:
 	void SetVolume(float Volume);
 	float GetVolume();
 
+	static constexpr int DEFAULT = -1;
 private:
 	std::string name;
 	FMOD_VECTOR position;
 	FMOD::Sound* sound;
 	float volume;
-
 };
-
-
 
 namespace AudioManager {
 	void Init();
@@ -54,6 +51,4 @@ namespace AudioManager {
 
 	void PauseSound(std::string sound);
 	void StopSound(std::string sound);
-
-
 }

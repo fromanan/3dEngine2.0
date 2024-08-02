@@ -5,13 +5,10 @@
 #include "Engine/Core/Renderer.h"
 #include <iostream>
 
-
-namespace Backend {
-
+namespace Backend
+{
 	int init();
 	GLFWwindow* GetWindowPointer();
-
 	bool IsWindowOpen();
 	void CloseWindow();
-
 }

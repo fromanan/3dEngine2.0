@@ -10,8 +10,8 @@
 #include <glm/gtc/type_ptr.hpp>
 //#include "Engine/Core/GameObject.h"
 
-
-enum ColliderShape {
+enum ColliderShape
+{
 	Box,
 	Sphere,
 	Cylinder,
@@ -19,7 +19,8 @@ enum ColliderShape {
 	Convex
 };
 
-enum CollisionGroups {
+enum CollisionGroups
+{
 	GROUP_PLAYER = 1,
 	GROUP_STATIC = 2,
 	GROUP_DYNAMIC = 4,
@@ -27,7 +28,8 @@ enum CollisionGroups {
 	// Add more groups as needed
 };
 
-namespace PhysicsManagerBullet{
+namespace PhysicsManagerBullet
+{
 	void Init();
 	void Update(float deltaTime);
 	void AddColliderShape(btCollisionShape* collider);

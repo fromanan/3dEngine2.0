@@ -1,4 +1,3 @@
-#pragma once
 #include "Renderer.h"
 #include "Scene/SceneManager.h"
 
@@ -11,23 +10,24 @@ Texture::Texture(const char* name, const char* path) {
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
+	
+	// Set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load and generate the texture
+	
+	// Load and generate the texture
 	int width, height;
 	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
-	if (data)
-	{
+	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
+	
 	stbi_image_free(data);
 
 	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
@@ -36,26 +36,27 @@ Texture::Texture(const char* name, const char* path) {
 
 	glGenTextures(1, &textureNormal);
 	glBindTexture(GL_TEXTURE_2D, textureNormal);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
+	
+	// Set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load and generate the texture
+	
+	// Load and generate the texture
 	int width1, height1;
-
 	unsigned char* data1 = stbi_load("Assets/Normals/no_normal.png", &width1, &height1, 0, STBI_rgb_alpha);
-	if (data1)
-	{
+	if (data1) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
+	
 	stbi_image_free(data1);
 }
+
 Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	this->name = name;
 	int texturenumTemp = CurrentTextureNumber++;
@@ -65,21 +66,21 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
+	
+	// Set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load and generate the texture
+	
+	// Load and generate the texture
 	int width, height;
 	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
-	if (data)
-	{
+	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
@@ -90,74 +91,71 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 
 	glGenTextures(1, &textureNormal);
 	glBindTexture(GL_TEXTURE_2D, textureNormal);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
+	
+	// Set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load and generate the texture
+	
+	// Load and generate the texture
 	int width1, height1;
 
 	unsigned char* data1 = stbi_load(normalPath, &width1, &height1, 0, STBI_rgb_alpha);
-	if (data1)
-	{
+	if (data1) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	else
-	{
+	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
+	
 	stbi_image_free(data1);
 }
+
 int Texture::GetTextureNormalNumber() {
 	return textureNormalNumber;
 }
+
 GLuint Texture::GetTextureNormal() {
 	return textureNormal;
 }
 
-
-
 const char* Texture::GetName() {
 	return name;
 }
+
 int Texture::GetTextureNumber() {
 	return textureNumber;
 }
+
 GLuint Texture::GetTexture() {
 	return texture;
 }
 
 int Texture::CurrentTextureNumber = GL_TEXTURE1;
 
-
-SkyBox::SkyBox() {
-
-}
-
+SkyBox::SkyBox() = default;
 
 SkyBox::SkyBox(std::vector<std::string> faces) {
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
 	int width, height, nrChannels;
-	for (unsigned int i = 0; i < faces.size(); i++)
-	{
+	for (unsigned int i = 0; i < faces.size(); i++) {
 		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-		if (data)
-		{
+		if (data) {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
 			);
 			stbi_image_free(data);
 		}
-		else
-		{
+		else {
 			std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
 			stbi_image_free(data);
 		}
 	}
+	
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -168,7 +166,8 @@ SkyBox::SkyBox(std::vector<std::string> faces) {
 unsigned int SkyBox::GetTextureID() {
 	return textureID;
 }
-unsigned int SkyBox::GetSkyBoxVAO(){
+
+unsigned int SkyBox::GetSkyBoxVAO() {
 	glGenVertexArrays(1, &skyboxVAO);
 	glGenBuffers(1, &skyboxVBO);
 	glBindVertexArray(skyboxVAO);
@@ -179,6 +178,7 @@ unsigned int SkyBox::GetSkyBoxVAO(){
 
 	return skyboxVAO;
 }
+
 float SkyBox::skyboxVertices[108] = {
 	// positions          
 	-1.0f,  1.0f, -1.0f,
@@ -224,7 +224,8 @@ float SkyBox::skyboxVertices[108] = {
 	 1.0f, -1.0f,  1.0f
 };
 
-namespace Renderer {
+namespace Renderer
+{
 	std::map<const char*, GLuint> shaderProgramIds;
 
 	GLuint LightID;
@@ -233,22 +234,14 @@ namespace Renderer {
 	GLuint ModelMatrixID;
 	GLuint ModelView3x3MatrixID;
 	GLuint gPosition;
-
-
+	
 	GLuint ubo;
-
-
-
 
 	unsigned int quadVAO;
 	unsigned int VBO;
 
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
-
-
-
-
 
 	GLuint Renderer::GetProgramID(const char* name) {
 		return shaderProgramIds[name];
@@ -259,10 +252,9 @@ namespace Renderer {
 		setMat4(ModelMatrixID, model);
 		setMat4(ViewMatrixID, view);
 		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
-
 	}
-	void Renderer::SetLights(std::vector<Light> lights)
-	{
+	
+	void Renderer::SetLights(std::vector<Light> lights) {
 		// Upload lights data to the GPU
 		std::vector<glm::vec3> lightPositions;
 		std::vector<glm::vec3> lightColors;
@@ -279,17 +271,15 @@ namespace Renderer {
 		GLuint lightColorsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightColors");
 		GLuint lightPowersLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPowers");
 
-		glUniform3fv(lightPositionsLoc, lights.size(), glm::value_ptr(lightPositions[0]));
-		glUniform3fv(lightColorsLoc, lights.size(), glm::value_ptr(lightColors[0]));
-		glUniform1fv(lightPowersLoc, lights.size(), &lightPowers[0]);
+		glUniform3fv(lightPositionsLoc, (GLsizei)lights.size(), glm::value_ptr(lightPositions[0]));
+		glUniform3fv(lightColorsLoc, (GLsizei)lights.size(), glm::value_ptr(lightColors[0]));
+		glUniform1fv(lightPowersLoc, (GLsizei)lights.size(), &lightPowers[0]);
 		//setVec3(LightID, lights[0].position);
-
 	}
 
 	int Renderer::init(const char* vertex, const char* fragment, const char* name) {
 		UseProgram(LoadShader(vertex, fragment, name));
 		std::cout << "Loaded texture shader at: " << GetProgramID("Texture") << std::endl;
-		
 
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
@@ -303,14 +293,15 @@ namespace Renderer {
 		LightID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "LightPosition_worldspace");
 		ModelView3x3MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MV3x3");
 
-		//skybox
+		// Skybox
 		LoadShader("Assets/Shaders/SkyBoxShader.vert", "Assets/Shaders/SkyBoxShader.frag", "skybox");
 		std::cout << "Loaded skybox shader at: " << GetProgramID("skybox") << std::endl;
 		LoadShader("Assets/Shaders/shaderSprite.vert", "Assets/Shaders/shaderSprite.frag", "sprite");
 		std::cout << "Loaded sprite shader at: " << GetProgramID("sprite") << std::endl;
 
 		UseProgram(GetProgramID("sprite"));
-		// configure VAO/VBO
+		
+		// Configure VAO/VBO
 		float vertices[] = {
 			// pos      // tex
 			0.0f, 1.0f, 0.0f, 1.0f,
@@ -333,15 +324,14 @@ namespace Renderer {
 		return 0;
 	}
 
-
-	void Renderer::setMat4(GLuint id, glm::mat4& mat4)
-	{
+	void Renderer::setMat4(GLuint id, glm::mat4& mat4) {
 		glUniformMatrix4fv(id, 1, GL_FALSE, &mat4[0][0]);
 	}
-	void Renderer::setVec3(GLuint id, glm::vec3& vec3)
-	{
+	
+	void Renderer::setVec3(GLuint id, glm::vec3& vec3) {
 		glUniform3f(id, vec3.x, vec3.y, vec3.z);
 	}
+	
 	void Renderer::ClearScreen() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -350,6 +340,7 @@ namespace Renderer {
 	void Renderer::UseProgram(int ProgramID) {
 		glUseProgram(ProgramID);
 	}
+	
 	int Renderer::LoadShader(const char* vertex, const char* fragment, const char* name) {
 		shaderProgramIds[name] = LoadShaders::LoadShaders(vertex, fragment); 
 		return shaderProgramIds[name];
@@ -360,7 +351,7 @@ namespace Renderer {
 		Text2D::printText2D(text, x, y, size);
 	}
 
-	//dosent work right now still in progress
+	// TODO: Doesn't work right now still in progress
 	void Renderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color) {
 		UseProgram(GetProgramID("sprite"));
 
@@ -386,14 +377,12 @@ namespace Renderer {
 
 		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 		glUniform1i(TextureID, texture->GetTextureNumber());
-		
 
 		glBindVertexArray(Renderer::quadVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
 	}
-
-
+	
 	void Renderer::RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox) {
 		glDepthMask(GL_FALSE);
 		UseProgram(GetProgramID("skybox"));
@@ -420,6 +409,4 @@ namespace Renderer {
 		glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgramID);
 		return currentProgramID;
 	}
-
 }
-

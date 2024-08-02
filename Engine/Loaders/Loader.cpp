@@ -1,14 +1,8 @@
-#include "loader.hpp"
+#include "Loader.hpp"
 
-
-
-
-
-
-
-namespace loader {
-
-	GLuint loader::loadBMP_custom(const char* imagepath) {
+namespace Loader
+{
+	GLuint Loader::loadBMP_custom(const char* imagepath) {
 		// Data read from the header of the BMP file
 		unsigned char header[54]; // Each BMP file begins by a 54-bytes header
 		unsigned int dataPos;     // Position in the file where the actual data begins
@@ -50,7 +44,7 @@ namespace loader {
 		// Read the actual data from the file into the buffer
 		fread(data, 1, imageSize, file);
 
-		//Everything is in memory now, the file can be closed
+		// Everything is in memory now, the file can be closed
 		fclose(file);
 
 		// Create one OpenGL texture
@@ -66,31 +60,23 @@ namespace loader {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-		// When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
+		// When Minifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		// Generate mipmaps, by the way.
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		return textureID;
-
 	}
 
-#define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
-#define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
-#define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
-
-	GLuint loader::loadDDS(const char* imagepath) {
-
+	GLuint Loader::loadDDS(const char* imagepath) {
 		unsigned char header[124];
 
-		FILE* fp;
-
-		/* try to open the file */
-		fp = fopen(imagepath, "rb");
-		if (fp == NULL)
+		// Try to open the file 
+		FILE* fp = fopen(imagepath, "rb");
+		if (fp == nullptr)
 			return 0;
 
-		/* verify the type of file */
+		// Verify the type of file 
 		char filecode[4];
 		fread(filecode, 1, 4, fp);
 		if (strncmp(filecode, "DDS ", 4) != 0) {
@@ -98,7 +84,7 @@ namespace loader {
 			return 0;
 		}
 
-		/* get the surface desc */
+		// Get the surface desc 
 		fread(&header, 124, 1, fp);
 
 		unsigned int height = *(unsigned int*)&(header[8]);
@@ -109,11 +95,13 @@ namespace loader {
 
 		unsigned char* buffer;
 		unsigned int bufsize;
-		/* how big is it going to be including all mipmaps? */
+		
+		// How big is it going to be including all mipmaps? 
 		bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
 		buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
 		fread(buffer, 1, bufsize, fp);
-		/* close the file pointer */
+		
+		// Close the file pointer 
 		fclose(fp);
 
 		unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
@@ -144,9 +132,8 @@ namespace loader {
 		unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
 		unsigned int offset = 0;
 
-		/* load the mipmaps */
-		for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
-		{
+		// Load the mipmaps
+		for (unsigned int level = 0; level < mipMapCount && (width || height); ++level) {
 			unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
 			glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
 				0, size, buffer + offset);
@@ -155,13 +142,13 @@ namespace loader {
 			width /= 2;
 			height /= 2;
 		}
+		
 		free(buffer);
 
 		return textureID;
 	}
 
-
-	bool loader::loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals) {
+	bool Loader::loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals) {
 		printf("Loading OBJ file %s...\n", path);
 
 		std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
@@ -169,22 +156,20 @@ namespace loader {
 		std::vector<glm::vec2> temp_uvs;
 		std::vector<glm::vec3> temp_normals;
 
-
 		FILE* file = fopen(path, "r");
-		if (file == NULL) {
+		if (file == nullptr) {
 			printf("Impossible to open the file ! Are you in the right path ? See Tutorial 1 for details\n");
 			return false;
 		}
 
-		while (1) {
-
+		while (true) {
 			char lineHeader[128];
-			// read the first word of the line
+			// Read the first word of the line
 			int res = fscanf(file, "%s", lineHeader);
 			if (res == EOF)
 				break; // EOF = End Of File. Quit the loop.
 
-			// else : parse lineHeader
+			// Else : parse lineHeader
 
 			if (strcmp(lineHeader, "v") == 0) {
 				glm::vec3 vertex;
@@ -211,7 +196,6 @@ namespace loader {
 					return false;
 				}
 
-
 				vertexIndices.push_back(vertexIndex[0]);
 				vertexIndices.push_back(vertexIndex[1]);
 				vertexIndices.push_back(vertexIndex[2]);
@@ -227,7 +211,6 @@ namespace loader {
 				char stupidBuffer[1000];
 				fgets(stupidBuffer, 1000, file);
 			}
-
 		}
 
 		// For each vertex of each triangle
@@ -248,7 +231,7 @@ namespace loader {
 			out_uvs.push_back(uv);
 			out_normals.push_back(normal);
 		}
-
+		
 		return true;
 	}
 }

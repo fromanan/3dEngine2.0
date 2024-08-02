@@ -1,4 +1,3 @@
-#pragma once
 #include "Engine.h"
 #include "Engine/Physics/BulletPhysics.h"
 
@@ -7,8 +6,8 @@
 //this Engine is fueled by coffee and sleep deprivation
 //https://github.com/HaydenD100
 
-namespace Engine {
-	
+namespace Engine
+{
 	int Engine::Run() {
 		//init Engine comps
 		Input::Init();
@@ -22,7 +21,6 @@ namespace Engine {
 		SceneManager::CreateScene(basicScene);
 		SceneManager::LoadScene(0);
 
-
 		// For speed computation
 		double lastTimeDT = glfwGetTime();
 		double previousTime = glfwGetTime();
@@ -31,20 +29,19 @@ namespace Engine {
 
 		while (Backend::IsWindowOpen()) {
 			
-			//Delta time stuff
+			// Delta time stuff
 			double currentTime = glfwGetTime();
-			float dt = currentTime - lastTimeDT;
+			double dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
 			frameCount++;
 
-			if (currentTime - previousTime >= 1.0)
-			{ 
+			if (currentTime - previousTime >= 1.0) { 
 				FPS = frameCount;
 				frameCount = 0;
 				previousTime = currentTime;
 			}
 
-			//Update Managers
+			// Update Managers
 			Input::Update();
 			Input::CenterMouse();
 			Renderer::ClearScreen();
@@ -63,5 +60,3 @@ namespace Engine {
 		return 0;
 	}
 }
-
-

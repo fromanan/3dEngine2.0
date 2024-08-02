@@ -5,16 +5,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Engine/Core/GameObject.h"
-#include "Engine/Core/AssetManager.h"
-
-
 #include <vector>
 #include <string>
 
-//This is still in working progress and hasnt been implemented into the engine
+#include "Engine/Core/GameObject.h"
+#include "Engine/Core/AssetManager.h"
 
-struct KeyFrame {
+// TODO: This is still a work-in-progress and hasn't been implemented into the engine
+
+struct KeyFrame
+{
 	float duration;
 	glm::vec3 position;
 	glm::vec3 rotation;
@@ -22,13 +22,14 @@ struct KeyFrame {
 	void Create(glm::vec3 Position, glm::vec3 Rotation, float Duration);
 };
 
-class Animation {
+class Animation
+{
 public:
 	Animation(std::string Name);
 	Animation(std::vector<KeyFrame> Keyframes, std::string Name);
 
 	void AddKeyFrame(KeyFrame Keyframe);
-	int GetKeyFrameSize();
+	size_t GetKeyFrameSize();
 	bool Playing();
 	void Stop();
 	void Start();
@@ -52,19 +53,14 @@ private:
 	std::string name;
 
 	GameObject* gameObject;
-
 };
 
-namespace AnimationManager {
+namespace AnimationManager
+{
 	void AddAnimation(Animation animation);
 	void Play(std::string Name, std::string ObjectName);
 	void Stop(std::string Name);
 	void Pause(std::string Name);
 	void Update(float deltaTime);
-
 	Animation* GetAnimation(std::string Name);
-
-
-
-};
-
+}

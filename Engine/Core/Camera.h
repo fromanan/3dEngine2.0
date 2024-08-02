@@ -13,7 +13,7 @@ namespace Camera
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
 
-	glm::vec3 GetPostion();
+	glm::vec3 GetPosition();
 	void SetHorizontalAngle(float angle);
 	void SetVerticalAngle(float angle);
 	void SetPosition(glm::vec3 pos);
@@ -22,5 +22,4 @@ namespace Camera
 
 	glm::vec3 ComputeRay();
 	btCollisionWorld::ClosestRayResultCallback GetRayHit();
-};
-
+}

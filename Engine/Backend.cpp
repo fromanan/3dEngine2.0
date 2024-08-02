@@ -1,8 +1,7 @@
-#pragma once
 #include "Backend.h"
 
-namespace Backend {
-
+namespace Backend
+{
 	GLFWwindow* window;
 	bool windowOpen = true;
 
@@ -20,10 +19,9 @@ namespace Backend {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
 
 		// Open a window and create its OpenGL context
-		window = glfwCreateWindow(SCREENWIDTH, SCREENHEIGHT , WINDOWTITILE, NULL, NULL);
+		window = glfwCreateWindow(SCREENWIDTH, SCREENHEIGHT , WINDOWTITILE, nullptr, nullptr);
 
-
-		if (window == NULL) {
+		if (window == nullptr) {
 			glfwTerminate();
 			return -1;
 		}
@@ -53,6 +51,4 @@ namespace Backend {
 	void Backend::CloseWindow() {
 		windowOpen = false;
 	}
-
-
 }

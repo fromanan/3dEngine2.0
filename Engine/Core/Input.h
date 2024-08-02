@@ -7,8 +7,8 @@
 #include <iostream>
 #include <cctype>
 
-
-namespace Input {
+namespace Input
+{
 	void Init();
 	void Update();
 
@@ -23,12 +23,7 @@ namespace Input {
 	bool LeftMousePressed();
 	bool RightMousePressed();
 
-
-
-
 	void DisableCursor();
 	void HideCursor();
 	void ShowCursor();
-	
 }
-

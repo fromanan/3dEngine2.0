@@ -6,6 +6,12 @@
 # JetBrains IDE Files
 .idea
 
+# VSCode
+.vscode
+
+# CMake Folder
+build
+
 # User-specific files
 *.rsuser
 *.suo
@@ -363,3 +369,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Include Assets Folder
+!Assets/**/*
