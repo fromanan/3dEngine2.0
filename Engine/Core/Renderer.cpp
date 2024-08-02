@@ -352,7 +352,7 @@ namespace Renderer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Renderer::UseProgram(int ProgramID) {
+	void Renderer::UseProgram(GLuint ProgramID) {
 		glUseProgram(ProgramID);
 	}
 	

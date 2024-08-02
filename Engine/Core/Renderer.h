@@ -55,7 +55,7 @@ namespace Renderer
     int LoadShader(const char* vertex, const char* fragment, const char* name);
 
     void ClearScreen();
-    void UseProgram(int ProgramID);
+    void UseProgram(GLuint ProgramID);
     void SwapBuffers(GLFWwindow* window);
 
     GLuint GetCurrentProgramID();
