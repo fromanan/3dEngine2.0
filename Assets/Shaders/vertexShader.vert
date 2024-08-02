@@ -1,5 +1,5 @@
 #version 330 core
-#define MAXLIGHTS 10
+#define MAXLIGHTS 3
 
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;

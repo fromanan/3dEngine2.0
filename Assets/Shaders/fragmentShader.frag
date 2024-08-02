@@ -1,5 +1,5 @@
 #version 330 core
-#define MAXLIGHTS 10
+#define MAXLIGHTS 3
 
 // Interpolated values from the vertex shaders
 in vec2 UV;
@@ -17,8 +17,10 @@ out vec4 color;
 uniform sampler2D DiffuseTextureSampler;
 uniform sampler2D NormalTextureSampler;
 uniform vec3 LightColors[MAXLIGHTS]; // Array of light colors
-uniform float LightPowers[MAXLIGHTS]; // Array of light powers
 uniform vec3 LightPositions_worldspace[MAXLIGHTS]; // Array of light positions
+uniform float LightConstants[MAXLIGHTS];
+uniform float LightLinears[MAXLIGHTS];
+uniform float LightQuadratics[MAXLIGHTS];
 
 
 void main() {
@@ -37,6 +39,8 @@ void main() {
 
         // Distance to the light
         float distance = length(LightPositions_worldspace[i] - Position_worldspace);
+        float attenuation = 1.0 / (LightConstants[i] + LightLinears[i] * distance + LightQuadratics[i] * (distance * distance));    
+
 
         // Normal of the computed fragment, in camera space
         vec3 n = TextureNormal_tangentspace;
@@ -55,16 +59,16 @@ void main() {
         float cosAlpha = clamp(dot(E, R), 0.0, 1.0);
 
         //it kept stacking up the ambient light if there were no lights
-        if(LightPowers[i] <= 0)
+        if(LightConstants[i]  == 0)
             continue;
 
         FinalColor +=
             // Ambient : simulates indirect lighting
             MaterialAmbientColor +
             // Diffuse : "color" of the object
-            MaterialDiffuseColor * LightColors[i] * LightPowers[i] * cosTheta / (distance * distance) +
+            MaterialDiffuseColor * LightColors[i] * attenuation;
             // Specular : reflective highlight, like a mirror
-            MaterialSpecularColor * LightColors[i] * LightPowers[i] * pow(cosAlpha, 5.0) / (distance * distance);
+            MaterialSpecularColor * LightColors[i] * attenuation;
     }
 
     // Output final color

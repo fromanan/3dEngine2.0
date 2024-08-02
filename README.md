@@ -3,9 +3,9 @@ https://github.com/HaydenD100/3dEngine2.0
 
 ## Changelog
 
-### 3D Engine 2.0 2024/August/1
+### 3D Engine 2.0 2024/August/2
 My main focus for the next couple weeks is going to be overhauling the lighting and rendering systems. The Engine now supports multiple lights that can be dynamically changed in the scene. I'm looking at other graphical improvements like SSAO or Rendering to a texture allowing post processing as well as working on a material system to make the textures feel more unique.
-![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/lights.png)
+![screenshot](https://github.com/HaydenD100/3dEngine2.0/blob/Bullet3-physics/github/screenshots/better_lighting.png)
 
 
 ### 3D Engine 2.0 2024/July/26

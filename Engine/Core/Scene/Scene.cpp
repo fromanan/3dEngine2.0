@@ -30,7 +30,9 @@ void Scene::Load() {
 	AssetManager::AddGameObject("fence2", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(-9, 1.3, 2), true, 0, Box);
 	AssetManager::AddGameObject("fence3", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(2, 1.3, -9), true, 0, Box);
 	AssetManager::AddGameObject("fence4", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(-1, 1.3, 5), true, 0, Box);
-	AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
+	//AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
+	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(0, 0, 0), true, 0, Box);
+
 	AssetManager::AddGameObject("floor", "Assets/Objects/slope.obj", AssetManager::GetTexture("sand"), glm::vec3(-1, 2, -7), true, 0, Convex);
 
 	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
@@ -51,26 +53,26 @@ void Scene::Load() {
 	// Sets renderer
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	std::vector<std::string> faces { 
-		"Assets/Skybox/daylight/right.png",
-			"Assets/Skybox/daylight/left.png",
-			"Assets/Skybox/daylight/top.png",
-			"Assets/Skybox/daylight/bottom.png",
-			"Assets/Skybox/daylight/front.png",
-			"Assets/Skybox/daylight/back.png"
+		"Assets/Skybox/Space/right.png",
+			"Assets/Skybox/Space/left.png",
+			"Assets/Skybox/Space/top.png",
+			"Assets/Skybox/Space/bottom.png",
+			"Assets/Skybox/Space/front.png",
+			"Assets/Skybox/Space/back.png"
 	};
 	sky = SkyBox(faces);
 
 	// MAX LIGHTS BY DEFAULT IS 10 if you want more lights go to FragmentShader.frag and VertexShader.vert and change MAXLIGHTS
 	{
-		Light light(glm::vec3(-2.5, 4, -5), glm::vec3(1, 0.25, 0), 30);
+		Light light(glm::vec3(-2.5, 4, -5), glm::vec3(1, 0.25, 0), 1,0.22,0.20);
 		lights.push_back(light);
 	}
 	{
-		Light light(glm::vec3(-6, 2, -2), glm::vec3(1, 0, 1), 30);
+		Light light(glm::vec3(-6, 2, -2), glm::vec3(1, 0, 1), 1, 0.22, 0.20);
 		lights.push_back(light);
 	}
 	{
-		Light light(glm::vec3(-1, 2, -1), glm::vec3(0, 1, 1), 30);
+		Light light(glm::vec3(-1, 2, -1), glm::vec3(0, 1, 1), 1, 0.22, 0.20);
 		lights.push_back(light);
 	}
 

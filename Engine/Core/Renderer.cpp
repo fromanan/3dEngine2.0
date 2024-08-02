@@ -143,7 +143,7 @@ SkyBox::SkyBox(std::vector<std::string> faces) {
 
 	int width, height, nrChannels;
 	for (unsigned int i = 0; i < faces.size(); i++) {
-		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 3);
 		if (data) {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
@@ -258,22 +258,35 @@ namespace Renderer
 		// Upload lights data to the GPU
 		std::vector<glm::vec3> lightPositions;
 		std::vector<glm::vec3> lightColors;
-		std::vector<float> lightPowers;
+		std::vector<float> LightConstants;
+		std::vector<float> LightLinears;
+		std::vector<float> LightQuadratics;
+
 
 		for (const auto& light : lights) {
 			lightPositions.push_back(light.position);
 			lightColors.push_back(light.colour);
-			lightPowers.push_back(light.strength);
+			LightConstants.push_back(light.constant);
+			LightLinears.push_back(light.linear);
+			LightQuadratics.push_back(light.quadratic);
+			
+			
 		}
 
 		// Set up uniform arrays in the shader
 		GLuint lightPositionsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPositions_worldspace");
 		GLuint lightColorsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightColors");
-		GLuint lightPowersLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPowers");
+		GLuint LightConstantsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightConstants");
+		GLuint LightLinearsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightLinears");
+		GLuint LightQuadraticsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightQuadratics");
+
 
 		glUniform3fv(lightPositionsLoc, (GLsizei)lights.size(), glm::value_ptr(lightPositions[0]));
 		glUniform3fv(lightColorsLoc, (GLsizei)lights.size(), glm::value_ptr(lightColors[0]));
-		glUniform1fv(lightPowersLoc, (GLsizei)lights.size(), &lightPowers[0]);
+		glUniform1fv(LightConstantsLoc, (GLsizei)lights.size(), &LightConstants[0]);
+		glUniform1fv(LightLinearsLoc, (GLsizei)lights.size(), &LightLinears[0]);
+		glUniform1fv(LightQuadraticsLoc, (GLsizei)lights.size(), &LightQuadratics[0]);
+
 		//setVec3(LightID, lights[0].position);
 	}
 
