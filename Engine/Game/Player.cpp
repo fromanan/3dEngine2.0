@@ -30,7 +30,7 @@ namespace Player
 	std::string inv[2] = { "ak47","glock" };
 
 	void Player::Init() {
-		srand(time(nullptr));
+		srand((unsigned int)time(nullptr));
 		AssetManager::AddGameObject(GameObject("player", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 1, 0.5));
 		AssetManager::AddGameObject(GameObject("player_head", "Assets/Objects/capsule.obj", AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5, 0.7, 0.5));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
@@ -74,7 +74,7 @@ namespace Player
 			WeaponManager::GetGunByName(gunName)->currentammo--;
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
-			horizontalAngle += (((double)rand()) / RAND_MAX) / WeaponManager::GetGunByName(gunName)->recoilY;
+			horizontalAngle += (float)rand() / RAND_MAX / WeaponManager::GetGunByName(gunName)->recoilY;
 			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
 			if (hit.m_collisionObject != nullptr) {
 				GameObject* gameobject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());

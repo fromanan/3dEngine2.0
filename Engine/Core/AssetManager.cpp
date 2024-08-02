@@ -131,7 +131,7 @@ namespace AssetManager
 	size_t AssetManager::AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
 	                                   bool save, float mass, ColliderShape shape) {
 		GameObjects.push_back(GameObject(name, path, texture, position,save, mass, shape));
-		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex(GameObjects.size() - 1);
+		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex((int)GameObjects.size() - 1);
 		return GameObjects.size() - 1;
 	}
 

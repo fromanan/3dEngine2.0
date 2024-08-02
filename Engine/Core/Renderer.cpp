@@ -271,9 +271,9 @@ namespace Renderer
 		GLuint lightColorsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightColors");
 		GLuint lightPowersLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPowers");
 
-		glUniform3fv(lightPositionsLoc, lights.size(), glm::value_ptr(lightPositions[0]));
-		glUniform3fv(lightColorsLoc, lights.size(), glm::value_ptr(lightColors[0]));
-		glUniform1fv(lightPowersLoc, lights.size(), &lightPowers[0]);
+		glUniform3fv(lightPositionsLoc, (GLsizei)lights.size(), glm::value_ptr(lightPositions[0]));
+		glUniform3fv(lightColorsLoc, (GLsizei)lights.size(), glm::value_ptr(lightColors[0]));
+		glUniform1fv(lightPowersLoc, (GLsizei)lights.size(), &lightPowers[0]);
 		//setVec3(LightID, lights[0].position);
 	}
 

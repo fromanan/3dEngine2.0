@@ -582,7 +582,7 @@ void GameObject::RenderObject(GLuint& programID) {
 	// Draw the triangles !
 	glDrawElements(
 		GL_TRIANGLES,      // mode
-		indices.size(),    // count
+		(GLsizei)indices.size(),    // count
 		GL_UNSIGNED_SHORT,   // type
 		(void*)0           // element array buffer offset
 	);
