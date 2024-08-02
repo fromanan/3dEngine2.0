@@ -148,7 +148,7 @@ namespace Player
 		interactingWithName = "Nothing";
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
-			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());
+			verticalAngle += mouseSpeed * (768.0f / 2 - (float)Input::GetMouseY());
 		
 		else if (verticalAngle > maxAngle)
 			verticalAngle = maxAngle;
