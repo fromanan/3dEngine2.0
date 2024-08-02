@@ -286,8 +286,7 @@ float Cube::intersect(Ray r, float t0, float t1) {
 		tmax = tzmax;
 	if ((tmin < t1) && (tmax > t0))
 		return tmin;
-	else
-		return -1;
+	return -1;
 }
 
 void Cube::Regenerate(GameObject* gameobject) {
