@@ -68,7 +68,7 @@ private:
 	glm::vec3 position;
 	float width, depth, height;
 	bool isTrigger = false;
-	bool Static = true;
+	bool isStatic = true;
 	bool shouldDelete = false;
 };
 
