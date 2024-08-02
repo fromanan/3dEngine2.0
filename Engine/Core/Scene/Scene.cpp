@@ -166,17 +166,10 @@ void Scene::RenderObjects() {
 	oss.precision(2);
 	oss << "Vel x:" << vel.x << " y:" << vel.y << " z:" << vel.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 540, 15);
-	
-	if (Player::getCurrentGun() != "nothing") {
-		oss.str("");
-		oss.clear();
-		const int currentAmmo = WeaponManager::GetGunByName(Player::getCurrentGun())->currentammo;
-		const int ammo = WeaponManager::GetGunByName(Player::getCurrentGun())->ammo;
-		oss << currentAmmo << "/" << ammo;
-		Renderer::RenderText(oss.str().c_str(), 660, 0, 15);
-	}
+
+	glm::vec3 rotation = btQuatToGLMVec(AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getRotation());
 	oss.str(""); oss.clear();
-	oss << Player::getCurrentGun();
+	oss << "rot x:" << rotation.x << " y:" << rotation.y << " z:" << rotation.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 500, 15);
 }
 

@@ -300,6 +300,7 @@ namespace Renderer
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
 		MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MVP");
 		ViewMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "V");
 		ModelMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "M");
