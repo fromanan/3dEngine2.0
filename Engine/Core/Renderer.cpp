@@ -135,9 +135,7 @@ GLuint Texture::GetTexture() {
 
 int Texture::CurrentTextureNumber = GL_TEXTURE1;
 
-SkyBox::SkyBox() {
-
-}
+SkyBox::SkyBox() = default;
 
 SkyBox::SkyBox(std::vector<std::string> faces) {
 	glGenTextures(1, &textureID);

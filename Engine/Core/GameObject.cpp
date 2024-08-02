@@ -2,9 +2,7 @@
 #include "Engine/Core/AssetManager.h"
 #include "Engine/Physics/BulletPhysics.h"
 
-GameObject::GameObject() {
-
-}
+GameObject::GameObject() = default;
 
 GameObject::GameObject(std::string name, bool save, float mass, ColliderShape shape) {
 	this->name = name;
