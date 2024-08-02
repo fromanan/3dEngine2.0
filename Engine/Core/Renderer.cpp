@@ -3,229 +3,6 @@
 #include "AssetPaths.h"
 #include "Scene/SceneManager.h"
 
-Texture::Texture(const char* name, const char* path) {
-	this->name = name;
-	int texturenumTemp = CurrentTextureNumber++;
-	textureNumber = texturenumTemp - GL_TEXTURE0;
-
-	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	
-	// Set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// Load and generate the texture
-	int width, height;
-	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	
-	stbi_image_free(data);
-
-	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
-
-	std::cout << "Texture Numbers Normal loaded at " << textureNormalNumber << std::endl;
-
-	glGenTextures(1, &textureNormal);
-	glBindTexture(GL_TEXTURE_2D, textureNormal);
-	
-	// Set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// Load and generate the texture
-	int width1, height1;
-	unsigned char* data1 = stbi_load(AssetPaths::Normal_None, &width1, &height1, 0, STBI_rgb_alpha);
-	if (data1) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	
-	stbi_image_free(data1);
-}
-
-Texture::Texture(const char* name, const char* path, const char* normalPath) {
-	this->name = name;
-	int texturenumTemp = CurrentTextureNumber++;
-	textureNumber = texturenumTemp - GL_TEXTURE0;
-
-	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	
-	// Set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// Load and generate the texture
-	int width, height;
-	unsigned char* data = stbi_load(path, &width, &height, 0, STBI_rgb_alpha);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	stbi_image_free(data);
-
-	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
-
-	std::cout << "Texture Numbers Normal loaded at " << textureNormalNumber << std::endl;
-
-	glGenTextures(1, &textureNormal);
-	glBindTexture(GL_TEXTURE_2D, textureNormal);
-	
-	// Set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// Load and generate the texture
-	int width1, height1;
-
-	unsigned char* data1 = stbi_load(normalPath, &width1, &height1, 0, STBI_rgb_alpha);
-	if (data1) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width1, height1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data1);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	
-	stbi_image_free(data1);
-}
-
-int Texture::GetTextureNormalNumber() {
-	return textureNormalNumber;
-}
-
-GLuint Texture::GetTextureNormal() {
-	return textureNormal;
-}
-
-const char* Texture::GetName() {
-	return name;
-}
-
-int Texture::GetTextureNumber() {
-	return textureNumber;
-}
-
-GLuint Texture::GetTexture() {
-	return texture;
-}
-
-int Texture::CurrentTextureNumber = GL_TEXTURE1;
-
-SkyBox::SkyBox() = default;
-
-SkyBox::SkyBox(std::vector<std::string> faces) {
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	int width, height, nrChannels;
-	for (unsigned int i = 0; i < faces.size(); i++) {
-		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 3);
-		if (data) {
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-			);
-			stbi_image_free(data);
-		}
-		else {
-			std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
-			stbi_image_free(data);
-		}
-	}
-	
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-}
-
-unsigned int SkyBox::GetTextureID() {
-	return textureID;
-}
-
-unsigned int SkyBox::GetSkyBoxVAO() {
-	glGenVertexArrays(1, &skyboxVAO);
-	glGenBuffers(1, &skyboxVBO);
-	glBindVertexArray(skyboxVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	return skyboxVAO;
-}
-
-float SkyBox::skyboxVertices[108] = {
-	// positions          
-	-1.0f,  1.0f, -1.0f,
-	-1.0f, -1.0f, -1.0f,
-	 1.0f, -1.0f, -1.0f,
-	 1.0f, -1.0f, -1.0f,
-	 1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-
-	-1.0f, -1.0f,  1.0f,
-	-1.0f, -1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f,
-
-	 1.0f, -1.0f, -1.0f,
-	 1.0f, -1.0f,  1.0f,
-	 1.0f,  1.0f,  1.0f,
-	 1.0f,  1.0f,  1.0f,
-	 1.0f,  1.0f, -1.0f,
-	 1.0f, -1.0f, -1.0f,
-
-	-1.0f, -1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	 1.0f,  1.0f,  1.0f,
-	 1.0f,  1.0f,  1.0f,
-	 1.0f, -1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f,
-
-	-1.0f,  1.0f, -1.0f,
-	 1.0f,  1.0f, -1.0f,
-	 1.0f,  1.0f,  1.0f,
-	 1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f, -1.0f,
-
-	-1.0f, -1.0f, -1.0f,
-	-1.0f, -1.0f,  1.0f,
-	 1.0f, -1.0f, -1.0f,
-	 1.0f, -1.0f, -1.0f,
-	-1.0f, -1.0f,  1.0f,
-	 1.0f, -1.0f,  1.0f
-};
-
 namespace Renderer
 {
 	std::map<const char*, GLuint> shaderProgramIds;
@@ -309,7 +86,7 @@ namespace Renderer
 		ModelView3x3MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MV3x3");
 
 		// Skybox
-		LoadShader(AssetPaths::Shader_SkyBox_Vert, AssetPaths::Shader_SkyBox_Frag, "skybox");
+		LoadShader(AssetPaths::Shader_Skybox_Vert, AssetPaths::Shader_Skybox_Frag, "skybox");
 		std::cout << "Loaded skybox shader at: " << GetProgramID("skybox") << std::endl;
 		LoadShader(AssetPaths::Shader_Sprite_Vert, AssetPaths::Shader_Sprite_Frag, "sprite");
 		std::cout << "Loaded sprite shader at: " << GetProgramID("sprite") << std::endl;
@@ -398,7 +175,7 @@ namespace Renderer
 		glBindVertexArray(0);
 	}
 	
-	void Renderer::RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox) {
+	void Renderer::RendererSkybox(glm::mat4 view, glm::mat4 projection, Skybox skybox) {
 		glDepthMask(GL_FALSE);
 		UseProgram(GetProgramID("skybox"));
 		GLuint projectionid = glGetUniformLocation(GetProgramID("skybox"), "projection");
@@ -407,7 +184,7 @@ namespace Renderer
 
 		setMat4(viewid, viewWithoutTranslation);
 		setMat4(projectionid, projection);
-		glBindVertexArray(skybox.GetSkyBoxVAO());
+		glBindVertexArray(skybox.GetSkyboxVAO());
 		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.GetTextureID());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glDepthMask(GL_TRUE);

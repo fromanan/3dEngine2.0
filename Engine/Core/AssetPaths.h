@@ -23,8 +23,8 @@ namespace AssetPaths
     // Shaders
     static const char* Shader_Text_Vert = "Assets/Shaders/textShader.vert";
     static const char* Shader_Text_Frag = "Assets/Shaders/textShader.frag";
-    static const char* Shader_SkyBox_Vert = "Assets/Shaders/SkyBoxShader.vert";
-    static const char* Shader_SkyBox_Frag = "Assets/Shaders/SkyBoxShader.frag";
+    static const char* Shader_Skybox_Vert = "Assets/Shaders/SkyBoxShader.vert";
+    static const char* Shader_Skybox_Frag = "Assets/Shaders/SkyBoxShader.frag";
     static const char* Shader_Sprite_Vert = "Assets/Shaders/shaderSprite.vert";
     static const char* Shader_Sprite_Frag = "Assets/Shaders/shaderSprite.frag";
     static const char* Shader_Material_Vert = "Assets/Shaders/vertexShader.vert";

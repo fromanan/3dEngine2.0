@@ -60,7 +60,7 @@ void Scene::Load() {
 			AssetPaths::Texture_SkyboxFront,
 		AssetPaths::Texture_SkyboxBack
 	};
-	sky = SkyBox(faces);
+	sky = Skybox(faces);
 
 	// MAX LIGHTS BY DEFAULT IS 10 if you want more lights go to FragmentShader.frag and VertexShader.vert and change MAXLIGHTS
 	{
@@ -114,7 +114,7 @@ void Scene::RenderObjects() {
 	glm::mat4 ViewMatrix = Camera::getViewMatrix();
 	glm::mat4 PV = ProjectionMatrix * ViewMatrix;
 
-	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, sky);
+	Renderer::RendererSkybox(ViewMatrix, ProjectionMatrix, sky);
 	Renderer::UseProgram(Renderer::GetProgramID("Texture"));
 	
 	GLuint programid = Renderer::GetCurrentProgramID();
@@ -195,7 +195,7 @@ void Scene::RenderObjects(const char* shaderName) {
 	glm::mat4 ViewMatrix = Camera::getViewMatrix();
 	glm::mat4 PV = ProjectionMatrix * ViewMatrix;
 
-	Renderer::RendererSkyBox(ViewMatrix, ProjectionMatrix, sky);
+	Renderer::RendererSkybox(ViewMatrix, ProjectionMatrix, sky);
 	GLuint programid = Renderer::GetProgramID(shaderName);
 
 	glEnable(GL_BLEND);

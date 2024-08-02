@@ -6,48 +6,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Skybox.h"
+#include "Texture.h"
 #include "Loaders/ShaderLoader.hpp"
 #include "Loaders/Loader.hpp"
 #include "Engine/Core/UI/Text2D.h"
 #include "Loaders/stb_image.h"
 #include "Engine/Core/Common.h"
 #include "Engine/Core/Lights/Light.h"
-
-class Texture
-{
-public:
-    static int CurrentTextureNumber;
-
-    Texture(const char* name, const char* path);
-    Texture(const char* name, const char* path, const char* normalPath);
-
-    const char* GetName();
-    int GetTextureNumber();
-    int GetTextureNormalNumber();
-
-    GLuint GetTexture();
-    GLuint GetTextureNormal();
-
-private:
-    const char* name;
-    int textureNumber; 
-    int textureNormalNumber;
-    GLuint texture;
-    GLuint textureNormal;
-};
-
-class SkyBox
-{
-public:
-    SkyBox();
-    SkyBox(std::vector<std::string> faces);
-    unsigned int GetTextureID();
-    unsigned int GetSkyBoxVAO();
-private:
-    unsigned int textureID;
-    unsigned int skyboxVAO, skyboxVBO;
-    static float skyboxVertices[108];
-};
 
 namespace Renderer
 {
@@ -64,7 +30,7 @@ namespace Renderer
     // Text Rendering
     void RenderText(const char* text, int x, int y, int size);
     void DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size = glm::vec2(10.0f, 10.0f), float rotate = 0.0f, glm::vec3 color = glm::vec3(1.0f));
-    void RendererSkyBox(glm::mat4 view, glm::mat4 projection, SkyBox skybox);
+    void RendererSkybox(glm::mat4 view, glm::mat4 projection, Skybox skybox);
 
     // Shader
     void SetTextureShader(glm::mat4 mvp, glm::mat4 model, glm::mat4 view, glm::mat3 ModelView3x3Matrix);
