@@ -46,8 +46,8 @@ namespace Player
 		AssetManager::GetGameObject("player")->SetRender(false);
 		body->setFriction(0.0f);
 		body->setRestitution(0.0f);
-		body->setCcdMotionThreshold(0.05);
-		body->setCcdSweptSphereRadius(0.2); // Set the radius for CCD
+		body->setCcdMotionThreshold(0.05f);
+		body->setCcdSweptSphereRadius(0.2f); // Set the radius for CCD
 
 		body->setGravity(btVector3(0, -10 * 3.0f, 0));
 		player_head->GetRigidBody()->setFriction(0.0f);
