@@ -49,7 +49,7 @@ namespace AudioManager {
 	std::vector<FMOD::Channel*> channels;
 	int channelSize = 50;
 
-	const float DISTANCEFACTOR = 1.0f;
+	constexpr float DISTANCEFACTOR = 1.0f;
 
 	//Listener
 	FMOD_VECTOR listenerpos = { 0.0f, 0.0f, 0.0f };
