@@ -63,17 +63,17 @@ namespace AssetManager
 		for (int i = 0; i < GameObjects.size(); i++) {
 			if (!GameObjects[i].CanSave())
 				continue;
-			std::vector<float> verticies;
+			std::vector<float> vertices;
 			std::vector<float> Uvs;
 			std::vector<float> normals;
-			std::vector<glm::vec3> indexed_vertices = GameObjects[i].getIndexedVerticies();
+			std::vector<glm::vec3> indexed_vertices = GameObjects[i].getIndexedVertices();
 			std::vector<glm::vec2> indexed_uvs = GameObjects[i].getIndexedUvs();
 			std::vector<glm::vec3> indexed_normals = GameObjects[i].getIndexedNormals();
 
 			for (int vert = 0; vert < indexed_vertices.size(); vert++) {
-				verticies.push_back(indexed_vertices[vert].x);
-				verticies.push_back(indexed_vertices[vert].y);
-				verticies.push_back(indexed_vertices[vert].z);
+				vertices.push_back(indexed_vertices[vert].x);
+				vertices.push_back(indexed_vertices[vert].y);
+				vertices.push_back(indexed_vertices[vert].z);
 			}
 			
 			for (int uvs = 0; uvs < indexed_uvs.size(); uvs++) {
@@ -99,7 +99,7 @@ namespace AssetManager
 				GameObjects[i].getScale().y,
 				GameObjects[i].getScale().z,
 				GameObjects[i].getIndices(),
-				verticies, Uvs, normals,
+				vertices, Uvs, normals,
 				GameObjects[i].GetTextureName(),
 				true
 			};

@@ -88,7 +88,7 @@ public:
 
 	// For Json Saving
 	std::vector<unsigned short> getIndices();
-	std::vector<glm::vec3> getIndexedVerticies();
+	std::vector<glm::vec3> getIndexedVertices();
 	std::vector<glm::vec2> getIndexedUvs();
 	std::vector<glm::vec3> getIndexedNormals();
 	const char* GetTextureName();
