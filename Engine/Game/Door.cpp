@@ -26,8 +26,8 @@ void Door::Update(float deltaTime) {
 	if (!opening)
 		return;
 	
-	if (rotaion >= 1.5f) {
-		rotaion = 0;
+	if (rotation >= 1.5f) {
+		rotation = 0;
 		opening = false;
 		opened = !opened;
 		return;
@@ -38,5 +38,5 @@ void Door::Update(float deltaTime) {
 	else
 		AssetManager::GetGameObject(name + "_door")->SetRotationY(AssetManager::GetGameObject(name + "_door")->getRotation().y - openingSpeed);
 
-	rotaion += openingSpeed;
+	rotation += openingSpeed;
 }

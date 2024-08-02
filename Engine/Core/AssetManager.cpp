@@ -22,7 +22,7 @@ namespace AssetManager
 			std::string Parentname = data["GameObjects"][gameobject][1];
 
 			glm::vec3 position = glm::vec3(data["GameObjects"][gameobject][2], data["GameObjects"][gameobject][3], data["GameObjects"][gameobject][4]);
-			glm::vec3 rotaion = glm::vec3(data["GameObjects"][gameobject][5], data["GameObjects"][gameobject][6], data["GameObjects"][gameobject][7]);
+			glm::vec3 rotation = glm::vec3(data["GameObjects"][gameobject][5], data["GameObjects"][gameobject][6], data["GameObjects"][gameobject][7]);
 			glm::vec3 scale = glm::vec3(data["GameObjects"][gameobject][8], data["GameObjects"][gameobject][9], data["GameObjects"][gameobject][10]);
 
 			std::vector<unsigned short> indices = data["GameObjects"][gameobject][11];
@@ -50,7 +50,7 @@ namespace AssetManager
 				normal = normal + 2;
 			}
 			bool save = data["GameObjects"][gameobject][16];
-			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotaion, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box));
+			GameObjects.push_back(GameObject(name.data(), Parentname.data(), texture, position, rotation, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box));
 		}
 	}
 

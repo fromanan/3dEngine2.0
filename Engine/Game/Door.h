@@ -18,6 +18,6 @@ private:
 	bool opened;
 	bool opening;
 	glm::vec3 door_position;
-	float rotaion = 0.0f;
+	float rotation = 0.0f;
 	float openingSpeed = 0.02f;
 };
