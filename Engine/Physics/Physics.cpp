@@ -416,7 +416,7 @@ std::string RigidBody::GetCollider() {
 }
 
 glm::vec3 RigidBody::GetForce() {
-	return glm::vec3(0,0,0);
+	return { 0, 0, 0 };
 }
 
 namespace PhysicsManager
