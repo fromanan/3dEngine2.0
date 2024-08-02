@@ -9,8 +9,7 @@ namespace Backend
 
 	int Backend::init() {
 		glewExperimental = true; // Needed for core profile
-		if (!glfwInit())
-		{
+		if (!glfwInit()) {
 			return -1;
 		}
 
