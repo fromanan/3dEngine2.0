@@ -9,7 +9,7 @@
 #include "Core/Camera.h"
 #include "Core/UI/Text2D.h"
 #include "Core/Animation.h"
-#include "Engine/Audio/Audio.h"
+#include "Engine/Audio/AudioManager.h"
 
 namespace Engine
 {
