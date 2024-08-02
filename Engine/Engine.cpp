@@ -31,7 +31,7 @@ namespace Engine
 			
 			//Delta time stuff
 			double currentTime = glfwGetTime();
-			float dt = currentTime - lastTimeDT;
+			double dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
 			frameCount++;
 
