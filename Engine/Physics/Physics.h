@@ -28,34 +28,34 @@ public:
 
 	std::string GetName();
 	std::string GetTag();
-	void SetTag(std::string Tag);
+	void SetTag(const std::string& tag);
 
 	void setPosition(glm::vec3 position);
 	glm::vec3 getPosition();
-	float getDepth();
-	float getHeight();
-	float getWidth();
+	float getDepth() const;
+	float getHeight() const;
+	float getWidth() const;
 	void setDimensions(float width, float height, float depth);
 
-	glm::vec3 getMin();
-	glm::vec3 getMax();
+	glm::vec3 getMin() const;
+	glm::vec3 getMax() const;
 
-	bool GetIsTrigger();
+	bool GetIsTrigger() const;
 	void SetIsTrigger(bool trigger);
-	void SetStatic(bool Static);
-	bool GetStatic();
+	void SetStatic(bool isStatic);
+	bool GetStatic() const;
 
 	void SetDelete(bool Delete);
-	bool ShouldDelete();
+	bool ShouldDelete() const;
 	
-	bool TouchingLeft(Cube* collider, float velocity);
-	bool TouchingRight(Cube* collider, float velocity);
-	bool TouchingFront(Cube* collider, float velocity);
-	bool TouchingBack(Cube* collider, float velocity);
-	bool TouchingBottom(Cube* collider, float velocity);
-	bool TouchingTop(Cube* collider, float velocity);
+	bool TouchingLeft(const Cube* collider, float velocity) const;
+	bool TouchingRight(const Cube* collider, float velocity) const;
+	bool TouchingFront(const Cube* collider, float velocity) const;
+	bool TouchingBack(const Cube* collider, float velocity) const;
+	bool TouchingBottom(const Cube* collider, const float velocity) const;
+	bool TouchingTop(const Cube* collider, const float velocity) const;
 
-	float intersect(Ray r, float t0, float t1);
+	float intersect(const Ray& r, float t0, float t1) const;
 
 	Cube(GameObject* gameObject, std::string name);
 	void Regenerate(GameObject* gameObject);
@@ -76,10 +76,10 @@ class RigidBody
 {
 public:
 	RigidBody();
-	RigidBody(glm::vec3 position,std::string name);
-	glm::vec3 GetPosition();
+	RigidBody(glm::vec3 position, const std::string& name);
+	glm::vec3 GetPosition() const;
 	void SetPosition(glm::vec3 position);
-	void SetCollider(std::string colliderName);
+	void SetCollider(const std::string& colliderName);
 	std::string GetCollider();
 
 	std::string GetName();

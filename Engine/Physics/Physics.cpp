@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "Engine/Game/Player.h"
 
-Ray::Ray(glm::vec3 dir, glm::vec3 org) {
+Ray::Ray(const glm::vec3 dir, const glm::vec3 org) {
 	direction = dir;
 	origin = org;
 }
@@ -12,7 +12,7 @@ Ray::Ray() {
 	origin = glm::vec3(0, 0, 0);
 }
 
-void Ray::UpdateRay(glm::vec3 dir, glm::vec3 org) {
+void Ray::UpdateRay(const glm::vec3 dir, const glm::vec3 org) {
 	direction = dir;
 	origin = org;
 }
@@ -119,11 +119,11 @@ std::string Cube::GetTag() {
 	return this->tag;
 }
 
-void Cube::SetTag(std::string Tag) {
+void Cube::SetTag(const std::string& tag) {
 	this->tag = tag;
 }
 
-void Cube::setPosition(glm::vec3 position) {
+void Cube::setPosition(const glm::vec3 position) {
 	this->position = position;
 	min = glm::vec3(position.x - width / 2, position.y - height / 2, position.z - depth / 2);
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
@@ -137,21 +137,21 @@ void Cube::SetStatic(bool isStatic) {
 	this->isStatic = isStatic;
 }
 
-bool Cube::GetStatic() {
+bool Cube::GetStatic() const {
 	if (this == nullptr)
 		return false;
 	return isStatic;
 }
 
-float Cube::getDepth() {
+float Cube::getDepth() const {
 	return depth;
 }
 
-float Cube::getHeight() {
+float Cube::getHeight() const {
 	return height;
 }
 
-float Cube::getWidth() {
+float Cube::getWidth() const {
 	return width;
 }
 
@@ -159,11 +159,11 @@ void Cube::SetDelete(bool Delete) {
 	shouldDelete = Delete;
 }
 
-bool Cube::ShouldDelete() {
+bool Cube::ShouldDelete() const {
 	return shouldDelete;
 }
 
-void Cube::setDimensions(float width,float height, float depth) {
+void Cube::setDimensions(float width, float height, float depth) {
 	this->depth = depth;
 	this->height = height;
 	this->width = width;
@@ -172,23 +172,23 @@ void Cube::setDimensions(float width,float height, float depth) {
 	max = glm::vec3(position.x + width / 2, position.y + height / 2, position.z + depth / 2);
 }
 
-bool Cube::GetIsTrigger() {
+bool Cube::GetIsTrigger() const {
 	return isTrigger;
 }
 
-glm::vec3 Cube::getMin() {
+glm::vec3 Cube::getMin() const {
 	return min;
 }
 
-glm::vec3 Cube::getMax() {
+glm::vec3 Cube::getMax() const {
 	return max;
 }
 
-void Cube::SetIsTrigger(bool trigger) {
+void Cube::SetIsTrigger(const bool trigger) {
 	isTrigger = trigger;
 }
 
-bool Cube::TouchingRight(Cube* collider, float velocity) {
+bool Cube::TouchingRight(const Cube* collider, const float velocity) const {
 	return this->getMax().x + velocity > collider->getMin().x &&
 		this->getMin().x < collider->getMin().x &&
 		this->getMax().z > collider->getMin().z &&
@@ -197,7 +197,7 @@ bool Cube::TouchingRight(Cube* collider, float velocity) {
 		this->getMax().y > collider->getMin().y;
 }
 
-bool Cube::TouchingLeft(Cube* collider, float velocity) {
+bool Cube::TouchingLeft(const Cube* collider, const float velocity) const {
 	return this->getMin().x + velocity < collider->getMax().x &&
 		this->getMax().x > collider->getMax().x &&
 		this->getMax().z > collider->getMin().z &&
@@ -206,7 +206,7 @@ bool Cube::TouchingLeft(Cube* collider, float velocity) {
 		this->getMax().y > collider->getMin().y;
 }
 
-bool Cube::TouchingFront(Cube* collider, float velocity) {
+bool Cube::TouchingFront(const Cube* collider, const float velocity) const {
 	return this->getMin().z + velocity < collider->getMax().z &&
 		this->getMax().z > collider->getMax().z &&
 		this->getMax().x > collider->getMin().x &&
@@ -215,7 +215,7 @@ bool Cube::TouchingFront(Cube* collider, float velocity) {
 		this->getMax().y > collider->getMin().y;
 }
 
-bool Cube::TouchingBack(Cube* collider, float velocity) {
+bool Cube::TouchingBack(const Cube* collider, const float velocity) const {
 	return this->getMax().z + velocity > collider->getMin().z &&
 		this->getMin().z < collider->getMin().z &&
 		this->getMax().x > collider->getMin().x &&
@@ -224,7 +224,7 @@ bool Cube::TouchingBack(Cube* collider, float velocity) {
 		this->getMax().y > collider->getMin().y;
 }
 
-bool Cube::TouchingBottom(Cube* collider, float velocity) {
+bool Cube::TouchingBottom(const Cube* collider, const float velocity) const {
 	return this->getMin().y < collider->getMax().y &&
 		this->getMax().x > collider->getMin().x &&
 		this->getMin().x < collider->getMax().x &&
@@ -232,7 +232,7 @@ bool Cube::TouchingBottom(Cube* collider, float velocity) {
 		this->getMin().z < collider->getMax().z;
 }
 
-bool Cube::TouchingTop(Cube* collider, float velocity) {
+bool Cube::TouchingTop(const Cube* collider, const float velocity) const {
 	return this->getMax().y > collider->getMin().y &&
 		this->getMax().x > collider->getMin().x &&
 		this->getMin().x < collider->getMax().x &&
@@ -241,7 +241,7 @@ bool Cube::TouchingTop(Cube* collider, float velocity) {
 }
 
 // Returns -1 if there is no intersection
-float Cube::intersect(Ray r, float t0, float t1) {
+float Cube::intersect(const Ray& r, const float t0, const float t1) const {
 	float tmin, tmax, tymin, tymax, tzmin, tzmax;
 	if (r.direction.x >= 0) {
 		tmin = (min.x - r.origin.x) / r.direction.x;
@@ -329,12 +329,12 @@ void Cube::Regenerate(GameObject* gameObject) {
 
 RigidBody::RigidBody() = default;
 
-RigidBody::RigidBody(glm::vec3 position, std::string name) {
+RigidBody::RigidBody(const glm::vec3 position, const std::string& name) {
 	this->position = position;
 	this->name = name;
 }
 
-glm::vec3 RigidBody::GetPosition() {
+glm::vec3 RigidBody::GetPosition() const {
 	return position;
 }
 
@@ -356,7 +356,7 @@ void RigidBody::NewPositionY(float deltaTime) {
 	position.y += velocity.y * deltaTime;
 }
 
-void RigidBody::AddForce(glm::vec3 force) {
+void RigidBody::AddForce(const glm::vec3 force) {
 	velocity += force;
 }
 
@@ -372,7 +372,7 @@ void RigidBody::AddForceZ(float force) {
 	velocity.z += force;
 }
 
-void RigidBody::SetForce(glm::vec3 force) {
+void RigidBody::SetForce(const glm::vec3 force) {
 	velocity = force;
 }
 
@@ -471,17 +471,17 @@ namespace PhysicsManager
 		}
 	}
 	
-	RigidBody* PhysicsManager::AddRigidbody(glm::vec3 position, std::string name) {
+	RigidBody* PhysicsManager::AddRigidbody(const glm::vec3 position, const std::string& name) {
 		rigidbodies.push_back(RigidBody(position, name));
 		return &rigidbodies[rigidbodies.size() - 1];
 	}
 	
-	Cube* PhysicsManager::AddCube(glm::vec3 position, glm::vec3 min, glm::vec3 max, std::string name) {
+	Cube* PhysicsManager::AddCube(const glm::vec3 position, glm::vec3 min, glm::vec3 max, const std::string& name) {
 		colliders.push_back(Cube(position, min, max, name));
 		return &colliders[colliders.size() - 1];
 	}
 	
-	Cube* PhysicsManager::AddCube(glm::vec3 position, float width, float height, float depth, std::string name) {
+	Cube* PhysicsManager::AddCube(const glm::vec3 position, float width, float height, float depth, const std::string& name) {
 		colliders.push_back(Cube(position, width, height,depth, name));
 		return &colliders[colliders.size() - 1];
 	}
