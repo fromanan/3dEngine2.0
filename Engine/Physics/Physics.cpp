@@ -418,8 +418,8 @@ namespace PhysicsManager
 	std::vector<RigidBody> rigidbodies;
 
 	// Forces
-	float friction = 7;
-	float Gravity = -12;
+	constexpr float friction = 7;
+	constexpr float gravity = -12;
 
 	bool UpdatedCamera = false;
 
@@ -429,7 +429,7 @@ namespace PhysicsManager
 			// Add friction so you're not sliding
 			rigidbodies[i].SetForceX(rigidbodies[i].GetForce().x / (1 + (deltaTime * friction)));
 			rigidbodies[i].SetForceZ(rigidbodies[i].GetForce().z / (1 + (deltaTime * friction)));
-			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + Gravity * deltaTime);
+			rigidbodies[i].SetForceY(rigidbodies[i].GetForce().y + gravity * deltaTime);
 
 			Cube* rb_collider = GetCollider(rigidbodies[i].GetCollider());
 			
