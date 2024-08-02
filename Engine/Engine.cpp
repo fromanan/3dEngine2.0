@@ -29,7 +29,7 @@ namespace Engine
 
 		while (Backend::IsWindowOpen()) {
 			
-			//Delta time stuff
+			// Delta time stuff
 			double currentTime = glfwGetTime();
 			double dt = currentTime - lastTimeDT;
 			lastTimeDT = currentTime;
@@ -41,7 +41,7 @@ namespace Engine
 				previousTime = currentTime;
 			}
 
-			//Update Managers
+			// Update Managers
 			Input::Update();
 			Input::CenterMouse();
 			Renderer::ClearScreen();
