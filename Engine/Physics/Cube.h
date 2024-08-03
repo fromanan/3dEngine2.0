@@ -6,6 +6,7 @@
 
 #include "GameObject.h"
 #include "Ray.h"
+#include "Tags.h"
 
 class Cube
 {
@@ -48,8 +49,8 @@ public:
     void Regenerate(GameObject* gameObject);
 
 private:
-    std::string name = "None";
-    std::string tag = "None";
+    std::string name = Tags::NONE;
+    std::string tag = Tags::NONE;
     glm::vec3 min;
     glm::vec3 max;
     glm::vec3 position;

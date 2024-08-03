@@ -11,6 +11,7 @@
 #include "Engine/Core/GameObject.h"
 #include "Engine/Physics/BulletPhysics.h"
 #include "Engine/Core/AssetManager.h"
+#include "Tags.h"
 
 class Crate
 {
@@ -21,6 +22,6 @@ public:
 	void DealDamage(int damage, glm::vec3 position, glm::vec3 force);
 	std::string GetName();
 private:
-	std::string name = "None";
+	std::string name = Tags::NONE;
 	int health = 500;
 };

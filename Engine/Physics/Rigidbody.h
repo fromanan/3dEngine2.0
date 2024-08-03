@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Tags.h"
+
 class RigidBody
 {
 public:
@@ -36,8 +38,8 @@ public:
     glm::vec3 GetForce();
 
 private:
-    std::string name = "None";
+    std::string name = Tags::NONE;
     glm::vec3 position = glm::vec3(0, 0, 0);
     glm::vec3 velocity = glm::vec3(0,0,0);
-    std::string collider = "None";
+    std::string collider = Tags::NONE;
 };

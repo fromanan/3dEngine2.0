@@ -23,7 +23,7 @@ std::string RigidBody::GetName() {
 
 void RigidBody::NewPosition(float deltaTime) {
 	position += velocity * deltaTime;
-	if (collider != "None")
+	if (collider != Tags::NONE)
 		PhysicsManager::GetCollider(collider)->setPosition(position);
 }
 

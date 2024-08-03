@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include <string>
 
 namespace Tags
 {
-    static const std::string NOTHING = "nothing"; 
-};
+    static const char* NOTHING = "Nothing"; 
+    static const char* NONE = "None"; 
+}
