@@ -5,8 +5,8 @@ namespace Input
 	void Init();
 	void Update();
 
-	int GetMouseX();
-	int GetMouseY();
+	double GetMouseX();
+	double GetMouseY();
 	bool KeyPressed(char c);
 	bool KeyDown(char c);
 	bool KeyDownLastFrame(char c);

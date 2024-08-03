@@ -37,12 +37,12 @@ namespace Input
         return keyDownLastFrame[std::toupper(c)];
     }
     
-    int Input::GetMouseX() {
-        return static_cast<int>(mouseX);
+    double Input::GetMouseX() {
+        return mouseX;
     }
     
-    int Input::GetMouseY() {
-        return static_cast<int>(mouseY);
+    double Input::GetMouseY() {
+        return mouseY;
     }
 
     void Input::DisableCursor() {

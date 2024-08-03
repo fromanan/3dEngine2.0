@@ -47,15 +47,15 @@ namespace Camera
 	
 	glm::vec3 Camera::ComputeRay() {
 		glm::vec4 lRayStart_NDC(
-			(static_cast<float>(Input::GetMouseX()) / static_cast<float>(SCREENWIDTH) - 0.5f) * 2.0f, // [0,1024] -> [-1,1]
-			(static_cast<float>(Input::GetMouseY()) / static_cast<float>(SCREENHEIGHT) - 0.5f) * 2.0f, // [0, 768] -> [-1,1]
+			(Input::GetMouseX() / SCREENWIDTH - 0.5) * 2.0, // [0,1024] -> [-1,1]
+			(Input::GetMouseY() / SCREENHEIGHT - 0.5) * 2.0, // [0, 768] -> [-1,1]
 			-1.0, // The near plane maps to Z=-1 in Normalized Device Coordinates
 			1.0f
 		);
 		
 		glm::vec4 lRayEnd_NDC(
-			(static_cast<float>(Input::GetMouseX()) / static_cast<float>(SCREENWIDTH) - 0.5f) * 2.0f,
-			(static_cast<float>(Input::GetMouseY()) / static_cast<float>(SCREENHEIGHT) - 0.5f) * 2.0f,
+			(Input::GetMouseX() / SCREENWIDTH - 0.5) * 2.0,
+			(Input::GetMouseY() / SCREENHEIGHT - 0.5) * 2.0,
 			0.0,
 			1.0f
 		);
