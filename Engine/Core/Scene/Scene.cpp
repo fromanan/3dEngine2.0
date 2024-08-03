@@ -15,35 +15,56 @@ void Scene::Load() {
 	AssetManager::AddTexture("sand", "Assets/Textures/sandyGround.png","Assets/Normals/sand_normal.png");
 
 	AssetManager::AddTexture("concrete", "Assets/Textures/fence.png","Assets/Normals/fence_normal.png");
-	AssetManager::AddTexture("ak47_lowpoly", "Assets/Textures/ak47_lowpoly.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("crosshair", "Assets/Sprites/CrossHair.png", "Assets/Normals/ak47_lowpoly_normal.png");
 	AssetManager::AddTexture("window", "Assets/Textures/window.png");
 	
 	AssetManager::AddTexture("glock", "Assets/Textures/glock_17.png", "Assets/Normals/glock_17_normal.png");
 	AssetManager::AddTexture("door2", "Assets/Textures/Door_C.jpg");
 
+	AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png", "Assets/Normals/ak47_normal.png");
+
+
 	// TODO: not currently working
 	//AssetManager::LoadAssets("Assets/Saves/mainScene.json");
 
+	//Loads Models that then can 
+	models["fence1"] = Model( Mesh("Assets/Objects/fence1.obj"), AssetManager::GetTexture("concrete"));
+	models["fence2"] = Model(Mesh("Assets/Objects/fence2.obj"), AssetManager::GetTexture("concrete"));
+	models["fence3"] = Model(Mesh("Assets/Objects/fence3.obj"), AssetManager::GetTexture("concrete"));
+	models["floor"] = Model(Mesh("Assets/Objects/Floor.obj"), AssetManager::GetTexture("sand"));
+	models["slope"] = Model(Mesh("Assets/Objects/slope.obj"), AssetManager::GetTexture("sand"));
+	models["crate"] = Model(Mesh("Assets/Objects/Crate.obj"), AssetManager::GetTexture("crate"));
+	models["glock"] = Model(Mesh("Assets/Objects/glock_17.obj"), AssetManager::GetTexture("glock"));
+	models["ak47"] = Model(Mesh("Assets/Objects/ak47.obj"), AssetManager::GetTexture("ak47"));
+	models["door"] = Model(Mesh("Assets/Objects/door2.obj"), AssetManager::GetTexture("door2"));
+	models["door_frame"] = Model(Mesh("Assets/Objects/frame2.obj"), AssetManager::GetTexture("door2"));
+	models["player"] = Model(Mesh("Assets/Objects/capsule.obj"), AssetManager::GetTexture("uvmap"));
+
+
+
+
+
+
+
 	WeaponManager::Init();
-	AssetManager::AddGameObject("fence1", "Assets/Objects/fence3.obj", AssetManager::GetTexture("concrete"), glm::vec3(5, 1.3, 2), true, 0, Box);
-	AssetManager::AddGameObject("fence2", "Assets/Objects/fence1.obj", AssetManager::GetTexture("concrete"), glm::vec3(-9, 1.3, 2), true, 0, Box);
-	AssetManager::AddGameObject("fence3", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(2, 1.3, -9), true, 0, Box);
-	AssetManager::AddGameObject("fence4", "Assets/Objects/fence2.obj", AssetManager::GetTexture("concrete"), glm::vec3(-1, 1.3, 5), true, 0, Box);
-	//AssetManager::AddGameObject("floor", "Assets/Objects/test_platform.obj", AssetManager::GetTexture("sand"), glm::vec3(0, -2, 0), true, 0, Box);
-	AssetManager::AddGameObject("floor", "Assets/Objects/Floor.obj", AssetManager::GetTexture("sand"), glm::vec3(0, 0, 0), true, 0, Box);
 
-	AssetManager::AddGameObject("floor", "Assets/Objects/slope.obj", AssetManager::GetTexture("sand"), glm::vec3(-1, 2, -7), true, 0, Convex);
+	AssetManager::AddGameObject("fence1", &models["fence3"], glm::vec3(5, 1.3, 2), true, 0, Box);
+	AssetManager::AddGameObject("fence2", &models["fence1"], glm::vec3(-9, 1.3, 2), true, 0, Box);
+	AssetManager::AddGameObject("fence3", &models["fence2"], glm::vec3(2, 1.3, -9), true, 0, Box);
+	AssetManager::AddGameObject("fence4", &models["fence2"], glm::vec3(-1, 1.3, 5), true, 0, Box);
+	AssetManager::AddGameObject("floor", &models["floor"], glm::vec3(0, 0, 0), true, 0, Box);
+	AssetManager::AddGameObject("floor", &models["slope"], glm::vec3(-1, 2, -7), true, 0, Convex);
 
-	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
-	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate2", "Assets/Objects/Crate.obj", AssetManager::GetTexture("crate")));
+	crates.push_back(Crate(glm::vec3(1, 25, 1), "crate1", & models["crate"]));
+	crates.push_back(Crate(glm::vec3(1, 30, 0.5), "crate2", &models["crate"]));
+	crates.push_back(Crate(glm::vec3(0.5, 20, 1), "crate3", &models["crate"]));
 
-	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(1, 30, 1)));
 
-	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", "Assets/Objects/glock_17.obj", AssetManager::GetTexture("glock"), glm::vec3(1,25, 0)));
+	gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", &models["ak47"], glm::vec3(1, 30, 1)));
 
-	doors.push_back(Door("door1", "Assets/Objects/door2.obj", "Assets/Objects/frame2.obj", AssetManager::GetTexture("door2"), AssetManager::GetTexture("door2"), glm::vec3(-3, 0, -3)));
+	gunPickUps.push_back(GunPickUp("glock", "glock_pickup1", &models["glock"], glm::vec3(1,25, 0)));
+
+	doors.push_back(Door("door1", &models["door"],&models["door_frame"], glm::vec3(-3, 0, -3)));
 
 	//gunPickUps.push_back(GunPickUp("ak47", "ak47_pickup", "Assets/Objects/ak47_lowpoly.obj", AssetManager::GetTexture("ak47_lowpoly"), glm::vec3(8, -12, -5)));
 	//AssetManager::GetGameObject("ak47_pickup")->SetRender(false);
@@ -136,10 +157,6 @@ void Scene::RenderObjects() {
 		gameobjectRender->RenderObject(programid);
 	}
 
-	for (int i = 0; i < windows.size(); i++) {
-		windows[i].Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
-	}
-
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++) {
 		Decal* decal = AssetManager::GetDecal(i);
 		if (decal->CheckParentIsNull())
@@ -207,6 +224,7 @@ void Scene::RenderObjects(const char* shaderName) {
 		glm::mat3 ModelView3x3Matrix = glm::mat3(ViewMatrix * ModelMatrix); // Take the upper-left part of ModelViewMatrix
 
 		Renderer::SetTextureShader(MVP, ModelMatrix, ViewMatrix, ModelView3x3Matrix);
+		//Renderers model
 		gameobjectRender->RenderObject(programid);
 	}
 }
@@ -221,4 +239,7 @@ Crate* Scene::GetCrate(std::string name) {
 			return &crates[i];
 	}
 	return nullptr;
+}
+Model* Scene::GetModel(std::string name) {
+	return &models[name];
 }

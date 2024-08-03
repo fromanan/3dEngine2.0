@@ -51,12 +51,11 @@ namespace WeaponManager
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {
-		AssetManager::AddGameObject(GameObject("glock", "Assets/Objects/glock_17.obj", AssetManager::GetTexture("glock"), glm::vec3(0.2, -0.25, 0.2), false,0,Box,0,0,0));
+		AssetManager::AddGameObject(GameObject("glock", SceneManager::GetCurrentScene()->GetModel("glock"), glm::vec3(0.2, -0.25, 0.2), false, 0, Box, 0, 0, 0));
 		AssetManager::GetGameObject("glock")->SetRender(false);
 		AssetManager::GetGameObject("glock")->SetParentName("player_head");
 
-		AssetManager::AddTexture("ak47", "Assets/Textures/ak47.png","Assets/Normals/ak47_normal.png");
-		AssetManager::AddGameObject(GameObject("ak47", "Assets/Objects/ak47.obj", AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box, 0, 0, 0));
+		AssetManager::AddGameObject(GameObject("ak47", SceneManager::GetCurrentScene()->GetModel("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box, 0, 0, 0));
 		AssetManager::GetGameObject("ak47")->SetRender(false);
 		AssetManager::GetGameObject("ak47")->SetParentName("player_head");
 		
@@ -113,17 +112,16 @@ namespace WeaponManager
 	}
 }
 
-GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* objectModel, Texture* texture, glm::vec3 position) {
+GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, Model* model, glm::vec3 position) {
 	gunName = GunName;
 	objectName = ObjectName;
-	AssetManager::AddGameObject(objectName, objectModel, texture, position, false,1,Convex);
+	AssetManager::AddGameObject(objectName, model, position, false,1,Convex);
 }
 
 // TODO: Doesn't work
 GunPickUp::GunPickUp(std::string GunName, std::string GunObject, glm::vec3 position) {
 	gunName = GunName;
 	objectName = GunObject + std::to_string(SceneManager::GetCurrentScene()->GetGunPickUpSize());
-	std::cout << "here" << std::endl;
 	AssetManager::GetGameObject(GunObject)->Copy(objectName);
 	std::cout << "here1" << std::endl;
 	AssetManager::GetGameObject(objectName)->SetRender(true);

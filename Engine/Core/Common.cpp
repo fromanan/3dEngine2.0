@@ -1,7 +1,9 @@
 #include "Common.h"
 #include "Engine/Loaders/Loader.hpp"
 #include "Engine/Loaders/vboindexer.h"
+#include "Engine/Loaders/stb_image.h"
 
+#include "Engine/Core/AssetManager.h"
 
 btVector3 glmToBtVector3(const glm::vec3& vec) {
     return btVector3(vec.x, vec.y, vec.z);
@@ -109,6 +111,8 @@ Model::Model(Mesh mesh, Texture* texture) {
     this->texture = texture;
     meshes.push_back(mesh);
 
+
+    //TODO: Make this dynamic so I can change to a diff mesh
     glGenBuffers(1, &vertexbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
     glBufferData(GL_ARRAY_BUFFER, meshes[0].indexed_vertices.size() * sizeof(glm::vec3), &meshes[0].indexed_vertices[0], GL_STATIC_DRAW);
@@ -141,6 +145,13 @@ void Model::SetMesh(int mesh) {
     if(mesh >= 0 && mesh < meshes.size())
         currentMesh = mesh;
 }
+Mesh* Model::GetCurrentMesh() {
+    return &meshes[currentMesh];
+}
+const char*  Model::GetTextureName() {
+    return texture->GetName();
+}
+
 void Model::RenderModel(GLuint& programID) {
 
     glUseProgram(programID);
@@ -156,6 +167,9 @@ void Model::RenderModel(GLuint& programID) {
         glBindTexture(GL_TEXTURE_2D, texture->GetTextureNormal());
         glUniform1i(NormalID, texture->GetTextureNormalNumber());
     }
+
+
+    
 
     // 1st attribute buffer : vertices
     glEnableVertexAttribArray(0);
@@ -234,4 +248,11 @@ void Model::RenderModel(GLuint& programID) {
     glDisableVertexAttribArray(3);
     glDisableVertexAttribArray(4);
 }
+
+
+
+
+
+
+
 

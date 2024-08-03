@@ -9,7 +9,7 @@
 class Door
 {
 public:
-	Door(std::string Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, glm::vec3 position);
+	Door(std::string Name, Model* foor, Model* frame, glm::vec3 position);
 	void Interact();
 	void Update(float deltaTime);
 

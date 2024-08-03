@@ -12,8 +12,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include "Engine/Core/Texture.h"
 
-#include "Engine/Core/Renderer.h"
 
 #define SCREENWIDTH 1024
 #define SCREENHEIGHT 768
@@ -36,6 +36,8 @@ struct Transform{
     }
 };
 
+
+
 struct Mesh {
     Mesh(const char* path);
 
@@ -54,12 +56,14 @@ public:
     Model(Mesh mesh, Texture* texture);
     void AddMesh(Mesh mesh);
     void SetMesh(int mesh);
+    Mesh* GetCurrentMesh();
+    const char* GetTextureName();
     void RenderModel(GLuint& programID);
 
 private:
     std::vector<Mesh> meshes;
     int currentMesh = 0;
-    Texture* texture;
+    Texture* texture = nullptr;
 
     GLuint vertexbuffer;
     GLuint uvbuffer;
@@ -67,6 +71,7 @@ private:
     GLuint elementbuffer;
     GLuint tangentbuffer;
     GLuint bitangentbuffer;
+
         
 };
 

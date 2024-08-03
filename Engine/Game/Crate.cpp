@@ -1,9 +1,9 @@
 #include "Crate.h"
 #include "Engine/Core/Common.h"
 
-Crate::Crate(glm::vec3 position, std::string name, const char* path, Texture* texture) {
+Crate::Crate(glm::vec3 position, std::string name, Model* model) {
 	this->name = name;
-	AssetManager::AddGameObject(name, path, texture, position, false,3,Convex);
+	AssetManager::AddGameObject(name, model, position, false,3,Convex);
 	AssetManager::GetGameObject(name)->GetRigidBody()->setCcdMotionThreshold(0.1);
 	AssetManager::GetGameObject(name)->GetRigidBody()->setCcdSweptSphereRadius(0.2); // Set the radius for CCD
 }

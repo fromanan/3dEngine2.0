@@ -25,32 +25,13 @@ public:
 	GameObject();
 	GameObject(std::string name, bool save, float mass, ColliderShape shape);
 	GameObject(std::string name, glm::vec3 position, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, glm::vec3 position, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape);
-	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float margin);
 
-	GameObject(std::string name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth);
+	GameObject(std::string name, Model* model, glm::vec3 position, bool save, float mass, ColliderShape shape);
+	GameObject(std::string name, Model* model, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth);
 
-	GameObject(std::string name, std::string parentname, Texture* texture, glm::vec3 position,glm::vec3 rotation, glm::vec3 scale, std::vector<unsigned short> indices,
-		std::vector<glm::vec3> indexed_vertices, std::vector<glm::vec2> indexed_uvs, std::vector<glm::vec3> indexed_normals, bool save, float mass, ColliderShape shape);
 	
-	GameObject(std::string name, std::string parentname, Texture* texure, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
-		std::vector<glm::vec3> vertices,
-		std::vector<glm::vec2> uvs,
-		std::vector<glm::vec3> normals,
-		std::vector<glm::vec3> tangents,
-		std::vector<glm::vec3> bitangents,
-		std::vector<unsigned short> indices,
-		std::vector<glm::vec3> indexed_vertices,
-		std::vector<glm::vec2> indexed_uvs,
-		std::vector<glm::vec3> indexed_normals,
-		std::vector<glm::vec3> indexed_tangents,
-		std::vector<glm::vec3> indexed_bitangents, 
-		bool canSave,
-		bool render,
-		bool shouldDelete, float mass, 
-		btConvexHullShape* collidershape);
+	
+
 
 	void LoadModel(const char* path);
 	void Copy(std::string copyName);
@@ -102,48 +83,16 @@ public:
 
 	void SetUserPoint(void* pointer);
 
-	void computeTangentBasis(
-		// inputs
-		std::vector<glm::vec3>& vertices,
-		std::vector<glm::vec2>& uvs,
-		std::vector<glm::vec3>& normals,
-		// outputs
-		std::vector<glm::vec3>& tangents,
-		std::vector<glm::vec3>& bitangents
-	);
-
 	btRigidBody* GetRigidBody();
 	btCollisionShape* GetCollisionShape();
 	btConvexHullShape* GetConvexHull();
 
 private:
 	Transform transform = Transform();
-	Texture* texture = nullptr;
+	Model* model = nullptr;
 
 	std::string parentName;
 	std::string name;
-
-	// Read our .obj file
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec2> uvs;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec3> tangents;
-	std::vector<glm::vec3> bitangents;
-
-	std::vector<unsigned short> indices;
-	std::vector<glm::vec3> indexed_vertices;
-	std::vector<glm::vec2> indexed_uvs;
-	std::vector<glm::vec3> indexed_normals;
-	std::vector<glm::vec3> indexed_tangents;
-	std::vector<glm::vec3> indexed_bitangents;
-
-	GLuint vertexbuffer;
-	GLuint uvbuffer;
-	GLuint normalbuffer;
-	GLuint elementbuffer;
-	GLuint VertexArrayID;
-	GLuint tangentbuffer;
-	GLuint bitangentbuffer;
 	
 	// Physics stuff
 	btCollisionShape* collider = nullptr;

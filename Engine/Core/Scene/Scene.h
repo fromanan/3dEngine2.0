@@ -17,7 +17,6 @@
 #include "Engine/Game/Door.h"
 #include "Engine/Game/Gun.h"
 #include "Engine/Game/Crate.h"
-#include "Engine/Game/Window.h"
 #include "Engine/Core/Lights/Light.h"
 #include "Engine/Physics/BulletPhysics.h"
  
@@ -36,12 +35,15 @@ public:
 
 	size_t GetGunPickUpSize();
 	Crate* GetCrate(std::string name);
+	Model* GetModel(std::string name);
 private:
 	SkyBox sky = SkyBox();
 	// Objects
 	std::vector<Door> doors;
 	std::vector<Crate> crates;
 	std::vector<GunPickUp> gunPickUps;
-	std::vector<Window> windows;
 	std::vector<Light> lights;
+
+	//holds the models
+	std::map<std::string, Model> models;
 };

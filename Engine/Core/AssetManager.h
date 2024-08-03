@@ -9,10 +9,11 @@
 #include <fstream>
 #include <iostream>
 
-#include "GameObject.h"
-#include "Common.h"
-#include "Renderer.h"
-#include "Decal.h"
+#include "Engine/Core/GameObject.h"
+#include "Engine/Core/Common.h"
+#include "Engine/Core/Renderer.h"
+#include "Engine/Core/Texture.h"
+#include "Engine/Core/Decal.h"
 
 // Json stuff
 #include "Loaders/nlohmann/json.hpp"
@@ -26,8 +27,7 @@ namespace AssetManager
 
 	// returns index of object
 	size_t AddGameObject(GameObject gameobject);
-	unsigned long long AddGameObject(std::string name, const char* path, Texture* texture, glm::vec3 position,
-	                                 bool save, float mass, ColliderShape shape);
+	unsigned long long AddGameObject(std::string name, Model* model, glm::vec3 position, bool save, float mass, ColliderShape shape);
 
 	unsigned long long AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture,
 	                            GameObject* parent);
