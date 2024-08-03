@@ -12,6 +12,9 @@
 # CMake Folder
 build
 
+# vcpkg
+vcpkg_installed
+
 # User-specific files
 *.rsuser
 *.suo
