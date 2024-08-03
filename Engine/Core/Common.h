@@ -11,13 +11,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
+
+#include "Engine/Core/Renderer.h"
 
 #define SCREENWIDTH 1024
 #define SCREENHEIGHT 768
 #define WINDOWTITILE "Engine 2.0"
 
-struct Transform
-{
+struct Transform{
     glm::vec3 position = glm::vec3(0);
     glm::vec3 rotation = glm::vec3(0);
     glm::vec3 scale = glm::vec3(1);
@@ -32,6 +34,40 @@ struct Transform
         m = glm::scale(m, scale);
         return m;
     }
+};
+
+struct Mesh {
+    Mesh(const char* path);
+
+    std::vector<unsigned short> indices;
+    std::vector<glm::vec3> indexed_vertices;
+    std::vector<glm::vec2> indexed_uvs;
+    std::vector<glm::vec3> indexed_normals;
+    std::vector<glm::vec3> indexed_tangents;
+    std::vector<glm::vec3> indexed_bitangents;
+
+};
+
+class Model {
+public:
+    Model() = default;
+    Model(Mesh mesh, Texture* texture);
+    void AddMesh(Mesh mesh);
+    void SetMesh(int mesh);
+    void RenderModel(GLuint& programID);
+
+private:
+    std::vector<Mesh> meshes;
+    int currentMesh = 0;
+    Texture* texture;
+
+    GLuint vertexbuffer;
+    GLuint uvbuffer;
+    GLuint normalbuffer;
+    GLuint elementbuffer;
+    GLuint tangentbuffer;
+    GLuint bitangentbuffer;
+        
 };
 
 btVector3 glmToBtVector3(const glm::vec3& vec);

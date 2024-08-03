@@ -11,10 +11,6 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 
 	transform.position = position;
 	transform.rotation = (rotationAxis * -angle);
-	std::cout << "debug" << std::endl;
-	std::cout << angle << std::endl;
-	std::cout << "x: " << normal.x << " y: " << position.y << " z: " << position.z << std::endl;
-	std::cout << "x: " << transform.rotation.x << " y: " << transform.rotation.y << " z: " << transform.rotation.z << std::endl;
 
 	transform.scale = scale;
 
