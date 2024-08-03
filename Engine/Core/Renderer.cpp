@@ -34,7 +34,7 @@ namespace Renderer
 		setMat4(MatrixID, mvp);
 		setMat4(ModelMatrixID, model);
 		setMat4(ViewMatrixID, view);
-		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
+		glUniformMatrix3fv(static_cast<GLint>(ModelView3x3MatrixID), 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
 	}
 	
 	void Renderer::SetLights(const std::vector<Light>& lights) {
@@ -54,11 +54,11 @@ namespace Renderer
 		}
 
 		// Set up uniform arrays in the shader
-		GLuint lightPositionsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPositions_worldspace");
-		GLuint lightColorsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightColors");
-		GLuint LightConstantsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightConstants");
-		GLuint LightLinearsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightLinears");
-		GLuint LightQuadraticsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightQuadratics");
+		const GLuint lightPositionsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightPositions_worldspace");
+		const GLuint lightColorsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightColors");
+		const GLuint LightConstantsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightConstants");
+		const GLuint LightLinearsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightLinears");
+		const GLuint LightQuadraticsLoc = glGetUniformLocation(GetProgramID("Texture"), "LightQuadratics");
 
 
 		glUniform3fv(lightPositionsLoc, static_cast<GLsizei>(lights.size()), glm::value_ptr(lightPositions[0]));
@@ -95,7 +95,7 @@ namespace Renderer
 		UseProgram(GetProgramID("sprite"));
 		
 		// Configure VAO/VBO
-		const float vertices[] = {
+		constexpr float vertices[] = {
 			// pos      // tex
 			0.0f, 1.0f, 0.0f, 1.0f,
 			1.0f, 0.0f, 1.0f, 0.0f,
@@ -145,7 +145,7 @@ namespace Renderer
 	}
 
 	// TODO: Doesn't work right now still in progress
-	void Renderer::DrawSprite(Texture* texture, const glm::vec2 position, const glm::vec2 size, const float rotate, const glm::vec3 color) {
+	void Renderer::DrawSprite(const Texture* texture, const glm::vec2 position, const glm::vec2 size, const float rotate, const glm::vec3 color) {
 		UseProgram(GetProgramID("sprite"));
 
 		glEnableVertexAttribArray(0);

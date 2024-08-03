@@ -399,7 +399,6 @@ GameObject::GameObject(const std::string& name, const std::string& parentName, T
 	float height = 1;
 	float depth = 1;
 	this->Btransform.setOrigin(glmToBtVector3(position));
-	std::cout << "here3" << std::endl;
 
 	bool isDynamic = (mass != 0.f);
 
@@ -434,7 +433,6 @@ GameObject::GameObject(const std::string& name, const std::string& parentName, T
 		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
 	
 	setPosition(position);
-	std::cout << "here4" << std::endl;
 }
 
 void GameObject::LoadModel(const char* path) {

@@ -36,7 +36,7 @@ namespace Text2D
 	}
 
 	void Text2D::printText2D(const char* text, const int x, const int y, const int size) {
-		size_t length = strlen(text);
+		const size_t length = strlen(text);
 		glEnable(GL_BLEND);
 		
 		// Fill buffers
@@ -57,9 +57,9 @@ namespace Text2D
 			vertices.push_back(vertex_up_right);
 			vertices.push_back(vertex_down_left);
 
-			char character = text[i];
-			float uv_x = float(character % 16) / 16.0f;
-			float uv_y = (character / 16.0f) / 16.0f;
+			const char character = text[i];
+			const float uv_x = static_cast<float>(character % 16) / 16.0f;
+			const float uv_y = static_cast<float>(character) / 16.0f / 16.0f;
 
 			glm::vec2 uv_up_left = glm::vec2(uv_x, uv_y);
 			glm::vec2 uv_up_right = glm::vec2(uv_x + 1.0f / 16.0f, uv_y);
@@ -75,9 +75,9 @@ namespace Text2D
 		}
 		
 		glBindBuffer(GL_ARRAY_BUFFER, Text2DVertexBufferID);
-		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size()) * sizeof(glm::vec2), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size()) * sizeof(glm::vec2), vertices.data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, Text2DUVBufferID);
-		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(UVs.size()) * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(UVs.size()) * sizeof(glm::vec2), UVs.data(), GL_STATIC_DRAW);
 
 		// Bind shader
 		glUseProgram(Text2DShaderID);
