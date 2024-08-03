@@ -59,7 +59,7 @@ namespace Text2D
 
 			const char character = text[i];
 			const float uv_x = static_cast<float>(character % 16) / 16.0f;
-			const float uv_y = static_cast<float>(character) / 16.0f / 16.0f;
+			const float uv_y = static_cast<float>(character / 16) / 16.0f;
 
 			glm::vec2 uv_up_left = glm::vec2(uv_x, uv_y);
 			glm::vec2 uv_up_right = glm::vec2(uv_x + 1.0f / 16.0f, uv_y);
