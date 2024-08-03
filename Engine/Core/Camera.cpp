@@ -1,7 +1,10 @@
+#include "pch.h"
+
 #include "Camera.h"
-#include "AssetManager.h"
-#include "Engine/Core/Common.h"
-#include "Engine/Physics/BulletPhysics.h"
+
+#include "CollisionGroups.h"
+#include "Input.h"
+#include "PhysicsManagerBullet.h"
 
 namespace Camera
 {
@@ -44,15 +47,15 @@ namespace Camera
 	
 	glm::vec3 Camera::ComputeRay() {
 		glm::vec4 lRayStart_NDC(
-			((float)Input::GetMouseX() / (float)SCREENWIDTH - 0.5f) * 2.0f, // [0,1024] -> [-1,1]
-			((float)Input::GetMouseY() / (float)SCREENHEIGHT - 0.5f) * 2.0f, // [0, 768] -> [-1,1]
+			(static_cast<float>(Input::GetMouseX()) / static_cast<float>(SCREENWIDTH) - 0.5f) * 2.0f, // [0,1024] -> [-1,1]
+			(static_cast<float>(Input::GetMouseY()) / static_cast<float>(SCREENHEIGHT) - 0.5f) * 2.0f, // [0, 768] -> [-1,1]
 			-1.0, // The near plane maps to Z=-1 in Normalized Device Coordinates
 			1.0f
 		);
 		
 		glm::vec4 lRayEnd_NDC(
-			((float)Input::GetMouseX() / (float)SCREENWIDTH - 0.5f) * 2.0f,
-			((float)Input::GetMouseY() / (float)SCREENHEIGHT - 0.5f) * 2.0f,
+			(static_cast<float>(Input::GetMouseX()) / static_cast<float>(SCREENWIDTH) - 0.5f) * 2.0f,
+			(static_cast<float>(Input::GetMouseY()) / static_cast<float>(SCREENHEIGHT) - 0.5f) * 2.0f,
 			0.0,
 			1.0f
 		);
@@ -74,21 +77,21 @@ namespace Camera
 	}
 	
 	btCollisionWorld::ClosestRayResultCallback Camera::GetRayHit() {
-		glm::vec3 out_end = Camera::position + ComputeRay() * 1000.0f;
+		const glm::vec3 out_end = position + ComputeRay() * 1000.0f;
 
 		btCollisionWorld::ClosestRayResultCallback RayCallback(
-			btVector3(Camera::position.x, Camera::position.y, Camera::position.z),
+			btVector3(position.x, position.y, position.z),
 			btVector3(out_end.x, out_end.y, out_end.z)
 		);
 		RayCallback.m_collisionFilterGroup = GROUP_PLAYER;
 		RayCallback.m_collisionFilterMask = GROUP_STATIC | GROUP_DYNAMIC;
-		PhysicsManagerBullet::GetDynamicWorld()->rayTest(btVector3(Camera::position.x, Camera::position.y, Camera::position.z),btVector3(out_end.x, out_end.y, out_end.z),RayCallback);
+		PhysicsManagerBullet::GetDynamicWorld()->rayTest(btVector3(position.x, position.y, position.z),btVector3(out_end.x, out_end.y, out_end.z),RayCallback);
 		return RayCallback;
 	}
 
 	void Camera::Update(float dt) {
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
-			verticalAngle += mouseSpeed * float(768 / 2 - Input::GetMouseY());
+			verticalAngle += mouseSpeed * (768.0f / 2 - static_cast<float>(Input::GetMouseY()));
 		else if (verticalAngle > maxAngle)
 			verticalAngle = maxAngle;
 		else if (verticalAngle < -maxAngle)
@@ -102,14 +105,14 @@ namespace Camera
 		);
 		
 		// Right vector
-		glm::vec3 right = glm::vec3(
+		const glm::vec3 right = glm::vec3(
 			sin(horizontalAngle - 3.14f / 2.0f),
 			0,
 			cos(horizontalAngle - 3.14f / 2.0f)
 		);
 		
 		// Up vector
-		glm::vec3 up = glm::cross(right, direction);
+		const glm::vec3 up = glm::cross(right, direction);
 
 		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 		ProjectionMatrix = glm::perspective(initialFoV, 4.0f / 3.0f, 0.1f, 100.0f);

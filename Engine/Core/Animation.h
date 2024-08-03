@@ -1,26 +1,8 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <vector>
-#include <string>
-
-#include "Engine/Core/GameObject.h"
-#include "Engine/Core/AssetManager.h"
 
 // TODO: This is still a work-in-progress and hasn't been implemented into the engine
 
-struct KeyFrame
-{
-	float duration;
-	glm::vec3 position;
-	glm::vec3 rotation;
-
-	void Create(glm::vec3 position, glm::vec3 rotation, float duration);
-};
+struct KeyFrame;
 
 class Animation
 {

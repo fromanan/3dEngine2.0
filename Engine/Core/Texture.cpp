@@ -1,9 +1,9 @@
-﻿#include "Texture.h"
+﻿#include "pch.h"
 
-#include <iostream>
+#include "Texture.h"
 
 #include "AssetPaths.h"
-#include "Loaders/stb_image.h"
+#include "stb_image.h"
 
 Texture::Texture(const char* name, const char* path) {
 	this->name = name;
@@ -117,23 +117,23 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	stbi_image_free(data1);
 }
 
-int Texture::GetTextureNormalNumber() {
+int Texture::GetTextureNormalNumber() const {
 	return textureNormalNumber;
 }
 
-GLuint Texture::GetTextureNormal() {
+GLuint Texture::GetTextureNormal() const {
 	return textureNormal;
 }
 
-const char* Texture::GetName() {
+const char* Texture::GetName() const {
 	return name;
 }
 
-int Texture::GetTextureNumber() {
+int Texture::GetTextureNumber() const {
 	return textureNumber;
 }
 
-GLuint Texture::GetTexture() {
+GLuint Texture::GetTexture() const {
 	return texture;
 }
 

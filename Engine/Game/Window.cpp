@@ -1,6 +1,11 @@
+#include "pch.h"
+
 #include "Window.h"
 
-Window::Window(std::string name, const char* frame_path, Texture* frame_texture, const char* window_path, Texture* window_texture, glm::vec3 position, glm::vec3 rotation) {
+#include "AssetManager.h"
+#include "Renderer.h"
+
+Window::Window(const std::string& name, const char* frame_path, Texture* frame_texture, const char* window_path, Texture* window_texture, glm::vec3 position, glm::vec3 rotation) {
 	this->name = name;
 	window = GameObject(name, window_path, window_texture, position, false,0,Box);
 	window.setRotation(rotation);
@@ -9,7 +14,7 @@ Window::Window(std::string name, const char* frame_path, Texture* frame_texture,
 	AssetManager::GetGameObject(name + "_frame")->setRotation(rotation);
 }
 
-void Window::Render(GLuint programID, glm::mat4 View, glm::mat4 projection) {
+void Window::Render(const GLuint programID, const glm::mat4& View, const glm::mat4& projection) const {
 	if (!window.ShouldRender())
 		return;
 	glm::mat4 ModelMatrix = window.GetModelMatrix();

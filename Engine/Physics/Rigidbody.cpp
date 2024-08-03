@@ -1,4 +1,6 @@
-﻿#include "RigidBody.h"
+﻿#include "pch.h"
+
+#include "RigidBody.h"
 
 #include "PhysicsManager.h"
 

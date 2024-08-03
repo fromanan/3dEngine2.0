@@ -1,7 +1,5 @@
 ﻿#pragma once
 #include <fmod.hpp>
-#include <string>
-#include <glm/glm.hpp>
 
 class Sound {
 public:

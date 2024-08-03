@@ -1,6 +1,6 @@
+#include "pch.h"
+
 #include "PhysicsManager.h"
-#include "Camera.h"
-#include "Engine/Game/Player.h"
 
 namespace PhysicsManager
 {

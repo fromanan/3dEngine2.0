@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "SceneManager.h"
 
 namespace SceneManager
@@ -14,14 +16,14 @@ namespace SceneManager
 		return scenes.size() - 1;
 	}
 	
-	void SceneManager::LoadScene(int index) {
+	void SceneManager::LoadScene(const int index) {
 		if (index < scenes.size())
 			currentScene = index;
 		scenes[currentScene].Load();
 		std::cout << "Loaded Scene " << index << std::endl;
 	}
 
-	void SceneManager::Update(float dt) {
+	void SceneManager::Update(const float dt) {
 		scenes[currentScene].Update(dt);
 	}
 	

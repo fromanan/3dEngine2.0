@@ -1,10 +1,17 @@
+#include "pch.h"
+
 #include "Player.h"
 
+#include "AssetManager.h"
 #include "AssetPaths.h"
+#include "Camera.h"
+#include "CollisionGroups.h"
+#include "Gun.h"
+#include "Input.h"
+#include "PhysicsManagerBullet.h"
 #include "Tags.h"
-#include "Engine/Core/AssetManager.h"
-#include "Engine/Core/Scene/SceneManager.h"
-#include "Engine/Physics/BulletPhysics.h"
+#include "WeaponManager.h"
+#include "Audio/AudioManager.h"
 
 namespace Player
 {
@@ -78,8 +85,7 @@ namespace Player
 			WeaponManager::GetGunByName(gunName)->Shoot();
 			verticalAngle += WeaponManager::GetGunByName(gunName)->recoil;
 			horizontalAngle += static_cast<float>(rand()) / RAND_MAX / WeaponManager::GetGunByName(gunName)->recoilY;
-			btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit();
-			if (hit.m_collisionObject != nullptr) {
+			if (btCollisionWorld::ClosestRayResultCallback hit = Camera::GetRayHit(); hit.m_collisionObject != nullptr) {
 				GameObject* gameObject = AssetManager::GetGameObject(hit.m_collisionObject->getUserIndex());
 				if (gameObject != nullptr)
 				{
@@ -103,8 +109,8 @@ namespace Player
 	}
 	
 	bool Player::OnGround() {
-		GameObject* player = AssetManager::GetGameObject("player");
-		glm::vec3 out_end = player->getPosition() + glm::vec3(0,-0.65,0);
+		const GameObject* player = AssetManager::GetGameObject("player");
+		const glm::vec3 out_end = player->getPosition() + glm::vec3(0,-0.65,0);
 
 		btCollisionWorld::ClosestRayResultCallback RayCallback(
 			btVector3(player->getPosition().x, player->getPosition().y, player->getPosition().z),
@@ -152,10 +158,8 @@ namespace Player
 
 		if (verticalAngle <= maxAngle && verticalAngle >= -maxAngle)
 			verticalAngle += mouseSpeed * (768.0f / 2 - static_cast<float>(Input::GetMouseY()));
-		
 		else if (verticalAngle > maxAngle)
 			verticalAngle = maxAngle;
-		
 		else if (verticalAngle < -maxAngle)
 			verticalAngle = -maxAngle;
 		
@@ -287,7 +291,7 @@ namespace Player
 		return forward;
 	}
 	
-	void Player::setPosition(glm::vec3 pos) {
+	void Player::setPosition(const glm::vec3 pos) {
 		AssetManager::GetGameObject("player")->setPosition(pos);
 		Camera::SetPosition(AssetManager::GetGameObject("player")->getPosition());
 	}
@@ -300,7 +304,7 @@ namespace Player
 		return gunName;
 	}
 	
-	bool Player::SelectWeapon(std::string weaponName) {
+	bool Player::SelectWeapon(const std::string& weaponName) {
 		if (reloading || weaponName == gunName)
 			return false;
 		if (gunName != Tags::NOTHING)
@@ -311,7 +315,7 @@ namespace Player
 		return true;
 	}
 	
-	void Player::SwitchWeapons(int index) {
+	void Player::SwitchWeapons(const int index) {
 		AssetManager::GetGameObject(inv[index])->SetRender(false);
 		gunName = inv[index];
 	}

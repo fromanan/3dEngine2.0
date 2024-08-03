@@ -1,26 +1,16 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <map>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-
 
 struct Light
 {
 	glm::vec3 position = glm::vec3(0,0,0);
-	glm::vec3 colour = glm::vec3(1,1,1);
+	glm::vec3 color = glm::vec3(1,1,1);
 
 	float constant;
 	float linear;
 	float quadratic;
 
-	Light(glm::vec3 position, glm::vec3 colour, float constant, float linear, float quadratic);
+	Light(glm::vec3 position, glm::vec3 color, float constant, float linear, float quadratic);
 };
-
-
 
 /*
 For Attenuation, These values are good starting points for most lights. More info at https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation

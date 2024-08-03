@@ -1,19 +1,12 @@
 #pragma once
-#include <string>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-#include "Engine/Core/AssetManager.h"
-#include "Engine/Physics/PhysicsManager.h"
+class Texture;
 
 class Window
 {
 public:
-	Window(std::string name, const char* frame_path, Texture* frame_texture, const char* window_path, Texture* window_texture, glm::vec3 position, glm::vec3 rotation);
-	void Render(GLuint programID, glm::mat4 View, glm::mat4 projection);
+	Window(const std::string& name, const char* frame_path, Texture* frame_texture, const char* window_path, Texture* window_texture, glm::vec3 position, glm::vec3 rotation);
+	void Render(GLuint programID, const glm::mat4& View, const glm::mat4& projection) const;
 private:
 	GameObject window;
 	std::string name;

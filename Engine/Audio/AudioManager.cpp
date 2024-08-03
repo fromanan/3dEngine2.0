@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include <chrono>
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
 #include "AudioManager.h"
 
 #include "AssetPaths.h"

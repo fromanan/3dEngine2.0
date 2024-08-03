@@ -1,4 +1,8 @@
+#include "pch.h"
+
 #include "Input.h"
+
+#include "Backend.h"
 
 namespace Input
 {
@@ -21,24 +25,24 @@ namespace Input
 
     GLFWwindow* window;
 
-    bool Input::KeyPressed(char c) {
+    bool Input::KeyPressed(const char c) {
         return keyPressed[std::toupper(c)];
     }
     
-    bool Input::KeyDown(char c) {
+    bool Input::KeyDown(const char c) {
         return keyDown[std::toupper(c)];
     }
     
-    bool Input::KeyDownLastFrame(char c) {
+    bool Input::KeyDownLastFrame(const char c) {
         return keyDownLastFrame[std::toupper(c)];
     }
     
     int Input::GetMouseX() {
-        return (int)mouseX;
+        return static_cast<int>(mouseX);
     }
     
     int Input::GetMouseY() {
-        return (int)mouseY;
+        return static_cast<int>(mouseY);
     }
 
     void Input::DisableCursor() {

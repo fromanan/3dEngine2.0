@@ -1,8 +1,10 @@
+#include "pch.h"
+
 #include "ShaderLoader.hpp"
 
-namespace LoadShaders
+namespace ShaderLoader
 {
-	GLuint LoadShaders::LoadShaders(const char* vertex_file_path, const char* fragment_file_path) {
+	GLuint ShaderLoader::LoadShaders(const char* vertex_file_path, const char* fragment_file_path) {
 		// Create the shaders
 		GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 		GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -46,8 +48,8 @@ namespace LoadShaders
 		glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		if (InfoLogLength > 0) {
 			std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
-			glGetShaderInfoLog(VertexShaderID, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
-			printf("%s\n", &VertexShaderErrorMessage[0]);
+			glGetShaderInfoLog(VertexShaderID, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
+			printf("%s\n", VertexShaderErrorMessage.data());
 		}
 
 		// Compile Fragment Shader
@@ -61,8 +63,8 @@ namespace LoadShaders
 		glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		if (InfoLogLength > 0) {
 			std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
-			glGetShaderInfoLog(FragmentShaderID, InfoLogLength, nullptr, &FragmentShaderErrorMessage[0]);
-			printf("%s\n", &FragmentShaderErrorMessage[0]);
+			glGetShaderInfoLog(FragmentShaderID, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
+			printf("%s\n", FragmentShaderErrorMessage.data());
 		}
 
 		// Link the program
@@ -77,8 +79,8 @@ namespace LoadShaders
 		glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		if (InfoLogLength > 0) {
 			std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-			glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
-			printf("%s\n", &ProgramErrorMessage[0]);
+			glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, ProgramErrorMessage.data());
+			printf("%s\n", ProgramErrorMessage.data());
 		}
 
 		glDetachShader(ProgramID, VertexShaderID);

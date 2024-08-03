@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <GL/glew.h>
 
 class Texture
 {
@@ -9,12 +8,12 @@ public:
     Texture(const char* name, const char* path);
     Texture(const char* name, const char* path, const char* normalPath);
 
-    const char* GetName();
-    int GetTextureNumber();
-    int GetTextureNormalNumber();
+    const char* GetName() const;
+    int GetTextureNumber() const;
+    int GetTextureNormalNumber() const;
 
-    GLuint GetTexture();
-    GLuint GetTextureNormal();
+    GLuint GetTexture() const;
+    GLuint GetTextureNormal() const;
 
 private:
     const char* name;

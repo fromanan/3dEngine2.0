@@ -1,6 +1,11 @@
+#include "pch.h"
+
 #include "Text2D.h"
 
 #include "AssetPaths.h"
+#include "Loaders/Loader.hpp"
+#include "Loaders/ShaderLoader.hpp"
+#include "Engine/Core/Renderer.h"
 
 namespace Text2D
 {
@@ -23,14 +28,14 @@ namespace Text2D
 		glGenBuffers(1, &Text2DUVBufferID);
 
 		// Initialize Shader
-		Text2DShaderID = LoadShaders::LoadShaders(AssetPaths::Shader_Text_Vert, AssetPaths::Shader_Text_Frag);
+		Text2DShaderID = ShaderLoader::LoadShaders(AssetPaths::Shader_Text_Vert, AssetPaths::Shader_Text_Frag);
 		Renderer::UseProgram(Text2DShaderID);
 		
 		// Initialize uniforms' IDs
 		Text2DUniformID = glGetUniformLocation(Text2DShaderID, "textShader");
 	}
 
-	void Text2D::printText2D(const char* text, int x, int y, int size) {
+	void Text2D::printText2D(const char* text, const int x, const int y, const int size) {
 		size_t length = strlen(text);
 		glEnable(GL_BLEND);
 		

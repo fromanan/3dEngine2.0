@@ -1,22 +1,24 @@
-#include "vboindexer.h"
+#include "pch.h"
 
-namespace indexer {
+#include "Indexer.h"
 
+namespace Indexer
+{
 	// Returns true iif v1 can be considered equal to v2
-	bool indexer::is_near(float v1, float v2) {
+	bool Indexer::is_near(const float v1, const float v2) {
 		return fabs(v1 - v2) < 0.01f;
 	}
 
 	// Searches through all already-exported vertices
 	// for a similar one.
 	// Similar = same position + same UVs + same normal
-	bool indexer::getSimilarVertexIndex(
-		glm::vec3& in_vertex,
-		glm::vec2& in_uv,
-		glm::vec3& in_normal,
-		std::vector<glm::vec3>& out_vertices,
-		std::vector<glm::vec2>& out_uvs,
-		std::vector<glm::vec3>& out_normals,
+	bool Indexer::getSimilarVertexIndex(
+		const glm::vec3& in_vertex,
+		const glm::vec2& in_uv,
+		const glm::vec3& in_normal,
+		const std::vector<glm::vec3>& out_vertices,
+		const std::vector<glm::vec2>& out_uvs,
+		const std::vector<glm::vec3>& out_normals,
 		unsigned short& result
 	) {
 		// Lame linear search
@@ -41,12 +43,12 @@ namespace indexer {
 		return false;
 	}
 
-	void indexer::indexVBO(
-		std::vector<glm::vec3>& in_vertices,
-		std::vector<glm::vec2>& in_uvs,
-		std::vector<glm::vec3>& in_normals,
-		std::vector<glm::vec3>& in_tangents,
-		std::vector<glm::vec3>& in_bitangents,
+	void Indexer::indexVBO(
+		const std::vector<glm::vec3>& in_vertices,
+		const std::vector<glm::vec2>& in_uvs,
+		const std::vector<glm::vec3>& in_normals,
+		const std::vector<glm::vec3>& in_tangents,
+		const std::vector<glm::vec3>& in_bitangents,
 
 		std::vector<unsigned short>& out_indices,
 		std::vector<glm::vec3>& out_vertices,
@@ -60,9 +62,7 @@ namespace indexer {
 
 			// Try to find a similar vertex in out_XXXX
 			unsigned short index;
-			bool found = getSimilarVertexIndex(in_vertices[i], in_uvs[i], in_normals[i], out_vertices, out_uvs, out_normals, index);
-
-			if (found) { // A similar vertex is already in the VBO, use it instead !
+			if (const bool found = getSimilarVertexIndex(in_vertices[i], in_uvs[i], in_normals[i], out_vertices, out_uvs, out_normals, index)) { // A similar vertex is already in the VBO, use it instead !
 				out_indices.push_back(index);
 
 				// Average the tangents and the bitangents
@@ -75,18 +75,17 @@ namespace indexer {
 				out_normals.push_back(in_normals[i]);
 				out_tangents.push_back(in_tangents[i]);
 				out_bitangents.push_back(in_bitangents[i]);
-				out_indices.push_back((unsigned short)out_vertices.size() - 1);
+				out_indices.push_back(static_cast<unsigned short>(out_vertices.size() - 1));
 			}
 		}
 	}
 
-	bool indexer::getSimilarVertexIndex_fast(
-		PackedVertex& packed,
+	bool Indexer::getSimilarVertexIndex_fast(
+		const PackedVertex& packed,
 		std::map<PackedVertex, unsigned short>& VertexToOutIndex,
 		unsigned short& result
 	) {
-		std::map<PackedVertex, unsigned short>::iterator it = VertexToOutIndex.find(packed);
-		if (it == VertexToOutIndex.end()) {
+		if (const std::map<PackedVertex, unsigned short>::iterator it = VertexToOutIndex.find(packed); it == VertexToOutIndex.end()) {
 			return false;
 		}
 		else {

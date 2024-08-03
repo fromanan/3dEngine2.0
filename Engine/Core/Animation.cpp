@@ -1,10 +1,9 @@
+#include "pch.h"
+
 #include "Animation.h"
 
-void KeyFrame::Create(const glm::vec3 position, const glm::vec3 rotation, const float duration) {
-	this->position = position;
-	this->rotation = rotation;
-	this->duration = duration;
-}
+#include "AssetManager.h"
+#include "Keyframe.h"
 
 Animation::Animation(const std::string& name) {
 	this->name = name;

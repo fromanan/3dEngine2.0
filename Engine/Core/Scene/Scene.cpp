@@ -1,6 +1,17 @@
+#include "pch.h"
+
 #include "Scene.h"
 
+#include "AssetManager.h"
 #include "AssetPaths.h"
+#include "Camera.h"
+#include "PhysicsManager.h"
+#include "Renderer.h"
+#include "Audio/AudioManager.h"
+#include "Game/Player.h"
+#include "Skybox.h"
+#include "Game/Gun.h"
+#include "Game/WeaponManager.h"
 
 Scene::Scene()  = default;
 
@@ -81,9 +92,9 @@ void Scene::Update(const float deltaTime) {
 		AssetManager::GetGameObject(i)->Update();
 	}
 	
-	for (int door = 0; door < doors.size(); door++) {
-		doors[door].Interact();
-		doors[door].Update(deltaTime);
+	for (auto& door : doors) {
+		door.Interact();
+		door.Update(deltaTime);
 	}
 	
 	for (int gun = 0; gun < gunPickUps.size(); gun++) {
@@ -92,15 +103,15 @@ void Scene::Update(const float deltaTime) {
 			gunPickUps.erase(gunPickUps.begin() + gun);
 	}
 	
-	for (int crate = 0; crate < crates.size(); crate++) {
-		crates[crate].Update();
+	for (const auto& crate : crates) {
+		crate.Update();
 	}
 	
-	AudioManager::UpdateListener(Player::getPosition(),Player::getForward(),PhysicsManager::GetRigidBody("PlayerRB")->GetForce());
+	AudioManager::UpdateListener(Player::getPosition(), Player::getForward(), PhysicsManager::GetRigidBody("PlayerRB")->GetForce());
 	AudioManager::Update();
 }
 
-void Scene::RenderObjects() {
+void Scene::RenderObjects() const {
 	const glm::mat4 ProjectionMatrix = Camera::getProjectionMatrix();
 	const glm::mat4 ViewMatrix = Camera::getViewMatrix();
 	const glm::mat4 PV = ProjectionMatrix * ViewMatrix;
@@ -127,12 +138,12 @@ void Scene::RenderObjects() {
 		gameObjectRender->RenderObject(programid);
 	}
 
-	for (int i = 0; i < windows.size(); i++) {
-		windows[i].Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
+	for (const auto& window : windows) {
+		window.Render(Renderer::GetProgramID("Texture"), ViewMatrix, ProjectionMatrix);
 	}
 
 	for (int i = 0; i < AssetManager::GetDecalsSize(); i++) {
-		Decal* decal = AssetManager::GetDecal(i);
+		const Decal* decal = AssetManager::GetDecal(i);
 		if (decal->CheckParentIsNull())
 			continue;
 		// Do some pre-normal calculations
@@ -146,12 +157,12 @@ void Scene::RenderObjects() {
 	glDisable(GL_BLEND);
 	std::ostringstream oss;
 	oss.precision(2);
-	glm::vec3 pos = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
+	const glm::vec3 pos = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getWorldTransform().getOrigin());
 	
 	oss << "Pos x:" << pos.x << " y:" << pos.y << " z:" << pos.z;
 	Renderer::RenderText(oss.str().c_str(), 0, 570, 15);
-	
-	glm::vec3 vel = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity());
+
+	const glm::vec3 vel = btToGlmVector3(AssetManager::GetGameObject("player")->GetRigidBody()->getLinearVelocity());
 	oss.str("");
 	oss.clear();
 	oss.precision(2);
@@ -171,12 +182,12 @@ void Scene::RenderObjects() {
 	Renderer::RenderText(oss.str().c_str(), 0, 500, 15);
 }
 
-void Scene::AddGunPickUp(const GunPickUp& gunpickup) {
+void Scene::AddGunPickUp(const GunPickup& gunpickup) {
 	gunPickUps.push_back(gunpickup);
 }
 
 void Scene::AddGunPickUp(const std::string& gunName, const std::string& gunObject, const glm::vec3 Position) {
-	GunPickUp pickup = GunPickUp(gunName, gunObject, Position);
+	const GunPickup pickup = GunPickup(gunName, gunObject, Position);
 	std::cout << " testing";
 	gunPickUps.push_back(pickup);
 }
@@ -195,7 +206,7 @@ void Scene::RenderObjects(const char* shaderName) const {
 	Renderer::SetLights(lights);
 
 	for (int i = 0; i < AssetManager::GetGameObjectsSize(); i++) {
-		GameObject* gameObjectRender = AssetManager::GetGameObject(i);
+		const GameObject* gameObjectRender = AssetManager::GetGameObject(i);
 
 		if (!gameObjectRender->ShouldRender())
 			continue;
@@ -214,9 +225,9 @@ size_t Scene::GetGunPickUpSize() const {
 }
 
 Crate* Scene::GetCrate(const std::string& name) {
-	for (int i = 0; i < crates.size(); i++) {
-		if (crates[i].GetName() == name)
-			return &crates[i];
+	for (auto& crate : crates) {
+		if (crate.GetName() == name)
+			return &crate;
 	}
 	return nullptr;
 }

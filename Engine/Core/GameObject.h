@@ -1,23 +1,8 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-#include <vector>
-#include <string>
-
-#include "Common.h"
-#include "Renderer.h"
-
-#include "../Loaders/vboindexer.h"
-#include "../Loaders/Loader.hpp"
-#include "Engine/Physics/BulletPhysics.h"
-
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include "ColliderShape.h"
+#include "Texture.h"
+#include "Transform.h"
 
 class GameObject
 {

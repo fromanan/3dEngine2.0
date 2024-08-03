@@ -1,6 +1,12 @@
+#include "pch.h"
+
 #include "Door.h"
 
-Door::Door(std::string Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, glm::vec3 position) {
+#include "AssetManager.h"
+#include "Player.h"
+#include "Audio/AudioManager.h"
+
+Door::Door(const std::string& Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, const glm::vec3 position) {
 	name = Name;
 	AssetManager::AddGameObject(GameObject(name + "_frame", framePath, frameTexture, position, false, 0, Box, 0, 0, 0));
 	AssetManager::AddGameObject(name + "_door", doorPath, doorTexture, position, false, 0, Convex);

@@ -1,15 +1,4 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <iostream>
-#include <chrono>
-#include <fmod.hpp>
-#include <fmod_errors.h>
-
-#include <iostream>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "Sound.h"
 

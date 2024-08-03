@@ -1,9 +1,14 @@
+#include "pch.h"
+
 #include "Gun.h"
 
+#include "AssetManager.h"
 #include "AssetPaths.h"
-#include "Engine/Core/Scene/SceneManager.h"
+#include "Player.h"
+#include "Audio/AudioManager.h"
+#include "Scene/SceneManager.h"
 
-void Gun::Update(float deltaTime, bool isReloading, bool aiming) {
+void Gun::Update(const float deltaTime, const bool isReloading, const bool aiming) {
 	GameObject* gun = AssetManager::GetGameObject(gunModel);
 	gun->GetRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
 	gun->GetRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
@@ -46,106 +51,4 @@ void Gun::Shoot() {
 	int randomnum = (rand() % 4) + 1;
 	AudioManager::PlaySound(gunsShotName + std::to_string(randomnum));
 	kickbackOffset += kickback;
-}
-
-namespace WeaponManager
-{
-	std::vector<Gun> guns;
-
-	void WeaponManager::Init() {
-		AssetManager::AddGameObject(GameObject("glock", AssetPaths::Model_Glock17, AssetManager::GetTexture("glock"), glm::vec3(0.2, -0.25, 0.2), false,0,Box,0,0,0));
-		AssetManager::GetGameObject("glock")->SetRender(false);
-		AssetManager::GetGameObject("glock")->SetParentName("player_head");
-
-		AssetManager::AddTexture("ak47", AssetPaths::Texture_Ak47, AssetPaths::Normal_Ak47);
-		AssetManager::AddGameObject(GameObject("ak47", AssetPaths::Model_Ak47, AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box, 0, 0, 0));
-		AssetManager::GetGameObject("ak47")->SetRender(false);
-		AssetManager::GetGameObject("ak47")->SetParentName("player_head");
-		
-		AudioManager::AddSound(AssetPaths::Audio_Ak47_1, "ak47_fire1", AssetManager::GetGameObject("ak47")->getPosition(), 5,0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Ak47_2, "ak47_fire2", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Ak47_3, "ak47_fire3", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Ak47_4, "ak47_fire4", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Glock17_1, "glock_fire1", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Glock17_2, "glock_fire2", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Glock17_3, "glock_fire3", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_Glock17_4, "glock_fire4", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.5f);
-		AudioManager::AddSound(AssetPaths::Audio_DryFire, "dry_fire", AssetManager::GetGameObject("glock")->getPosition(), 5, 0.2f);
-		
-		Gun glock;
-		glock.name = "glock";
-		glock.ammo = 18;
-		glock.reloadtime = 1.5;
-		glock.firerate = 250;
-		glock.currentammo = 18;
-		glock.damage = 10;
-		glock.type = Semi;
-		glock.recoil = 0.01f;
-		glock.recoilY = 100;
-		glock.kickback = 3;
-		glock.weaponOffSet = glm::vec3(-0.3, -0.2, 0.9);
-		glock.aimingPosition = glm::vec3(0,-0.16, 0.7);
-		glock.gunModel = "glock"; 
-		glock.gunsShotName = "glock_fire";
-		guns.emplace_back(glock);
-
-		Gun ak47;
-		ak47.name = "ak47";
-		ak47.ammo = 30;
-		ak47.reloadtime = 2.5;
-		ak47.firerate = 600;
-		ak47.currentammo = 30;
-		ak47.damage = 25;
-		ak47.type = Auto;
-		ak47.recoil = 0.03f;
-		ak47.recoilY = 175;
-		ak47.kickback = 2;
-		ak47.gunModel = "ak47";
-		ak47.gunsShotName = "ak47_fire";
-		ak47.weaponOffSet = glm::vec3(-0.3, -0.25, 0.9);
-		ak47.aimingPosition = glm::vec3(0, -0.2, 0.7);
-		guns.emplace_back(ak47);
-	}
-	
-	Gun* WeaponManager::GetGunByName(std::string name) {
-		for (int i = 0; i < guns.size(); i++)
-			if (guns[i].name == name)
-				return &guns[i];
-		return nullptr;
-	}
-}
-
-GunPickUp::GunPickUp(std::string GunName, std::string ObjectName, const char* objectModel, Texture* texture, glm::vec3 position) {
-	gunName = GunName;
-	objectName = ObjectName;
-	AssetManager::AddGameObject(objectName, objectModel, texture, position, false,1,Convex);
-}
-
-// TODO: Doesn't work
-GunPickUp::GunPickUp(std::string GunName, std::string GunObject, glm::vec3 position) {
-	gunName = GunName;
-	objectName = GunObject + std::to_string(SceneManager::GetCurrentScene()->GetGunPickUpSize());
-	std::cout << "here" << std::endl;
-	AssetManager::GetGameObject(GunObject)->Copy(objectName);
-	std::cout << "here1" << std::endl;
-	AssetManager::GetGameObject(objectName)->SetRender(true);
-	AssetManager::GetGameObject(objectName)->setPosition(position);
-}
-
-void GunPickUp::Update() {
-	
-}
-
-bool GunPickUp::Interact() {
-	if (Player::GetInteractingWithName() != objectName || !Player::SelectWeapon(gunName))
-		return false;
-	
-	GameObject* object = AssetManager::GetGameObject(objectName);
-
-	PhysicsManagerBullet::GetDynamicWorld()->removeRigidBody(object->GetRigidBody());
-	object->SetRender(false);
-		
-	WeaponManager::GetGunByName(gunName)->currentammo = WeaponManager::GetGunByName(gunName)->ammo;
-	AudioManager::PlaySound("item_pickup", Player::getPosition());
-	return true;
 }

@@ -1,6 +1,9 @@
+#include "pch.h"
+
 #include "Backend.h"
 
 #include "AssetPaths.h"
+#include "Renderer.h"
 
 namespace Backend
 {
@@ -46,7 +49,7 @@ namespace Backend
 	}
 
 	bool Backend::IsWindowOpen() {
-		return (!glfwWindowShouldClose(window) && windowOpen);
+		return !glfwWindowShouldClose(window) && windowOpen;
 	}
 
 	void Backend::CloseWindow() {

@@ -1,7 +1,11 @@
+#include "pch.h"
+
 #include "Renderer.h"
 
 #include "AssetPaths.h"
+#include "Loaders/ShaderLoader.hpp"
 #include "Scene/SceneManager.h"
+#include "UI/Text2D.h"
 
 namespace Renderer
 {
@@ -43,7 +47,7 @@ namespace Renderer
 
 		for (const auto& light : lights) {
 			lightPositions.push_back(light.position);
-			lightColors.push_back(light.colour);
+			lightColors.push_back(light.color);
 			LightConstants.push_back(light.constant);
 			LightLinears.push_back(light.linear);
 			LightQuadratics.push_back(light.quadratic);
@@ -131,7 +135,7 @@ namespace Renderer
 	}
 	
 	int Renderer::LoadShader(const char* vertex, const char* fragment, const char* name) {
-		shaderProgramIds[name] = LoadShaders::LoadShaders(vertex, fragment); 
+		shaderProgramIds[name] = ShaderLoader::LoadShaders(vertex, fragment); 
 		return shaderProgramIds[name];
 	} 
 

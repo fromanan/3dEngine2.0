@@ -1,11 +1,7 @@
 #pragma once
-#include <vector>
-#include <map>
-#include <iostream>
-#include <glm/glm.hpp>
-#include <string.h> // for memcmp
 
-namespace indexer {
+namespace Indexer
+{
 	// Returns true iif v1 can be considered equal to v2
 	bool is_near(float v1, float v2);
 
@@ -13,12 +9,12 @@ namespace indexer {
 	// for a similar one.
 	// Similar = same position + same UVs + same normal
 	bool getSimilarVertexIndex(
-		glm::vec3& in_vertex,
-		glm::vec2& in_uv,
-		glm::vec3& in_normal,
-		std::vector<glm::vec3>& out_vertices,
-		std::vector<glm::vec2>& out_uvs,
-		std::vector<glm::vec3>& out_normals,
+		const glm::vec3& in_vertex,
+		const glm::vec2& in_uv,
+		const glm::vec3& in_normal,
+		const std::vector<glm::vec3>& out_vertices,
+		const std::vector<glm::vec2>& out_uvs,
+		const std::vector<glm::vec3>& out_normals,
 		unsigned short& result
 	);
 
@@ -43,17 +39,17 @@ namespace indexer {
 	};
 
 	bool getSimilarVertexIndex_fast(
-		PackedVertex& packed,
+		const PackedVertex& packed,
 		std::map<PackedVertex, unsigned short>& VertexToOutIndex,
 		unsigned short& result
 	);
 
 	void indexVBO(
-		std::vector<glm::vec3>& in_vertices,
-		std::vector<glm::vec2>& in_uvs,
-		std::vector<glm::vec3>& in_normals,
-		std::vector<glm::vec3>& in_tangents,
-		std::vector<glm::vec3>& in_bitangents,
+		const std::vector<glm::vec3>& in_vertices,
+		const std::vector<glm::vec2>& in_uvs,
+		const std::vector<glm::vec3>& in_normals,
+		const std::vector<glm::vec3>& in_tangents,
+		const std::vector<glm::vec3>& in_bitangents,
 
 		std::vector<unsigned short>& out_indices,
 		std::vector<glm::vec3>& out_vertices,

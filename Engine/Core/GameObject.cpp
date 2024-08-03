@@ -1,6 +1,17 @@
+#include "pch.h"
+
+#ifdef max
+#undef max
+#endif
+
 #include "GameObject.h"
-#include "Engine/Core/AssetManager.h"
-#include "Engine/Physics/BulletPhysics.h"
+
+#include "AssetManager.h"
+#include "CollisionGroups.h"
+#include "PhysicsManagerBullet.h"
+
+#include "Loaders/Loader.hpp"
+#include "Loaders/Indexer.h"
 
 GameObject::GameObject() = default;
 
@@ -432,7 +443,7 @@ void GameObject::LoadModel(const char* path) {
 
 	bool res = Loader::loadOBJ(path, vertices, uvs, normals);
 	computeTangentBasis(vertices, uvs, normals, tangents, bitangents);
-	indexer::indexVBO(vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals,indexed_tangents,indexed_bitangents);
+	Indexer::indexVBO(vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals,indexed_tangents,indexed_bitangents);
 	
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);

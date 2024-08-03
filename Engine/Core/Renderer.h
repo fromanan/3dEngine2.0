@@ -1,19 +1,8 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <map>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "Skybox.h"
 #include "Texture.h"
-#include "Loaders/ShaderLoader.hpp"
-#include "Loaders/Loader.hpp"
-#include "Engine/Core/UI/Text2D.h"
-#include "Loaders/stb_image.h"
-#include "Engine/Core/Common.h"
-#include "Engine/Core/Lights/Light.h"
+#include "Lights/Light.h"
 
 namespace Renderer
 {

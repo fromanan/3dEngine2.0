@@ -1,4 +1,10 @@
+#include "pch.h"
+
 #include "AssetManager.h"
+
+// Json stuff
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
 
 namespace AssetManager
 {

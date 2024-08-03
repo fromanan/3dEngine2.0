@@ -1,22 +1,24 @@
+#include "pch.h"
+
 #include "Decal.h"
 
-Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture, GameObject* Parent) {
+Decal::Decal(const glm::vec3 position, const glm::vec3 normal, const glm::vec3 scale, Texture* texture, GameObject* parent) {
     this->texture = texture;
 	this->normal = normal;
-	parent = Parent;
+	this->parent = parent;
 
 	glm::vec3 up(0, 1, 0);
 	glm::vec3 rotationAxis = glm::cross(normal, up);
 	float angle = acos(glm::dot(normal, up));
 
-	transform.position = position;
-	transform.rotation = (rotationAxis * -angle);
+	this->transform.position = position;
+	this->transform.rotation = (rotationAxis * -angle);
 	std::cout << "debug" << std::endl;
 	std::cout << angle << std::endl;
 	std::cout << "x: " << normal.x << " y: " << position.y << " z: " << position.z << std::endl;
 	std::cout << "x: " << transform.rotation.x << " y: " << transform.rotation.y << " z: " << transform.rotation.z << std::endl;
 
-	transform.scale = scale;
+	this->transform.scale = scale;
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -47,21 +49,21 @@ Decal::Decal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* tex
 	glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 }
 
-bool Decal::CheckParentIsNull() {
+bool Decal::CheckParentIsNull() const {
 	if (parent == nullptr)
 		return true;
 	return false;
 }
 
-glm::mat4 Decal::GetModel() {
-	return parent->GetModelMatrix() * transform.to_mat4();
+glm::mat4 Decal::GetModel() const {
+	return this->parent->GetModelMatrix() * transform.to_mat4();
 }
 
-glm::vec3 Decal::GetNormal() {
-	return normal;
+glm::vec3 Decal::GetNormal() const {
+	return this->normal;
 }
 
-void Decal::RenderDecal(GLuint& programID) {
+void Decal::RenderDecal(const GLuint& programID) const {
 	glUseProgram(programID);
 
 	if (texture != nullptr) {
@@ -142,7 +144,7 @@ void Decal::RenderDecal(GLuint& programID) {
 	// Draw the triangles !
 	glDrawElements(
 		GL_TRIANGLES,      // mode
-		(GLsizei)indices.size(),    // count
+		static_cast<GLsizei>(indices.size()),    // count
 		GL_UNSIGNED_SHORT,   // type
 		nullptr           // element array buffer offset
 	);

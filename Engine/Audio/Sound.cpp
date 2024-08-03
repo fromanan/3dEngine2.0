@@ -1,4 +1,10 @@
-﻿#include "Sound.h"
+﻿#include "pch.h"
+
+#include <chrono>
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
+#include "Sound.h"
 
 #include "AudioManager.h"
 

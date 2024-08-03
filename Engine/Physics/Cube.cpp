@@ -1,4 +1,6 @@
-﻿#include "Cube.h"
+﻿#include "pch.h"
+
+#include "Cube.h"
 
 Cube::Cube(glm::vec3 position, glm::vec3 min, glm::vec3 max, std::string name) {
 	this->min = min;

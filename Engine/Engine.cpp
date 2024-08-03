@@ -1,7 +1,17 @@
+#include "pch.h"
+
 #include "Engine.h"
 
 #include "AssetPaths.h"
-#include "Engine/Physics/BulletPhysics.h"
+#include "Backend.h"
+#include "PhysicsManagerBullet.h"
+#include "Camera.h"
+#include "Input.h"
+#include "Renderer.h"
+#include "Audio/AudioManager.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
+#include "UI/Text2D.h"
 
 //rewrite of my first 3D Engine
 //Not sure what im going to call it yet 

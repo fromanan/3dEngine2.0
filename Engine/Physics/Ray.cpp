@@ -1,4 +1,6 @@
-﻿#include "Ray.h"
+﻿#include "pch.h"
+
+#include "Ray.h"
 
 Ray::Ray(const glm::vec3 dir, const glm::vec3 org) {
     direction = dir;
