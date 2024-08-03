@@ -10,7 +10,7 @@ Texture::Texture(const char* name, const char* path) {
 	int texturenumTemp = CurrentTextureNumber++;
 	textureNumber = texturenumTemp - GL_TEXTURE0;
 
-	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
+	std::cout << "Texture Numbers loaded at " << textureNumber << std::endl;
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -66,7 +66,7 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	int texturenumTemp = CurrentTextureNumber++;
 	textureNumber = texturenumTemp - GL_TEXTURE0;
 
-	std::cout << "TextureNumbers loaded at " << textureNumber << std::endl;
+	std::cout << "Texture Numbers loaded at " << textureNumber << std::endl;
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
