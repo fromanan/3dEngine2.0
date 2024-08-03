@@ -15,6 +15,10 @@ build
 # vcpkg
 vcpkg_installed
 
+# Precompiled Headers
+pch.i
+**.pch
+
 # User-specific files
 *.rsuser
 *.suo
