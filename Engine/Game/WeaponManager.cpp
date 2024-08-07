@@ -11,16 +11,18 @@ namespace WeaponManager
 	std::vector<Gun> guns;
 
 	void WeaponManager::Init() {
-		AssetManager::AddGameObject(GameObject("glock", AssetPaths::Model_Glock17, AssetManager::GetTexture("glock"), glm::vec3(0.2, -0.25, 0.2), false,0,Box,0,0,0));
+		AssetManager::AddGameObject(GameObject("glock", SceneManager::GetCurrentScene()->GetModel("glock"), glm::vec3(0.2, -0.25, 0.2), false, 0, Box, 0, 0, 0));
+		//AssetManager::AddGameObject(GameObject("glock", AssetPaths::Model_Glock17, AssetManager::GetTexture("glock"), glm::vec3(0.2, -0.25, 0.2), false, 0, Box, 0, 0, 0));
 		AssetManager::GetGameObject("glock")->SetRender(false);
 		AssetManager::GetGameObject("glock")->SetParentName("player_head");
 
-		AssetManager::AddTexture("ak47", AssetPaths::Texture_Ak47, AssetPaths::Normal_Ak47);
-		AssetManager::AddGameObject(GameObject("ak47", AssetPaths::Model_Ak47, AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false,0,Box, 0, 0, 0));
+		AssetManager::AddGameObject(GameObject("ak47", SceneManager::GetCurrentScene()->GetModel("ak47"), glm::vec3(0.2, -0.25, -0.2), false, 0, Box, 0, 0, 0));
+		//AssetManager::AddTexture("ak47", AssetPaths::Texture_Ak47, AssetPaths::Normal_Ak47);
+		//AssetManager::AddGameObject(GameObject("ak47", AssetPaths::Model_Ak47, AssetManager::GetTexture("ak47"), glm::vec3(0.2, -0.25, -0.2), false, 0, Box, 0, 0, 0));
 		AssetManager::GetGameObject("ak47")->SetRender(false);
 		AssetManager::GetGameObject("ak47")->SetParentName("player_head");
 		
-		AudioManager::AddSound(AssetPaths::Audio_Ak47_1, "ak47_fire1", AssetManager::GetGameObject("ak47")->getPosition(), 5,0.5f);
+		AudioManager::AddSound(AssetPaths::Audio_Ak47_1, "ak47_fire1", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);
 		AudioManager::AddSound(AssetPaths::Audio_Ak47_2, "ak47_fire2", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);
 		AudioManager::AddSound(AssetPaths::Audio_Ak47_3, "ak47_fire3", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);
 		AudioManager::AddSound(AssetPaths::Audio_Ak47_4, "ak47_fire4", AssetManager::GetGameObject("ak47")->getPosition(), 5, 0.5f);

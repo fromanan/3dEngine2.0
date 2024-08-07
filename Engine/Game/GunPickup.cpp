@@ -10,11 +10,17 @@
 #include "Audio/AudioManager.h"
 #include "Scene/SceneManager.h"
 
-GunPickup::GunPickup(const std::string& gunName, const std::string& objectName, const char* objectModel, Texture* texture, const glm::vec3 position) {
+GunPickUp::GunPickUp(const std::string& gunName, const std::string& objectName, Model* model, const glm::vec3 position) {
+	this->gunName = gunName;
+    this->objectName = objectName;
+	AssetManager::AddGameObject(this->objectName, model, position, false, 1, Convex);
+}
+
+/*GunPickup::GunPickup(const std::string& gunName, const std::string& objectName, const char* objectModel, Texture* texture, const glm::vec3 position) {
     this->gunName = gunName;
     this->objectName = objectName;
-    AssetManager::AddGameObject(this->objectName, objectModel, texture, position, false,1,Convex);
-}
+    AssetManager::AddGameObject(this->objectName, objectModel, texture, position, false, 1, Convex);
+}*/
 
 // TODO: Doesn't work
 GunPickup::GunPickup(const std::string& gunName, const std::string& gunObject, const glm::vec3 position) {
