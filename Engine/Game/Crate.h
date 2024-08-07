@@ -5,7 +5,7 @@
 class Crate
 {
 public:
-	Crate(glm::vec3 position, const std::string& name,const char* path, Texture* texture);
+	Crate(glm::vec3 position, const std::string& name, Model* model);
 	void Update() const;
 	void Break() const;
 	void DealDamage(int damage, glm::vec3 position, glm::vec3 force);

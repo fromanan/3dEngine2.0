@@ -27,25 +27,9 @@ GameObject::GameObject(const std::string& name, const glm::vec3 position, const 
 	this->canSave = save;
 }
 
-GameObject::GameObject(const std::string& name, const char* path, const bool save, float mass, ColliderShape shape) {
+GameObject::GameObject(const std::string& name, Model* model, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 	this->name = name;
-	LoadModel(path);
-	this->parentName = "";
-	this->canSave = save;
-}
-
-GameObject::GameObject(const std::string& name, const char* path, const glm::vec3 position, const bool save, float mass, ColliderShape shape) {
-	this->name = name;
-	LoadModel(path);
-	setPosition(position);
-	this->parentName = "";
-	this->canSave = save;
-}
-
-GameObject::GameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape) {
-	this->name = name;
-	this->texture = texture;
-	LoadModel(path);
+	this->model = model;
 	this->parentName = "";
 	this->canSave = save;
 
@@ -59,7 +43,7 @@ GameObject::GameObject(const std::string& name, const char* path, Texture* textu
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
-		for (const auto& vertex : indexed_vertices) {
+		for (const auto& vertex : model->GetCurrentMesh()->indexed_vertices) {
 			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
 			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
 			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
@@ -74,7 +58,7 @@ GameObject::GameObject(const std::string& name, const char* path, Texture* textu
 	}
 	else if (shape == Convex) {
 		this->convexHullShape = new btConvexHullShape();
-		for (const auto& vertex : indexed_vertices) {
+		for (const auto& vertex : model->GetCurrentMesh()->indexed_vertices) {
 			this->convexHullShape->addPoint(glmToBtVector3(vertex));
 		}
 		this->convexHullShape->optimizeConvexHull();
@@ -83,7 +67,7 @@ GameObject::GameObject(const std::string& name, const char* path, Texture* textu
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
-		for (const auto& vertex : indexed_vertices) {
+		for (const auto& vertex : model->GetCurrentMesh()->indexed_vertices) {
 			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
 			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
 			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
@@ -99,7 +83,7 @@ GameObject::GameObject(const std::string& name, const char* path, Texture* textu
 		glm::vec3 minPoint(std::numeric_limits<float>::max());
 		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
 
-		for (const auto& vertex : indexed_vertices) {
+		for (const auto& vertex : model->GetCurrentMesh()->indexed_vertices) {
 			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
 			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
 			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
@@ -148,122 +132,10 @@ GameObject::GameObject(const std::string& name, const char* path, Texture* textu
 	setPosition(position);
 }
 
-GameObject::GameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position, bool save, float mass, ColliderShape shape, float margin) {
+
+GameObject::GameObject(const std::string& name, Model* model, glm::vec3 position, bool save, float mass, ColliderShape shape, float width, float height, float depth) {
 	this->name = name;
-	this->texture = texture;
-	LoadModel(path);
-	this->parentName = "";
-	this->canSave = save;
-
-	float width = 1;
-	float height = 1;
-	float depth = 1;
-	this->Btransform.setOrigin(glmToBtVector3(position));
-	glm::vec3 dimensions(1, 1, 1);
-
-	if (shape == Box) {
-		glm::vec3 minPoint(std::numeric_limits<float>::max());
-		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
-
-		for (const auto& vertex : indexed_vertices) {
-			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
-			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
-			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
-
-			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
-			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
-			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
-		}
-		dimensions = maxPoint - minPoint;
-		this->collider = new btBoxShape(btVector3(dimensions.x / 2, dimensions.y / 2, dimensions.z / 2));
-	}
-	else if (shape == Convex) {
-		this->convexHullShape = new btConvexHullShape();
-		for (const auto& vertex : indexed_vertices) {
-			this->convexHullShape->addPoint(glmToBtVector3(vertex));
-		}
-		this->convexHullShape->optimizeConvexHull();
-	}
-	else if (shape == Sphere) {
-		glm::vec3 minPoint(std::numeric_limits<float>::max());
-		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
-
-		for (const auto& vertex : indexed_vertices) {
-			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
-			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
-			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
-
-			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
-			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
-			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
-		}
-		
-		dimensions = maxPoint - minPoint;
-		this->collider = new btSphereShape(dimensions.x / 2);
-	}
-	else if (shape == Capsule) {
-		glm::vec3 minPoint(std::numeric_limits<float>::max());
-		glm::vec3 maxPoint(std::numeric_limits<float>::lowest());
-
-		for (const auto& vertex : indexed_vertices) {
-			if (vertex.x < minPoint.x) minPoint.x = vertex.x;
-			if (vertex.y < minPoint.y) minPoint.y = vertex.y;
-			if (vertex.z < minPoint.z) minPoint.z = vertex.z;
-
-			if (vertex.x > maxPoint.x) maxPoint.x = vertex.x;
-			if (vertex.y > maxPoint.y) maxPoint.y = vertex.y;
-			if (vertex.z > maxPoint.z) maxPoint.z = vertex.z;
-		}
-		dimensions = maxPoint - minPoint;
-		this->collider = new btCapsuleShape(dimensions.x / 2, dimensions.y / 2);
-	}
-	
-	if (collider != nullptr)
-		this->collider->setMargin(margin);
-	if (convexHullShape != nullptr)
-		this->convexHullShape->setMargin(margin);
-
-	PhysicsManagerBullet::AddColliderShape(collider);
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0, 0, 0);
-	if (isDynamic && collider != nullptr)
-		this->collider->calculateLocalInertia(mass, localInertia);
-	else if (isDynamic && convexHullShape != nullptr)
-		this->convexHullShape->calculateLocalInertia(mass, localInertia);
-
-	this->Btransform.setIdentity();
-	this->Btransform.setOrigin(btVector3(position.x, position.y, position.z));
-
-	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr) {
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collider, localInertia);
-		body = new btRigidBody(rbInfo);
-	}
-	else {
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, convexHullShape, localInertia);
-		body = new btRigidBody(rbInfo);
-	}
-
-	this->body->setActivationState(DISABLE_DEACTIVATION);
-	this->body->setFriction(0.9f);
-	this->body->setUserIndex(-1);
-	
-	// Add the body to the dynamics world
-	if (mass != 0)
-		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
-	else
-		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
-	
-	setPosition(position);
-}
-
-GameObject::GameObject(const std::string& name, const char* path, Texture* texture, const glm::vec3 position,
-	const bool save, const float mass, const ColliderShape shape, const float width, const float height, const float depth) {
-	this->name = name;
-	this->texture = texture;
-	LoadModel(path);
+	this->model = model;
 	this->parentName = "";
 	this->canSave = save;
 
@@ -301,175 +173,8 @@ GameObject::GameObject(const std::string& name, const char* path, Texture* textu
 	setPosition(position);
 }
 
-GameObject::GameObject(const std::string& name, const std::string& parentName, Texture* texture,
-	const glm::vec3 position, const glm::vec3 rotation, const glm::vec3 scale, std::vector<unsigned short> indice,
-	std::vector<glm::vec3> indexed_vert, std::vector<glm::vec2> indexed_uv, std::vector<glm::vec3> indexed_norms,
-	const bool save, float mass, ColliderShape shape)
-{
-	this->canSave = save;
-	this->name = name;
-	setPosition(position);
-	this->texture = texture;
-	this->parentName = parentName;
-	setRotation(rotation);
-	this->transform.scale.x = scale.x;
-	this->transform.scale.y = scale.y;
-	this->transform.scale.z = scale.z;
-	this->indices = std::move(indice);
-	this->indexed_normals = std::move(indexed_norms);
-	this->indexed_uvs = std::move(indexed_uv);
-	this->indexed_vertices = std::move(indexed_vert);
-
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_vertices.size()) * sizeof(glm::vec3), indexed_vertices.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &uvbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_uvs.size()) * sizeof(glm::vec2), indexed_uvs.data(), GL_STATIC_DRAW);
-	
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_normals.size()) * sizeof(glm::vec3), indexed_normals.data(), GL_STATIC_DRAW);
-
-	// Generate a buffer for the indices as well
-	glGenBuffers(1, &elementbuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(indices.size()) * sizeof(unsigned short), indices.data(), GL_STATIC_DRAW);
-}
-
-GameObject::GameObject(const std::string& name, const std::string& parentName, Texture* texture, glm::vec3 position,
-	glm::vec3 rotation, glm::vec3 scale, std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs,
-	std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents, std::vector<glm::vec3> bitangents,
-	std::vector<unsigned short> indices, std::vector<glm::vec3> indexed_vertices, std::vector<glm::vec2> indexed_uvs,
-	std::vector<glm::vec3> indexed_normals, std::vector<glm::vec3> indexed_tangents,
-	std::vector<glm::vec3> indexed_bitangents, bool canSave, bool render, bool shouldDelete, float mass,
-	btConvexHullShape* colliderShape)
-{
-	this->name = name;
-	this->parentName = parentName;
-	this->texture = texture;
-	this->transform.position = position;
-	this->transform.rotation = rotation;
-	this->transform.scale = scale;
-	this->vertices = std::move(vertices);
-	this->uvs = std::move(uvs);
-	this->normals = std::move(normals);
-	this->tangents = std::move(tangents);
-	this->bitangents = std::move(bitangents);
-	this->indices = indices;
-	this->indexed_vertices = indexed_vertices;
-	this->indexed_uvs = indexed_uvs;
-	this->indexed_normals = indexed_normals;
-	this->indexed_tangents = indexed_tangents;
-	this->indexed_bitangents = indexed_bitangents;
-	this->canSave = canSave;
-	this->render = render;
-	this->shouldDelete = shouldDelete;
-	this->convexHullShape = colliderShape;
-
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_vertices.size()) * sizeof(glm::vec3), indexed_vertices.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &uvbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_uvs.size()) * sizeof(glm::vec2), indexed_uvs.data(), GL_STATIC_DRAW);
-	
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_normals.size()) * sizeof(glm::vec3), indexed_normals.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &elementbuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(indices.size()) * sizeof(unsigned short), indices.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &tangentbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_tangents.size()) * sizeof(glm::vec3), indexed_tangents.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &bitangentbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_bitangents.size()) * sizeof(glm::vec3), indexed_bitangents.data(), GL_STATIC_DRAW);
-
-	float width = 1;
-	float height = 1;
-	float depth = 1;
-	this->Btransform.setOrigin(glmToBtVector3(position));
-
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0, 0, 0);
-	if (isDynamic && collider != nullptr)
-		this->collider->calculateLocalInertia(mass, localInertia);
-	else if (isDynamic && convexHullShape != nullptr)
-		this->convexHullShape->calculateLocalInertia(mass, localInertia);
-
-	this->Btransform.setIdentity();
-	this->Btransform.setOrigin(btVector3(position.x, position.y, position.z));
-
-	// Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(Btransform);
-	if (convexHullShape == nullptr) {
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collider, localInertia);
-		this->body = new btRigidBody(rbInfo);
-	}
-	else {
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, convexHullShape, localInertia);
-		this->body = new btRigidBody(rbInfo);
-	}
-
-	this->body->setActivationState(DISABLE_DEACTIVATION);
-	this->body->setFriction(0.7f);
-	this->body->setUserIndex(-1);
-	
-	// Add the body to the dynamics world
-	if (mass != 0)
-		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_DYNAMIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
-	else
-		PhysicsManagerBullet::GetDynamicWorld()->addRigidBody(body, GROUP_STATIC, GROUP_PLAYER | GROUP_STATIC | GROUP_DYNAMIC);
-	
-	setPosition(position);
-}
-
-void GameObject::LoadModel(const char* path) {
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
-	bool res = Loader::loadOBJ(path, vertices, uvs, normals);
-	computeTangentBasis(vertices, uvs, normals, tangents, bitangents);
-	Indexer::indexVBO(vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals,indexed_tangents,indexed_bitangents);
-	
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_vertices.size()) * sizeof(glm::vec3), indexed_vertices.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &uvbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_uvs.size()) * sizeof(glm::vec2), indexed_uvs.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_normals.size()) * sizeof(glm::vec3), indexed_normals.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &elementbuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(indices.size()) * sizeof(unsigned short), indices.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &tangentbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_tangents.size()) * sizeof(glm::vec3), indexed_tangents.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &bitangentbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexed_bitangents.size()) * sizeof(glm::vec3), indexed_bitangents.data(), GL_STATIC_DRAW);
-}
-
-void GameObject::Copy(const std::string& copyName) const {
-	AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,convexHullShape));
+void GameObject::Copy(std::string copyName) {
+	//AssetManager::AddGameObject(GameObject(copyName, parentName, texture, getPosition(), getRotation(), getScale(), vertices, uvs, normals, tangents, bitangents, indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents, canSave, render, shouldDelete,1,convexHullShape));
 }
 
 void GameObject::SetUserPoint(void* pointer) const {
@@ -512,97 +217,7 @@ void GameObject::Update() {
 void GameObject::RenderObject(const GLuint& programID) const {
 	if (!render)
 		return;
-	
-	glUseProgram(programID);
-
-	if (texture != nullptr) {
-		glActiveTexture(texture->GetTextureNumber() + GL_TEXTURE0);
-		GLuint TextureID = glGetUniformLocation(programID, "DiffuseTextureSampler");
-		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
-		glUniform1i(static_cast<GLint>(TextureID), texture->GetTextureNumber());
-
-		glActiveTexture(texture->GetTextureNormalNumber() + GL_TEXTURE0);
-		GLuint NormalID = glGetUniformLocation(programID, "NormalTextureSampler");
-		glBindTexture(GL_TEXTURE_2D, texture->GetTextureNormal());
-		glUniform1i(static_cast<GLint>(NormalID), texture->GetTextureNormalNumber());
-	}
-	
-	// 1st attribute buffer : vertices
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		0,                  // attribute
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		nullptr            // array buffer offset
-	);
-
-	// 2nd attribute buffer : UVs
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glVertexAttribPointer(
-		1,                                // attribute
-		2,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		nullptr                          // array buffer offset
-	);
-
-	// 3rd attribute buffer : normals
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glVertexAttribPointer(
-		2,                                // attribute
-		3,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		nullptr                          // array buffer offset
-	);
-	
-	// 4th attribute buffer : tangents
-	glEnableVertexAttribArray(3);
-	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
-	glVertexAttribPointer(
-		3,                                // attribute
-		3,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		nullptr                          // array buffer offset
-	);
-
-	// 5th attribute buffer : bitangents
-	glEnableVertexAttribArray(4);
-	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
-	glVertexAttribPointer(
-		4,                                // attribute
-		3,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		nullptr                          // array buffer offset
-	);
-
-	// Index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-
-	// Draw the triangles !
-	glDrawElements(
-		GL_TRIANGLES,      // mode
-		static_cast<GLsizei>(indices.size()),    // count
-		GL_UNSIGNED_SHORT,   // type
-		nullptr           // element array buffer offset
-	);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(3);
-	glDisableVertexAttribArray(4);
+	model->RenderModel(programID);
 }
 
 void GameObject::setPosition(const glm::vec3 position) {
@@ -706,19 +321,19 @@ void GameObject::SetParentName(const std::string& name) {
 }
 
 std::vector<unsigned short> GameObject::getIndices() {
-	return this->indices;
+	return model->GetCurrentMesh()->indices;
 }
 
-std::vector<glm::vec3>  GameObject::getIndexedVertices() {
-	return this->indexed_vertices;
+std::vector<glm::vec3>  GameObject::getIndexedVerticies() {
+	return model->GetCurrentMesh()->indexed_vertices;
 }
 
 std::vector<glm::vec2>  GameObject::getIndexedUvs() {
-	return this->indexed_uvs;
+	return model->GetCurrentMesh()->indexed_uvs;
 }
 
 std::vector<glm::vec3>  GameObject::getIndexedNormals() {
-	return this->indexed_normals;
+	return model->GetCurrentMesh()->indexed_normals;
 }
 
 btConvexHullShape* GameObject::GetConvexHull() const {
@@ -726,7 +341,7 @@ btConvexHullShape* GameObject::GetConvexHull() const {
 }
 
 const char* GameObject::GetTextureName() const {
-	return this->texture->GetName();
+	return this->model->GetTextureName();
 }
 
 bool GameObject::CanSave() const {
@@ -749,7 +364,7 @@ bool GameObject::ShouldDelete() const {
 	return this->shouldDelete;
 }
 
-void GameObject::computeTangentBasis(
+/*void GameObject::computeTangentBasis(
 	// inputs
 	std::vector<glm::vec3>& vertices,
 	std::vector<glm::vec2>& uvs,
@@ -791,4 +406,4 @@ void GameObject::computeTangentBasis(
 		bitangents.push_back(bitangent);
 		bitangents.push_back(bitangent);
 	}
-}
+}*/

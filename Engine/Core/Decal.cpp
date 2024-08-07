@@ -13,11 +13,6 @@ Decal::Decal(const glm::vec3 position, const glm::vec3 normal, const glm::vec3 s
 
 	this->transform.position = position;
 	this->transform.rotation = (rotationAxis * -angle);
-	std::cout << "debug" << std::endl;
-	std::cout << angle << std::endl;
-	std::cout << "x: " << normal.x << " y: " << position.y << " z: " << position.z << std::endl;
-	std::cout << "x: " << transform.rotation.x << " y: " << transform.rotation.y << " z: " << transform.rotation.z << std::endl;
-
 	this->transform.scale = scale;
 
 	glGenVertexArrays(1, &VertexArrayID);

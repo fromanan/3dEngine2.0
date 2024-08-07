@@ -10,7 +10,7 @@ Texture::Texture(const char* name, const char* path) {
 	int texturenumTemp = CurrentTextureNumber++;
 	textureNumber = texturenumTemp - GL_TEXTURE0;
 
-	std::cout << "Texture Numbers loaded at " << textureNumber << std::endl;
+	std::cout << "Loading Texture " << path << std::endl;
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -35,8 +35,6 @@ Texture::Texture(const char* name, const char* path) {
 	stbi_image_free(data);
 
 	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
-
-	std::cout << "Texture Numbers Normal loaded at " << textureNormalNumber << std::endl;
 
 	glGenTextures(1, &textureNormal);
 	glBindTexture(GL_TEXTURE_2D, textureNormal);
@@ -66,7 +64,7 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	int texturenumTemp = CurrentTextureNumber++;
 	textureNumber = texturenumTemp - GL_TEXTURE0;
 
-	std::cout << "Texture Numbers loaded at " << textureNumber << std::endl;
+	std::cout << "Loading Texture " << path << std::endl;
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -90,8 +88,6 @@ Texture::Texture(const char* name, const char* path, const char* normalPath) {
 	stbi_image_free(data);
 
 	textureNormalNumber = CurrentTextureNumber++ - GL_TEXTURE0;
-
-	std::cout << "Texture Numbers Normal loaded at " << textureNormalNumber << std::endl;
 
 	glGenTextures(1, &textureNormal);
 	glBindTexture(GL_TEXTURE_2D, textureNormal);

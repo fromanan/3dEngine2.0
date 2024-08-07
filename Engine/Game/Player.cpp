@@ -41,8 +41,10 @@ namespace Player
 
 	void Player::Init() {
 		srand(static_cast<unsigned int>(time(nullptr)));
-		AssetManager::AddGameObject(GameObject("player", AssetPaths::Model_Capsule, AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5f, 1, 0.5f));
-		AssetManager::AddGameObject(GameObject("player_head", AssetPaths::Model_Capsule, AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5f, 0.7f, 0.5f));
+		//AssetManager::AddGameObject(GameObject("player", AssetPaths::Model_Capsule, AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5f, 1, 0.5f));
+		//AssetManager::AddGameObject(GameObject("player_head", AssetPaths::Model_Capsule, AssetManager::GetTexture("uvmap"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5f, 0.7f, 0.5f));
+		AssetManager::AddGameObject(GameObject("player", SceneManager::GetCurrentScene()->GetModel("player"), glm::vec3(0, 10, 5), false, 1, Capsule, 0.5, 1, 0.5));
+		AssetManager::AddGameObject(GameObject("player_head", SceneManager::GetCurrentScene()->GetModel("player"), glm::vec3(0, 10, 5), false, 0, Sphere, 0.5, 0.7, 0.5));
 		GameObject* player_head = AssetManager::GetGameObject("player_head");
 		player_head->SetRender(false);
 		btBroadphaseProxy*  proxy = player_head->GetRigidBody()->getBroadphaseHandle();

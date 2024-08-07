@@ -46,16 +46,19 @@ namespace AssetManager
 				indexed_vertices.emplace_back(gameObject[12][vert], gameObject[12][vert + 1], gameObject[12][vert + 2]);
 				vert = vert + 2;
 			}
+
 			for (int uvs = 0; uvs < Uvs.size(); uvs++) {
 				indexed_uvs.emplace_back(gameObject[13][uvs], gameObject[13][uvs + 1]);
 				uvs = uvs + 1;
 			}
+
 			for (int normal = 0; normal < normals.size(); normal++) {
 				indexed_normals.emplace_back(gameObject[14][normal], gameObject[14][normal + 1], gameObject[14][normal + 2]);
 				normal = normal + 2;
 			}
-			bool save = gameObject[16];
-			GameObjects.emplace_back(name.data(), Parentname.data(), texture, position, rotation, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save,0,Box);
+
+			bool save = data["GameObjects"][gameobject][16];
+			//GameObjects.emplace_back(name.data(), Parentname.data(), texture, position, rotation, scale, indices, indexed_vertices, indexed_uvs, indexed_normals, save, 0, Box);
 		}
 	}
 
@@ -134,8 +137,7 @@ namespace AssetManager
 		return GameObjects.size() - 1;
 	}
 
-	size_t AssetManager::AddGameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position,
-	                                   bool save, float mass, ColliderShape shape) {
+	size_t AssetManager::AddGameObject(std::string name, Model* model, glm::vec3 position, bool save, float mass, ColliderShape shape) {
 		GameObjects.emplace_back(name, path, texture, position, save, mass, shape);
 		GameObjects[GameObjects.size() - 1].GetRigidBody()->setUserIndex(static_cast<int>(GameObjects.size()) - 1);
 		return GameObjects.size() - 1;

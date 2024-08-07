@@ -6,10 +6,12 @@
 #include "Player.h"
 #include "Audio/AudioManager.h"
 
-Door::Door(const std::string& Name, const char* doorPath, const char* framePath, Texture* doorTexture, Texture* frameTexture, const glm::vec3 position) {
-	name = Name;
-	AssetManager::AddGameObject(GameObject(name + "_frame", framePath, frameTexture, position, false, 0, Box, 0, 0, 0));
-	AssetManager::AddGameObject(name + "_door", doorPath, doorTexture, position, false, 0, Convex);
+Door::Door(const std::string& Name, Model* door, Model* frame, const glm::vec3 position) {
+	this->name = Name;
+	AssetManager::AddGameObject(GameObject(name + "_frame", frame, position, false, 0, Box, 0, 0, 0));
+	AssetManager::AddGameObject(name + "_door", door, position, false, 0, Convex);
+	//AssetManager::AddGameObject(GameObject(name + "_frame", framePath, frameTexture, position, false, 0, Box, 0, 0, 0));
+	//AssetManager::AddGameObject(name + "_door", doorPath, doorTexture, position, false, 0, Convex);
 	GameObject* gameObject = AssetManager::GetGameObject(name + "_door");
 	gameObject->GetRigidBody()->setCcdMotionThreshold(0.1f);
 	gameObject->GetRigidBody()->setCcdSweptSphereRadius(0.2f); // Set the radius for CCD

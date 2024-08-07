@@ -72,13 +72,13 @@ namespace Renderer
 
 	int Renderer::init(const char* vertex, const char* fragment, const char* name) {
 		UseProgram(LoadShader(vertex, fragment, name));
-		std::cout << "Loaded texture shader at: " << GetProgramID("Texture") << std::endl;
 
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 		MatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "MVP");
 		ViewMatrixID = glGetUniformLocation(Renderer::GetCurrentProgramID(), "V");
@@ -88,9 +88,7 @@ namespace Renderer
 
 		// Skybox
 		LoadShader(AssetPaths::Shader_Skybox_Vert, AssetPaths::Shader_Skybox_Frag, "skybox");
-		std::cout << "Loaded skybox shader at: " << GetProgramID("skybox") << std::endl;
 		LoadShader(AssetPaths::Shader_Sprite_Vert, AssetPaths::Shader_Sprite_Frag, "sprite");
-		std::cout << "Loaded sprite shader at: " << GetProgramID("sprite") << std::endl;
 
 		UseProgram(GetProgramID("sprite"));
 		
@@ -145,7 +143,7 @@ namespace Renderer
 	}
 
 	// TODO: Doesn't work right now still in progress
-	void Renderer::DrawSprite(const Texture* texture, const glm::vec2 position, const glm::vec2 size, const float rotate, const glm::vec3 color) {
+	/*void Renderer::DrawSprite(const Texture* texture, const glm::vec2 position, const glm::vec2 size, const float rotate, const glm::vec3 color) {
 		UseProgram(GetProgramID("sprite"));
 
 		glEnableVertexAttribArray(0);
@@ -174,7 +172,7 @@ namespace Renderer
 		glBindVertexArray(Renderer::quadVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
-	}
+	}*/
 	
 	void Renderer::RendererSkybox(const glm::mat4& view, glm::mat4 projection, Skybox skybox) {
 		glDepthMask(GL_FALSE);

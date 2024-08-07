@@ -21,12 +21,15 @@ public:
 
 	size_t GetGunPickUpSize() const;
 	Crate* GetCrate(const std::string& name);
+	Model* GetModel(const std::string& name);
 private:
 	Skybox sky = Skybox();
 	// Objects
 	std::vector<Door> doors;
 	std::vector<Crate> crates;
-	std::vector<GunPickup> gunPickUps;
-	std::vector<Window> windows;
+	std::vector<GunPickUp> gunPickUps;
 	std::vector<Light> lights;
+
+	//holds the models
+	std::map<std::string, Model> models;
 };

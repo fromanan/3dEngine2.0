@@ -3,7 +3,7 @@
 class Door
 {
 public:
-	Door(const std::string& Name, const char* doorPath, const char* framePath, Texture* door_texture, Texture* frameTexture, glm::vec3 position);
+	Door(const std::string& Name, Model* foor, Model* frame, glm::vec3 position);
 	void Interact();
 	void Update(float deltaTime);
 

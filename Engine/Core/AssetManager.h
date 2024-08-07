@@ -9,8 +9,8 @@ namespace AssetManager
 
 	// returns index of object
 	size_t AddGameObject(const GameObject& gameObject);
-	size_t AddGameObject(const std::string& name, const char* path, Texture* texture, glm::vec3 position,
-									   bool save, float mass, ColliderShape shape);
+	size_t AddGameObject(const std::string& name, Model* model, glm::vec3 position,
+										bool save, float mass, ColliderShape shape);
 
 	size_t AddDecal(glm::vec3 position, glm::vec3 normal, glm::vec3 scale, Texture* texture,
 	                            GameObject* parent);

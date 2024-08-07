@@ -73,4 +73,5 @@ void main() {
 
     // Output final color
     color = vec4(FinalColor, texture(DiffuseTextureSampler, UV).a);
+    //color = vec4(vec3(gl_FragCoord.z),1.0);
 }
